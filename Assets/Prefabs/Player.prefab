@@ -101,7 +101,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2.5
   m_Material: {fileID: 6200000, guid: a6defb0f443613247a1eab366a01bff3, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -145,8 +145,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.009999983, y: 1.0744535}
-  m_Size: {x: 3.1100013, y: 2.2627451}
+  m_Offset: {x: -0.044679694, y: 0.5958684}
+  m_Size: {x: 1.736685, y: 1.3055807}
   m_Direction: 1
 --- !u!1 &7962418247137918926
 GameObject:
@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c79596b6d0022f4799d5a25087a6351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minimumSwipeMagnitude: 5
 --- !u!114 &320417313174639445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,9 +207,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ccf16cdada84c743afd169f8c38a092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDatas: {fileID: 11400000, guid: f127d1eaf3a3d084cadfc7f0f8480d93, type: 2}
   inputManager: {fileID: 361170832714984852}
   maxTimeHold: 2
   spriteTransform: {fileID: 1228329714641054801}
   coefSize: 2
   rb: {fileID: 1074973734424836418}
-  jumpForce: 10
+  jumpForce: 30
+  groundCheckDistance: 1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
