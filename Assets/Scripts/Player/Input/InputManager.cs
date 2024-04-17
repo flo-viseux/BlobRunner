@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    [SerializeField] private float minimumSwipeMagnitude = 5f;
+    private Vector2 swipeDirection;
+    
     private TouchController _touchController;
     
     public delegate void StartTouchEvent(float time);
@@ -13,6 +16,10 @@ public class InputManager : MonoBehaviour
     
     public delegate void EndTouchEvent(float time);
     public event EndTouchEvent OnEndTouch;
+
+    public delegate void SwipeSuccesful();
+
+    public event SwipeSuccesful OnSwipeSuccessful;
 
     private void Awake()
     {
@@ -33,6 +40,8 @@ public class InputManager : MonoBehaviour
     {
         _touchController.Player.TouchPress.started += ctx => StartTouch(ctx);
         _touchController.Player.TouchPress.canceled += ctx => EndTouch(ctx);
+        _touchController.Player.Swipe.performed += ctx => Swipe(ctx);
+        
     }
     
     private void StartTouch(InputAction.CallbackContext context)
@@ -48,6 +57,17 @@ public class InputManager : MonoBehaviour
         if (OnEndTouch != null)
         {
             OnEndTouch((float)context.time);
+        }
+    }
+
+    private void Swipe(InputAction.CallbackContext context)
+    {
+        swipeDirection = context.ReadValue<Vector2>();
+        bool swipeX = swipeDirection.x < 0.1f & swipeDirection.x > -0.1f;
+        if (swipeDirection.y < 0 & swipeX)
+        {
+            Debug.Log(("Swipe down"));
+            OnSwipeSuccessful();
         }
     }
 }
