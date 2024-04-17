@@ -11,6 +11,9 @@ public class LevelSection : MonoBehaviour
     [SerializeField] private SectionSlot[] startSlots = null;
 
     [SerializeField] private SectionSlot[] endSlots = null;
+
+    [SerializeField] private float startLeftY = 5.06f;
+    [SerializeField] private float endLeftY  = 8.5f;
     #endregion
 
     #region API
@@ -21,12 +24,12 @@ public class LevelSection : MonoBehaviour
     private void OnDrawGizmos()
     {
         Vector3 startLeft = transform.position;
-        startLeft -= Vector3.up * 5.06f;
+        startLeft -= Vector3.up * startLeftY;
         Vector3 startRight = startLeft + Vector3.right * (parallaxObject.Width + 0.5f);
 
         startLeft += 0.5f * Vector3.left;
 
-        Vector3 endLeft = startLeft + Vector3.up * 8.5f;
+        Vector3 endLeft = startLeft + Vector3.up * endLeftY;
         float height = (endLeft.y - startLeft.y) / 2f;
 
         foreach (SectionSlot slot in startSlots)
