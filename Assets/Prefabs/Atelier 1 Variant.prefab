@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6791592031817741374
+--- !u!1001 &1330049150949031613
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,37 +8,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3654513331952818886, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - target: {fileID: 2369514400252270098, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3654513331952818886, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - target: {fileID: 2369514400252270098, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_Color.g
-      value: 0.61707866
+      value: 0.86172897
       objectReference: {fileID: 0}
-    - target: {fileID: 3654513331952818886, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - target: {fileID: 2369514400252270098, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_Color.r
       value: 0.54901963
       objectReference: {fileID: 0}
+    - target: {fileID: 3654513331952818886, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+      propertyPath: m_Color.b
+      value: 0.54901963
+      objectReference: {fileID: 0}
+    - target: {fileID: 3654513331952818886, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9024086
+      objectReference: {fileID: 0}
     - target: {fileID: 3738334214733640831, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 5037351451182982001, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5037351451182982001, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
-      propertyPath: m_Color.g
-      value: 0.14257646
-      objectReference: {fileID: 0}
-    - target: {fileID: 5037351451182982001, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
-      propertyPath: m_Color.r
-      value: 0
+      value: 8.17
       objectReference: {fileID: 0}
     - target: {fileID: 8111898030813779034, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_Name
-      value: LevelSection Variant
+      value: Atelier 1 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8265892205530573804, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_LocalPosition.x
