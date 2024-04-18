@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Player;
 using UnityEngine;
 
@@ -103,8 +100,11 @@ public class PlayerInput : MonoBehaviour
 
     public void Jump()
     {
-        Debug.Log(isInAir);
-        if (isInAir) return;
+        if (!IsThereGround())
+            return;
+
+        /*Debug.Log(isInAir);
+        if (isInAir) return;*/
         Debug.Log("Jump");
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         isInAir = true;

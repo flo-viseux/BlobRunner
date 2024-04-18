@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3654513331952818886}
   - component: {fileID: 3286888317815737546}
   - component: {fileID: 3636703395880177851}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 8265892205530573804}
   - component: {fileID: 8946981311370764674}
   - component: {fileID: 7397602420422953816}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ParallaxObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,6 +274,10 @@ PrefabInstance:
     - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_Name
       value: Obstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
