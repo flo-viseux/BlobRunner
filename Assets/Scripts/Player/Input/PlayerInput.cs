@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Player;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -12,50 +10,58 @@ public class PlayerInput : MonoBehaviour
     [Header("Input")]
     [SerializeField] private InputManager inputManager;
     [SerializeField] private float maxTimeHold = 5f;
+    [Header("Animation")] 
+    [SerializeField] private PlayerAnimatorController animController;
     [Header("Size")]
     [SerializeField] private Transform spriteTransform;
     [SerializeField] private float coefSize = 2f;
     [Header("Physic")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpForceFromHold = 10f;
+    [SerializeField] private float minJumpForceFromHold = 0.2f;
+    [SerializeField] private float dashDownForce = 5f;
+    [SerializeField] private Transform feetTransform;
     [SerializeField] private float groundCheckDistance = 0.5f;
     [SerializeField] private LayerMask groundMask;
 
     private float startTime;
-    private bool isJumping;
+    private bool isInAir;
     private float durationTouchHold;
+    private bool isThereBounce = false;
 
     private void Start()
     {
         startTime = 0;
-        isJumping = false;
+        isInAir = false;
+        isThereBounce = false;
     }
 
     private void OnEnable()
     {
+        inputManager.OnSwipeSuccessful += DashDown;
+        inputManager.OnTap += Jump;
         inputManager.OnStartTouch += GetSmaller;
         inputManager.OnEndTouch += GetBackToNormalSize;
-        inputManager.OnSwipeSuccessful += DashDown;
-    }
 
+    }
+    
     private void OnDisable()
     {
+        inputManager.OnSwipeSuccessful -= DashDown;
+        inputManager.OnTap += Jump;
         inputManager.OnStartTouch -= GetSmaller;
         inputManager.OnEndTouch -= GetBackToNormalSize;
-        inputManager.OnSwipeSuccessful -= DashDown;
     }
     
     public void GetSmaller(float time)
     {
         if (IsThereGround())
         {
-            // Debug.Log("on ground : get smaller");
-
             playerDatas.State = PlayerState.SMALL;
             
             // change size
-            Vector3 scale = spriteTransform.localScale;
-            scale.y = scale.y / coefSize;
+            Vector3 scale = spriteTransform.localScale / coefSize;
             spriteTransform.localScale = scale;
 
             // jump
@@ -67,19 +73,20 @@ public class PlayerInput : MonoBehaviour
     {
         if (playerDatas.State == PlayerState.SMALL)
         {
-            // Debug.Log("is small : get back to normal");
-
             playerDatas.State = PlayerState.NORMAL;
             
             // change size
-            Vector3 scale = spriteTransform.localScale;
-            scale.y = scale.y * coefSize;
+            Vector3 scale = spriteTransform.localScale * coefSize;
             spriteTransform.localScale = scale;
             
             // jump
-            durationTouchHold = Mathf.Clamp01((time - startTime) / maxTimeHold);
-            // Debug.Log($"hold time : {durationTouchHold}");
-            isJumping = true;
+            durationTouchHold = Mathf.Clamp((time - startTime) / maxTimeHold, minJumpForceFromHold, 1f);
+            Vector2 forceDirection = (jumpForceFromHold * durationTouchHold) * Vector2.up;
+            rb.AddForce(forceDirection, ForceMode2D.Impulse);
+
+            isThereBounce = true;
+            // animController.EnterJumpTrig();
+            isInAir = true;
         }
     }
 
@@ -88,28 +95,41 @@ public class PlayerInput : MonoBehaviour
         if (!IsThereGround())
         {
             Debug.Log("Dash Down");
+            isInAir = true;
+            Vector2 dashDirection = dashDownForce * Vector2.down;
+            rb.AddForce(dashDirection, ForceMode2D.Impulse);
         }
+    }
+
+    public void Jump()
+    {
+        Debug.Log(isInAir);
+        if (isInAir) return;
+        Debug.Log("Jump");
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        isInAir = true;
     }
 
     private void FixedUpdate()
     {
-        if (isJumping)
+        Debug.Log($"is in air {isInAir}");
+        if (isInAir && IsThereGround())
         {
-            Vector2 forceDirection = (jumpForce * durationTouchHold) * Vector2.up;
-            rb.AddForce(forceDirection, ForceMode2D.Impulse);
-            isJumping = false;
+            // animController.EnterLandTrig();
+            isInAir = false;
         }
     }
 
     private bool IsThereGround()
     {
-        Vector2 startpos = rb.transform.position;
-        Vector2 direction = startpos + Vector2.down;
+        Vector2 startpos = feetTransform.position;
+        Vector2 direction = startpos * Vector2.down;
         RaycastHit2D hit = Physics2D.Raycast(startpos, direction, groundCheckDistance, groundMask);
-        Debug.DrawLine(startpos, direction * groundCheckDistance, Color.cyan, 0.5f);
+        Debug.DrawLine(startpos, new Vector2(direction.x,direction.y * groundCheckDistance), Color.cyan, 0.5f);
         
-        if (hit) Debug.Log($"collider detected : {hit.collider.name}");
+        if (hit.collider != null) Debug.Log($"Raycast > collider detected : {hit.collider.name}");
+        else Debug.Log("no collider");
         
-        return hit != null;
+        return hit.collider != null;
     }
 }
