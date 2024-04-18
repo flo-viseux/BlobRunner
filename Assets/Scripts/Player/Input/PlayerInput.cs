@@ -112,20 +112,18 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log($"is in air {isInAir}");
-        if (isInAir && IsThereGround())
+        if (IsThereGround())
         {
-            // animController.EnterLandTrig();
             isInAir = false;
         }
     }
 
     private bool IsThereGround()
     {
-        Vector2 startpos = feetTransform.position;
-        Vector2 direction = startpos * Vector2.down;
+        Vector2 startpos = rb.transform.position;
+        Vector2 direction = Vector2.down;
         RaycastHit2D hit = Physics2D.Raycast(startpos, direction, groundCheckDistance, groundMask);
-        Debug.DrawLine(startpos, new Vector2(direction.x,direction.y * groundCheckDistance), Color.cyan, 0.5f);
+        Debug.DrawRay(startpos, direction * groundCheckDistance, Color.cyan, 0.5f);
         
         if (hit.collider != null) Debug.Log($"Raycast > collider detected : {hit.collider.name}");
         else Debug.Log("no collider");
