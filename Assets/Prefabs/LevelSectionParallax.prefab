@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  offset: 0
+  offset: -5
   initialWidth: 22
   props:
   - {fileID: 7397602420422953816, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}

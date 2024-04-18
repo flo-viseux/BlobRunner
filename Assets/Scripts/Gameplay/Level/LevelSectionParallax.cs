@@ -3,44 +3,6 @@ using UnityEngine;
 
 public class LevelSectionParallax : Parallax
 {
-    /*#region SerializedFields
-    [SerializeField] private LevelSection[] sections;
-
-    [SerializeField] private float speed = 1.0f;
-    #endregion
-
-    #region Attributes
-    private float currentDist;
-
-    private float sectionDist;
-    #endregion
-
-    #region UnityMethods
-    private void Awake()
-    {
-        InstantiateRandomSection();
-    }
-
-    private void Update()
-    {
-        currentDist += Time.deltaTime * speed;
-
-        if (currentDist >= sectionDist) 
-        {
-            InstantiateRandomSection();
-        }
-    }
-    #endregion
-
-    #region Private
-    private void InstantiateRandomSection()
-    {
-        LevelSection newSection = Instantiate(sections[Random.Range(0, sections.Length)], this.transform);
-        newSection.speed = speed;
-        sectionDist += newSection.Size;
-    }
-    #endregion*/
-
     #region Serialized fields
     [SerializeField] private float offset = -2f;
 
@@ -96,7 +58,7 @@ public class LevelSectionParallax : Parallax
         Scrolling = true;
 
         currentWidth = initialWidth;
-        CurrentEnd = -offset;
+        CurrentEnd = 0;
     }
 
     private void Update()
@@ -118,7 +80,7 @@ public class LevelSectionParallax : Parallax
 
         if (instances.TryPeek(out ParallaxObject props))
         {
-            if (props.transform.localPosition.x + props.Width < 0)
+            if (props.transform.localPosition.x + props.Width < 0 + offset)
             {
                 instances.Dequeue();
                 RemoveProps(props);
@@ -194,7 +156,7 @@ public class LevelSectionParallax : Parallax
     #region Debug
     private void OnDrawGizmosSelected()
     {
-        Vector3 start = transform.position - Vector3.right * offset;
+        Vector3 start = transform.position;
         Vector3 end = start + Vector3.right * initialWidth;
 
         Gizmos.color = Color.green;
