@@ -1,15 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Lean.Touch;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private float minimumSwipeMagnitude = 5f;
-    private Vector2 swipeDirection;
-    
-    private TouchController _touchController;
+    private enum InputState
+    {
+        NONE,
+        TAP,
+        HOLD,
+        SWIPE
+    }
+
+    private InputState state;
     
     public delegate void StartTouchEvent(float time);
     public event StartTouchEvent OnStartTouch;
@@ -17,57 +22,93 @@ public class InputManager : MonoBehaviour
     public delegate void EndTouchEvent(float time);
     public event EndTouchEvent OnEndTouch;
 
-    public delegate void SwipeSuccesful();
-
-    public event SwipeSuccesful OnSwipeSuccessful;
-
-    private void Awake()
-    {
-        _touchController = new TouchController();
-    }
-
-    private void OnEnable()
-    {
-        _touchController.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _touchController.Disable();
-    }
+    public delegate void SwipeSuccesfulEvent();
+    public event SwipeSuccesfulEvent OnSwipeSuccessful;
+    
+    public delegate void TapEvent();
+    public event TapEvent OnTap;
+    
+    private bool isHolding = false;
 
     private void Start()
     {
-        _touchController.Player.TouchPress.started += ctx => StartTouch(ctx);
-        _touchController.Player.TouchPress.canceled += ctx => EndTouch(ctx);
-        _touchController.Player.Swipe.performed += ctx => Swipe(ctx);
-        
-    }
-    
-    private void StartTouch(InputAction.CallbackContext context)
-    {
-        if (OnStartTouch != null)
-        {
-            OnStartTouch((float)context.startTime);
-        }
-    }
-    
-    private void EndTouch(InputAction.CallbackContext context)
-    {
-        if (OnEndTouch != null)
-        {
-            OnEndTouch((float)context.time);
-        }
+        state = InputState.NONE;
     }
 
-    private void Swipe(InputAction.CallbackContext context)
+    void OnEnable()
     {
-        swipeDirection = context.ReadValue<Vector2>();
-        bool swipeX = swipeDirection.x < 0.1f & swipeDirection.x > -0.1f;
-        if (swipeDirection.y < 0 & swipeX)
+        Lean.Touch.LeanTouch.OnFingerSwipe += HandleSwipe;
+        Lean.Touch.LeanTouch.OnFingerTap += HandleTap;
+        Lean.Touch.LeanTouch.OnFingerOld += HandleFingerOld;
+        Lean.Touch.LeanTouch.OnFingerUp += HandleFingerUp;
+    }
+
+    void OnDisable()
+    {
+        Lean.Touch.LeanTouch.OnFingerSwipe -= HandleSwipe;
+        Lean.Touch.LeanTouch.OnFingerTap -= HandleTap;
+        Lean.Touch.LeanTouch.OnFingerOld -= HandleFingerOld;
+        Lean.Touch.LeanTouch.OnFingerUp -= HandleFingerUp;
+    }
+
+    void HandleFingerOld(Lean.Touch.LeanFinger finger)
+    {
+        if (finger.Index != 0) return;
+        
+        if (state != InputState.NONE) return;
+        
+        // Debug.Log($"Hold {finger.Age} {finger.Index}");
+        
+        state = InputState.HOLD;
+        
+        if (finger.Age > 2f) return;
+        OnStartTouch(finger.Age);
+        isHolding = true;
+    }
+
+    void HandleFingerUp(Lean.Touch.LeanFinger finger)
+    {
+        if (finger.Index != 0) return;
+        
+        if (state == InputState.HOLD)
         {
-            Debug.Log(("Swipe down"));
+            // Debug.Log($"Hold stop {finger.Age} {finger.Index}");
+            OnEndTouch(finger.Age);
+        }
+
+        state = InputState.NONE;
+    }
+
+    void HandleSwipe(Lean.Touch.LeanFinger finger)
+    {
+        if (finger.Index != 0) return;
+        
+        if (state != InputState.NONE) return;
+        
+        Vector2 swipeDelta = finger.SwipeScreenDelta;
+        
+        if (swipeDelta.y < -Mathf.Abs(swipeDelta.x))
+        {
+            state = InputState.SWIPE;
+            // Debug.Log("Swiped Down");
+            // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
             OnSwipeSuccessful();
         }
+
+        state = InputState.NONE;
+    }
+
+    void HandleTap(Lean.Touch.LeanFinger finger)
+    {
+        if (finger.Index != 0) return;
+        
+        if (state != InputState.NONE) return;
+
+        state = InputState.TAP;
+        // Debug.Log("Tap");
+        // Debug.Log($" Tap {finger.Age} {finger.Index}");
+        OnTap();
+        
+        state = InputState.NONE;
     }
 }

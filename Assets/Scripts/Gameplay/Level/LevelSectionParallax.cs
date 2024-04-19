@@ -58,7 +58,7 @@ public class LevelSectionParallax : Parallax
         Scrolling = true;
 
         currentWidth = initialWidth;
-        CurrentEnd = -offset;
+        CurrentEnd = 0;
     }
 
     private void Update()
@@ -80,7 +80,7 @@ public class LevelSectionParallax : Parallax
 
         if (instances.TryPeek(out ParallaxObject props))
         {
-            if (props.transform.localPosition.x + props.Width < 0)
+            if (props.transform.localPosition.x + props.Width < 0 + offset)
             {
                 instances.Dequeue();
                 RemoveProps(props);
@@ -156,7 +156,7 @@ public class LevelSectionParallax : Parallax
     #region Debug
     private void OnDrawGizmosSelected()
     {
-        Vector3 start = transform.position - Vector3.right * offset;
+        Vector3 start = transform.position;
         Vector3 end = start + Vector3.right * initialWidth;
 
         Gizmos.color = Color.green;
