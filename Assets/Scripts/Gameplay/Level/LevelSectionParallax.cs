@@ -8,6 +8,8 @@ public class LevelSectionParallax : Parallax
 
     [SerializeField] private float initialWidth = 4f;
 
+    [SerializeField] private ParallaxObject initialProps = null;
+
     [SerializeField] private ParallaxObject[] props = null;
     #endregion
 
@@ -57,8 +59,9 @@ public class LevelSectionParallax : Parallax
 
         Scrolling = true;
 
-        currentWidth = initialWidth;
         CurrentEnd = 0;
+
+        InitialFill();
     }
 
     private void Update()
@@ -92,6 +95,17 @@ public class LevelSectionParallax : Parallax
     #endregion
 
     #region Private
+    private void InitialFill()
+    {
+        ParallaxObject instanciatedProps = InstantiateProps(initialProps);
+
+        instances.Enqueue(instanciatedProps);
+        instanciatedProps.transform.localPosition = Vector3.right * CurrentEnd;
+
+        currentWidth = initialProps.Width;
+        CurrentEnd += initialProps.Width;
+    }
+
     private void Fill()
     {
         while (CurrentEnd < currentWidth)
