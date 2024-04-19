@@ -1,7 +1,8 @@
+using System;
 using Player;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerBehaviour : MonoBehaviour
 {
     [SerializeField] private SO_PlayerDatas playerDatas;
     [Header("Input")]
@@ -18,20 +19,27 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float jumpForceFromHold = 10f;
     [SerializeField] private float minJumpForceFromHold = 0.2f;
     [SerializeField] private float dashDownForce = 5f;
-    [SerializeField] private Transform feetTransform;
     [SerializeField] private float groundCheckDistance = 0.5f;
     [SerializeField] private LayerMask groundMask;
+    [Header("Bounce")] 
+    [SerializeField] private int bounceTotalCount = 3;
 
     private float startTime;
     private bool isInAir;
     private float durationTouchHold;
-    private bool isThereBounce = false;
+
+    private bool isBouncing = false;
+    private int bounceCount = 0;
+    private float startSpeedFromHold = 0f;
+
+    private bool isDashing = false;
 
     private void Start()
     {
         startTime = 0;
         isInAir = false;
-        isThereBounce = false;
+        isDashing = false;
+        bounceCount = 0;
     }
 
     private void OnEnable()
@@ -63,6 +71,7 @@ public class PlayerInput : MonoBehaviour
 
             // jump
             startTime = time;
+            
         }
     }
 
@@ -78,12 +87,14 @@ public class PlayerInput : MonoBehaviour
             
             // jump
             durationTouchHold = Mathf.Clamp((time - startTime) / maxTimeHold, minJumpForceFromHold, 1f);
-            Vector2 forceDirection = (jumpForceFromHold * durationTouchHold) * Vector2.up;
+            startSpeedFromHold = jumpForceFromHold * durationTouchHold;
+            Vector2 forceDirection = startSpeedFromHold * Vector2.up;
             rb.AddForce(forceDirection, ForceMode2D.Impulse);
 
-            isThereBounce = true;
+            isBouncing = true;
             // animController.EnterJumpTrig();
             isInAir = true;
+            bounceCount = 0;
         }
     }
 
@@ -91,8 +102,9 @@ public class PlayerInput : MonoBehaviour
     {
         if (!IsThereGround())
         {
-            Debug.Log("Dash Down");
+            // Debug.Log("Dash Down");
             isInAir = true;
+            isDashing = true;
             Vector2 dashDirection = dashDownForce * Vector2.down;
             rb.AddForce(dashDirection, ForceMode2D.Impulse);
         }
@@ -102,22 +114,13 @@ public class PlayerInput : MonoBehaviour
     {
         if (!IsThereGround())
             return;
-
-        /*Debug.Log(isInAir);
-        if (isInAir) return;*/
-        Debug.Log("Jump");
+        
+        // Debug.Log("Jump");
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         isInAir = true;
+        
     }
-
-    private void FixedUpdate()
-    {
-        if (IsThereGround())
-        {
-            isInAir = false;
-        }
-    }
-
+    
     private bool IsThereGround()
     {
         Vector2 startpos = rb.transform.position;
@@ -125,9 +128,35 @@ public class PlayerInput : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(startpos, direction, groundCheckDistance, groundMask);
         Debug.DrawRay(startpos, direction * groundCheckDistance, Color.cyan, 0.5f);
         
-        if (hit.collider != null) Debug.Log($"Raycast > collider detected : {hit.collider.name}");
-        else Debug.Log("no collider");
+        // if (hit.collider != null) Debug.Log($"Raycast > collider detected : {hit.collider.name}");
+        // else Debug.Log("no collider");
         
         return hit.collider != null;
+    }
+    
+    private void FixedUpdate()
+    {
+        if (isDashing && IsThereGround() && isBouncing)
+        {
+            isInAir = false;
+            isBouncing = false;
+            isDashing = false;
+        }
+    }
+    
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (isBouncing && other.gameObject.layer == 6)
+        {
+            bounceCount++;
+            float ratio = 1 - Mathf.Clamp01(bounceCount / (float)bounceTotalCount);
+            if (bounceCount == bounceTotalCount+1)
+            {
+                isBouncing = false;
+                return;
+            }
+            Vector2 direction = other.contacts[0].normal;
+            rb.AddForce(direction * ratio * startSpeedFromHold, ForceMode2D.Impulse);
+        }
     }
 }
