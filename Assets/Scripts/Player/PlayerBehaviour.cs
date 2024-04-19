@@ -92,7 +92,7 @@ public class PlayerBehaviour : MonoBehaviour
             rb.AddForce(forceDirection, ForceMode2D.Impulse);
 
             isBouncing = true;
-            // animController.EnterJumpTrig();
+            animController.EnterJumpTrig();
             isInAir = true;
             bounceCount = 0;
         }
@@ -117,8 +117,8 @@ public class PlayerBehaviour : MonoBehaviour
         
         // Debug.Log("Jump");
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        isInAir = true;
-        
+        animController.EnterJumpTrig();
+        //isInAir = true;
     }
     
     private bool IsThereGround()
@@ -136,11 +136,22 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void FixedUpdate()
     {
+        if (!IsThereGround())
+            isInAir = true;
+
+        if (isInAir && IsThereGround())
+        {
+            isInAir = false;
+            animController.EnterLandTrig();
+        }
+
         if (isDashing && IsThereGround() && isBouncing)
         {
             isInAir = false;
             isBouncing = false;
             isDashing = false;
+
+            animController.EnterLandTrig();
         }
     }
     
