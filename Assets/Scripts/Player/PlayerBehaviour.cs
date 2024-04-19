@@ -91,9 +91,9 @@ public class PlayerBehaviour : MonoBehaviour
             Vector2 forceDirection = startSpeedFromHold * Vector2.up;
             rb.AddForce(forceDirection, ForceMode2D.Impulse);
 
+            Debug.Log("GetBackToNormalSize");
             isBouncing = true;
-            animController.EnterJumpTrig();
-            isInAir = true;
+            animController.Jump();
             bounceCount = 0;
         }
     }
@@ -117,7 +117,7 @@ public class PlayerBehaviour : MonoBehaviour
         
         // Debug.Log("Jump");
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        animController.EnterJumpTrig();
+        animController.Jump();
         //isInAir = true;
     }
     
@@ -133,17 +133,17 @@ public class PlayerBehaviour : MonoBehaviour
         
         return hit.collider != null;
     }
-    
-    private void FixedUpdate()
-    {
-        if (!IsThereGround())
-            isInAir = true;
 
+    private void Update()
+    {
         if (isInAir && IsThereGround())
         {
             isInAir = false;
-            animController.EnterLandTrig();
+            animController.Land();
         }
+
+        if (!IsThereGround())
+            isInAir = true;
 
         if (isDashing && IsThereGround() && isBouncing)
         {
@@ -151,7 +151,7 @@ public class PlayerBehaviour : MonoBehaviour
             isBouncing = false;
             isDashing = false;
 
-            animController.EnterLandTrig();
+            animController.Land();
         }
     }
     
