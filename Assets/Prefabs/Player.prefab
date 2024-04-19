@@ -142,9 +142,9 @@ MonoBehaviour:
   spriteTransform: {fileID: 9160605459590528789}
   coefSize: 2
   rb: {fileID: 219738332032548818}
-  jumpForce: 10
-  jumpForceFromHold: 1.75
-  minJumpForceFromHold: 10
+  jumpForce: 12.5
+  jumpForceFromHold: 2.5
+  minJumpForceFromHold: 12.5
   dashDownForce: 25
   feetTransform: {fileID: 5407971525940720135}
   groundCheckDistance: 0.1
@@ -203,8 +203,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 2.5
+  m_AngularDrag: 0
+  m_GravityScale: 4
   m_Material: {fileID: 6200000, guid: a6defb0f443613247a1eab366a01bff3, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
