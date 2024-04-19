@@ -186,7 +186,7 @@ Transform:
   m_GameObject: {fileID: 5230936797612457993}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.5139, y: -3.4956, z: 0}
+  m_LocalPosition: {x: 9.5139, y: -3.55, z: 0}
   m_LocalScale: {x: 0.972, y: 2.0259569, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -344,8 +344,8 @@ Transform:
   m_GameObject: {fileID: 6282527378856391321}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.5201, y: -2.2826996, z: 0}
-  m_LocalScale: {x: 2.9423487, y: 0.4299, z: 0.8598}
+  m_LocalPosition: {x: 8.5201, y: -2.3, z: 0}
+  m_LocalScale: {x: 2.9888377, y: 0.4299, z: 0.8598}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6972435947509093713}
@@ -508,7 +508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8349817918591902534, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6826998
+      value: -0.68
       objectReference: {fileID: 0}
     - target: {fileID: 8349817918591902534, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -656,6 +656,11 @@ PrefabInstance:
     - {fileID: 2728650311469332272, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
     - {fileID: 8271252794580467099, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
     - {fileID: 239073860810294380, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - {fileID: 6268789265625738932, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - {fileID: 1518566771620314275, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - {fileID: 1212187813698173928, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - {fileID: 1474708608520353733, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+    - {fileID: 2101668020710301299, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8265892205530573804, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       insertIndex: -1
