@@ -30,6 +30,7 @@ public class PlayerAnimatorController : MonoBehaviour
 
     public void EnterJumpTrig()
     {
+        animator.ResetTrigger(ID_LandTrigger);
         animator.SetTrigger(ID_JumpTrigger);
     }
 
@@ -46,6 +47,7 @@ public class PlayerAnimatorController : MonoBehaviour
     
     public void EnterLandTrig()
     {
+        animator.ResetTrigger(ID_JumpTrigger);
         animator.SetTrigger(ID_LandTrigger);
     }
 }
