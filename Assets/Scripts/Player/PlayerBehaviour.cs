@@ -1,4 +1,5 @@
 using System;
+using EZCameraShake;
 using Player;
 using UnityEngine;
 
@@ -7,7 +8,9 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] private SO_PlayerDatas playerDatas;
     [Header("Input")]
     [SerializeField] private InputManager inputManager;
-    [SerializeField] private float maxTimeHold = 5f;
+
+    [SerializeField] private float minTimeHold = 0.5f;
+    [SerializeField] private float maxTimeHold = 1.5f;
     [Header("Animation")] 
     [SerializeField] private PlayerAnimatorController animController;
     [Header("Size")]
@@ -15,9 +18,16 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] private float coefSize = 2f;
     [Header("Physic")]
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float jumpForce = 10f;
-    [SerializeField] private float jumpForceFromHold = 10f;
-    [SerializeField] private float minJumpForceFromHold = 0.2f;
+    [SerializeField] private float jumpForce = 12.5f;
+
+
+    [SerializeField] private float jumpForceFromMinHold = 12.5f; //=jumpForce
+    [SerializeField] private float jumpForceFromDefaultHold = 35f;
+    [SerializeField] private float jumpForceFromMaxHold = 35f;
+    [SerializeField] private AnimationCurve jumpCurve = null;
+    [SerializeField] private bool usingCurve = false;
+
+
     [SerializeField] private float dashDownForce = 5f;
     [SerializeField] private float groundCheckDistance = 0.5f;
     [SerializeField] private LayerMask groundMask;
@@ -86,8 +96,21 @@ public class PlayerBehaviour : MonoBehaviour
             spriteTransform.localScale = scale;
             
             // jump
-            durationTouchHold = Mathf.Clamp((time - startTime) / maxTimeHold, minJumpForceFromHold, 1f);
-            startSpeedFromHold = jumpForceFromHold * durationTouchHold;
+            durationTouchHold = Mathf.Clamp((time - startTime), minTimeHold, maxTimeHold);
+
+            if (durationTouchHold == minTimeHold)
+                startSpeedFromHold = jumpForceFromMinHold;
+            else if (durationTouchHold == maxTimeHold)
+                startSpeedFromHold = jumpForceFromMaxHold;
+            else
+            {
+                if (usingCurve)
+                    startSpeedFromHold = jumpCurve.Evaluate(durationTouchHold);
+                else
+                    startSpeedFromHold = jumpForceFromDefaultHold;
+            }
+                
+
             Vector2 forceDirection = startSpeedFromHold * Vector2.up;
             rb.AddForce(forceDirection, ForceMode2D.Impulse);
 
@@ -95,6 +118,7 @@ public class PlayerBehaviour : MonoBehaviour
             isBouncing = true;
             animController.Jump();
             bounceCount = 0;
+            CameraShaker.Instance.ShakeOnce(.1f, .1f, .1f, .1f);
         }
     }
 
@@ -157,7 +181,7 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (isBouncing && other.gameObject.layer == 6)
+        if (isBouncing && !IsThereGround() && other.gameObject.layer == 6)
         {
             bounceCount++;
             float ratio = 1 - Mathf.Clamp01(bounceCount / (float)bounceTotalCount);
@@ -167,7 +191,7 @@ public class PlayerBehaviour : MonoBehaviour
                 return;
             }
             Vector2 direction = other.contacts[0].normal;
-            rb.AddForce(direction * ratio * startSpeedFromHold, ForceMode2D.Impulse);
+            rb.AddForce(direction * startSpeedFromHold * ratio, ForceMode2D.Impulse);
         }
     }
 }

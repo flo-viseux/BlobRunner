@@ -258,14 +258,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerDatas: {fileID: 11400000, guid: f127d1eaf3a3d084cadfc7f0f8480d93, type: 2}
   inputManager: {fileID: 1824199248658129865}
+  minTimeHold: 0.2
   maxTimeHold: 2
   animController: {fileID: 5889826114997222806}
   spriteTransform: {fileID: 9160605459590528789}
   coefSize: 2
   rb: {fileID: 219738332032548818}
   jumpForce: 12.5
-  jumpForceFromHold: 2.5
-  minJumpForceFromHold: 12.5
+  jumpForceFromMinHold: 12.5
+  jumpForceFromDefaultHold: 25
+  jumpForceFromMaxHold: 40
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.2
+      value: 15
+      inSlope: 24.466984
+      outSlope: 24.466984
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.08078604
+    - serializedVersion: 3
+      time: 2
+      value: 35
+      inSlope: 3.6276958
+      outSlope: 3.6276958
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14410476
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  usingCurve: 0
   dashDownForce: 25
   groundCheckDistance: 0.1
   groundMask:
