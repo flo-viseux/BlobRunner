@@ -1,5 +1,4 @@
 using System;
-using EZCameraShake;
 using Player;
 using UnityEngine;
 
@@ -118,7 +117,6 @@ public class PlayerBehaviour : MonoBehaviour
             isBouncing = true;
             animController.Jump();
             bounceCount = 0;
-            CameraShaker.Instance.ShakeOnce(.1f, .1f, .1f, .1f);
         }
     }
 
