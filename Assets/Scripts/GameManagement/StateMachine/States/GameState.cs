@@ -6,16 +6,33 @@ using UnityEngine.SceneManagement;
 public class GameState : IGameBaseState
 {
     public GameStatus Status => GameStatus.GAME;
-    private string sceneName = ""; // TODO : give the name of the game scene
+    private string sceneName;
+    private PlayerDatas playerDatas;
+
+    public GameState(PlayerDatas datas, string sceneNameToLoad)
+    {
+        playerDatas = datas;
+        sceneName = sceneNameToLoad;
+    }
+    
     public void OnEnterState()
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        if (!GameManager.Instance.wasPaused)
+        {
+            playerDatas.InitPlayerDatas();
+        }
         UIManager.Instance.ShowUIPanel(Status);
     }
 
     public void OnExitState()
     {
-        SceneManager.UnloadSceneAsync(sceneName);
+        if (!GameManager.Instance.wasPaused)
+        {
+            SceneManager.UnloadSceneAsync(sceneName);
+        }
+        GameManager.Instance.wasPaused = false;
         UIManager.Instance.HideUIPanel(Status);
     }
+
+
 }

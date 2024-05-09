@@ -6,10 +6,16 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+    [SerializeField] private GameObject menuPanel;
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private GameObject gamePanel;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject loosePanel;
+    [SerializeField] private GameObject pausePanel;
 
     private void Awake()
     {
-        if (Instance != null || Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
@@ -34,12 +40,12 @@ public class UIManager : MonoBehaviour
         // TODO : change game object to UI panel
         switch (status)
         {
-            case GameStatus.MENU : return gameObject;
-            case GameStatus.PAUSE : return gameObject;
-            case GameStatus.LOAD : return gameObject;
-            case GameStatus.GAME : return gameObject;
-            case GameStatus.WIN : return gameObject;
-            case GameStatus.LOOSE : return gameObject;
+            case GameStatus.MENU : return menuPanel;
+            case GameStatus.PAUSE : return pausePanel;
+            case GameStatus.LOAD : return loadingPanel;
+            case GameStatus.GAME : return gamePanel;
+            case GameStatus.WIN : return winPanel;
+            case GameStatus.LOOSE : return loosePanel;
             default: return gameObject;
         }
     }
