@@ -7,70 +7,75 @@ using UnityEngine.InputSystem;
 namespace Runner.Player
 {
     public class InputManager : MonoBehaviour
-    {
-        [SerializeField] private float minimumSwipeMagnitude = 5f;
-        private Vector2 swipeDirection;
-        
-        private TouchController _touchController;
-        
+    { 
         public delegate void StartTouchEvent(float time);
         public event StartTouchEvent OnStartTouch;
         
         public delegate void EndTouchEvent(float time);
         public event EndTouchEvent OnEndTouch;
 
-        public delegate void SwipeSuccesful();
+        public delegate void SwipeSuccesfulEvent();
+        public event SwipeSuccesfulEvent OnSwipeSuccessful;
+        
+        public delegate void TapEvent();
+        public event TapEvent OnTap;
 
-        public event SwipeSuccesful OnSwipeSuccessful;
 
-        private void Awake()
+        void OnEnable()
         {
-            _touchController = new TouchController();
+            Lean.Touch.LeanTouch.OnFingerSwipe += HandleSwipe;
+            Lean.Touch.LeanTouch.OnFingerTap += HandleTap;
+            Lean.Touch.LeanTouch.OnFingerOld += HandleFingerOld;
+            Lean.Touch.LeanTouch.OnFingerUp += HandleFingerUp;
         }
 
-        private void OnEnable()
+        void OnDisable()
         {
-            _touchController.Enable();
+            Lean.Touch.LeanTouch.OnFingerSwipe -= HandleSwipe;
+            Lean.Touch.LeanTouch.OnFingerTap -= HandleTap;
+            Lean.Touch.LeanTouch.OnFingerOld -= HandleFingerOld;
+            Lean.Touch.LeanTouch.OnFingerUp -= HandleFingerUp;
         }
 
-        private void OnDisable()
+        void HandleFingerOld(Lean.Touch.LeanFinger finger)
         {
-            _touchController.Disable();
-        }
-
-        private void Start()
-        {
-            _touchController.Player.TouchPress.started += ctx => StartTouch(ctx);
-            _touchController.Player.TouchPress.canceled += ctx => EndTouch(ctx);
-            _touchController.Player.Swipe.performed += ctx => Swipe(ctx);
+            if (finger.Index != 0) return;
             
-        }
-        
-        private void StartTouch(InputAction.CallbackContext context)
-        {
-            if (OnStartTouch != null)
-            {
-                OnStartTouch((float)context.startTime);
-            }
-        }
-        
-        private void EndTouch(InputAction.CallbackContext context)
-        {
-            if (OnEndTouch != null)
-            {
-                OnEndTouch((float)context.time);
-            }
+            // Debug.Log($"Hold {finger.Age} {finger.Index}");
+            
+            if (finger.Age > 2f) return;
+            OnStartTouch(finger.Age);
         }
 
-        private void Swipe(InputAction.CallbackContext context)
+        void HandleFingerUp(Lean.Touch.LeanFinger finger)
         {
-            swipeDirection = context.ReadValue<Vector2>();
-            bool swipeX = swipeDirection.x < 0.1f & swipeDirection.x > -0.1f;
-            if (swipeDirection.y < 0 & swipeX)
+            if (finger.Index != 0) return;
+            
+            // Debug.Log($"Hold stop {finger.Age} {finger.Index}");
+            OnEndTouch(finger.Age);
+        }
+
+        void HandleSwipe(Lean.Touch.LeanFinger finger)
+        {
+            if (finger.Index != 0) return;
+            
+            Vector2 swipeDelta = finger.SwipeScreenDelta;
+            
+            if (swipeDelta.y < -Mathf.Abs(swipeDelta.x))
             {
-                Debug.Log("Swipe down");
+                // Debug.Log("Swiped Down");
+                // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
                 OnSwipeSuccessful();
             }
+        }
+
+        void HandleTap(Lean.Touch.LeanFinger finger)
+        {
+            if (finger.Index != 0) return;
+            
+            // Debug.Log("Tap");
+            // Debug.Log($" Tap {finger.Age} {finger.Index}");
+            OnTap();
         }
     }
 }

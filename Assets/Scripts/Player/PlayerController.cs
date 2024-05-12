@@ -14,5 +14,10 @@ namespace Runner.Player
         {
             stateMachine = new PlayerStateMachine(this, inputManager);
         }
+
+        private void OnDestroy()
+        {
+            stateMachine.UnsubscribeToInput();
+        }
     }
 }
