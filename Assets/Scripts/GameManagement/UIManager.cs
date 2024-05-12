@@ -37,7 +37,6 @@ public class UIManager : MonoBehaviour
     
     private GameObject GetPanelFromGameStatus(GameStatus status)
     {
-        // TODO : change game object to UI panel
         switch (status)
         {
             case GameStatus.MENU : return menuPanel;

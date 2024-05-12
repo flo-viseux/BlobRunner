@@ -1,21 +1,25 @@
 ﻿
 using UnityEngine;
 
-[System.Serializable]
-public class PlayerDatas
+namespace Runner.Player
 {
-    public int MaxHealth = 1;
-    [HideInInspector] public int CurrentHealth;
+    [System.Serializable]
 
-    public float StartSpeed = 5f;
-    [HideInInspector] public float CurrentSpeed;
-
-    [HideInInspector] public int CurrentScore;
-
-    public void InitPlayerDatas()
+    public class PlayerDatas
     {
-        CurrentHealth = MaxHealth;
-        CurrentSpeed = StartSpeed;
-        CurrentScore = 0;
+        [SerializeField] private int MaxHealth = 1;
+        [HideInInspector] public int CurrentHealth;
+
+        [SerializeField] private  float StartSpeed = 5f;
+        [HideInInspector] public float CurrentSpeed;
+
+        [HideInInspector] public int CurrentScore;
+
+        public void InitPlayerDatas()
+        {
+            CurrentHealth = MaxHealth;
+            CurrentSpeed = StartSpeed;
+            CurrentScore = 0;
+        }
     }
 }
