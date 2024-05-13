@@ -16,5 +16,6 @@ public class PauseState : IGameBaseState
     {
         Time.timeScale = 1f;
         UIManager.Instance.HideUIPanel(Status);
+        GameManager.Instance.wasPaused = true;
     }
 }

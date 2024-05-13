@@ -11,7 +11,7 @@ public class LoadPersitantScene : MonoBehaviour
     void Start()
     {
         if (String.IsNullOrEmpty(sceneName)) sceneName = "Persistant";
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
 }

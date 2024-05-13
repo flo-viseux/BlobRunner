@@ -8,7 +8,8 @@ public class GameStateMachine
 
     public void OnChangeState(IGameBaseState nextState)
     {
-        currentState.OnExitState();
+        if (currentState != null)
+            currentState.OnExitState();
         currentState = nextState;
         currentState.OnEnterState();
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,10 +17,12 @@ public class GameManager : MonoBehaviour
     private LooseState _looseState;
 
     public PlayerDatas playerDatas;
+    public string gameSceneName;
 
+    public bool wasPaused;
     private void Awake()
     {
-        if (Instance != null || Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
@@ -33,13 +36,13 @@ public class GameManager : MonoBehaviour
     {
         stateMachine = new GameStateMachine();
         _menuState = new MenuState();
-        _loadState = new LoadState();
-        _gameState = new GameState();
+        _gameState = new GameState(playerDatas, gameSceneName);
         _pauseState = new PauseState();
         _winState = new WinState();
         _looseState = new LooseState();
         stateMachine.OnChangeState(_menuState);
-        
+
+        wasPaused = false;
     }
 
     public void SwitchState(GameStatus newGameStatus)
@@ -50,11 +53,12 @@ public class GameManager : MonoBehaviour
                 return;
             case GameStatus.PAUSE : stateMachine.OnChangeState(_pauseState);
                 return;
-            case GameStatus.LOAD : stateMachine.OnChangeState(_loadState);
-                return;
-            case GameStatus.GAME : 
+            case GameStatus.GAME :
+                if (!wasPaused)
+                {
+                    StartCoroutine(LoadScreen());
+                }
                 stateMachine.OnChangeState(_gameState);
-                playerDatas.InitPlayerDatas();
                 return;
             case GameStatus.WIN : stateMachine.OnChangeState(_winState);
                 return;
@@ -63,4 +67,43 @@ public class GameManager : MonoBehaviour
             default: return;
         }
     }
+    
+    private IEnumerator LoadScreen()
+    {
+        UIManager.Instance.ShowUIPanel(GameStatus.LOAD);
+        AsyncOperation async = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Additive);
+        while (!async.isDone) yield return null;
+        UIManager.Instance.HideUIPanel(GameStatus.LOAD);
+    }
+    
+    #region Buttons
+
+    public void GoToMenu()
+    {
+        SwitchState(GameStatus.MENU);
+    }
+
+    public void GoToPause()
+    {
+        SwitchState(GameStatus.PAUSE);
+    }
+    public void GoToGame()
+    {
+        SwitchState(GameStatus.GAME);
+    }
+
+    public void GoToWin()
+    {
+        SwitchState(GameStatus.WIN);
+    }
+
+    public void GoToLoose()
+    {
+        SwitchState(GameStatus.LOOSE);
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    #endregion
 }
