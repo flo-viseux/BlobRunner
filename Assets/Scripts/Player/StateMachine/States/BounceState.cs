@@ -11,25 +11,52 @@ namespace Runner.Player
         private float durationTime;
         public void SetDurationTime(float value) => durationTime = value;
         
+        private float timer = 0f;
+        private float bounceForce;
+        private JumpSpec bounceSpec;
+
+        
         public void OnEnterState(PlayerController playerController)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Bounce state");
+            timer = 0f;
+            
+            if (playerController.isBouncingFromChemical)
+            {
+                bounceSpec = playerController.bounceChemicalSpec;
+            }
+            else
+            {
+                bounceSpec = playerController.bounceSpec;
+            }
+
+            bounceForce = bounceSpec.gravityRise.Evaluate(durationTime);
         }
 
-        public void LogicUpdate(PlayerController playerController)
+        public void LogicUpdate(PlayerController playerController, float deltaTime)
         {
-            throw new System.NotImplementedException();
+            // handle sounds
+            
+            // Increase Speed
+            timer += deltaTime;
+            if (timer >= playerController.delayBetweenAddSpeed)
+            {
+                timer = 0;
+                GameManager.Instance.playerDatas.IncreaseSpeed(playerController.addSpeed);
+            }
+            
+            // TODO : bounce
         }
 
-        public void PhysicsUpdate(PlayerController playerController)
+        public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
-            throw new System.NotImplementedException();
+
         }
 
 
         public void OnExitState(PlayerController playerController)
         {
-            throw new System.NotImplementedException();
+            GameManager.Instance.playerDatas.ResetSpeed();
         }
     }
 }

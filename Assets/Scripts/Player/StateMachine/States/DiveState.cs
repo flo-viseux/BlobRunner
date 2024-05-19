@@ -8,22 +8,33 @@ namespace Runner.Player
     {
         public void OnEnterState(PlayerController playerController)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Dive State");
+            // sound
         }
 
-        public void LogicUpdate(PlayerController playerController)
+        public void LogicUpdate(PlayerController playerController, float deltaTime)
         {
-            throw new System.NotImplementedException();
+            playerController.transform.Translate(Vector3.down * (playerController.diveForce * deltaTime));
+            
+            if (playerController.IsOnGround())
+            {
+                playerController.stateMachine.NormalState();
+                
+            }
         }
 
-        public void PhysicsUpdate(PlayerController playerController)
+        public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
-            throw new System.NotImplementedException();
+
         }
 
         public void OnExitState(PlayerController playerController)
         {
-            throw new System.NotImplementedException();
+            // sound land
+            
+            if (playerController.isBouncingFromChemical)
+                playerController.isBouncingFromChemical = false;
+
         }
     }
 }

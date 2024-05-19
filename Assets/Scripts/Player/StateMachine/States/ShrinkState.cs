@@ -8,22 +8,24 @@ namespace Runner.Player
     {
         public void OnEnterState(PlayerController playerController)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Shrink state");
+            // sound shrink
+            playerController.rb2D.gravityScale = playerController.gravityFall;
         }
 
-        public void LogicUpdate(PlayerController playerController)
+        public void LogicUpdate(PlayerController playerController, float deltaTime)
         {
-            throw new System.NotImplementedException();
+
         }
 
-        public void PhysicsUpdate(PlayerController playerController)
+        public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
-            throw new System.NotImplementedException();
+
         }
 
         public void OnExitState(PlayerController playerController)
         {
-            throw new System.NotImplementedException();
+            playerController.rb2D.gravityScale = playerController.startGravity;
         }
     }
 

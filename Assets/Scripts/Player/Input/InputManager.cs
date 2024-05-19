@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Runner.Player
 {
@@ -41,7 +38,7 @@ namespace Runner.Player
         {
             if (finger.Index != 0) return;
             
-            // Debug.Log($"Hold {finger.Age} {finger.Index}");
+            //Debug.Log($"Hold {finger.Age} {finger.Index}");
             
             if (finger.Age > 2f) return;
             OnStartTouch(finger.Age);
@@ -51,7 +48,7 @@ namespace Runner.Player
         {
             if (finger.Index != 0) return;
             
-            // Debug.Log($"Hold stop {finger.Age} {finger.Index}");
+            //Debug.Log($"Hold stop {finger.Age} {finger.Index}");
             OnEndTouch(finger.Age);
         }
 
@@ -63,7 +60,7 @@ namespace Runner.Player
             
             if (swipeDelta.y < -Mathf.Abs(swipeDelta.x))
             {
-                // Debug.Log("Swiped Down");
+                //Debug.Log("Swiped Down");
                 // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
                 OnSwipeSuccessful();
             }
@@ -73,7 +70,7 @@ namespace Runner.Player
         {
             if (finger.Index != 0) return;
             
-            // Debug.Log("Tap");
+            //Debug.Log("Tap");
             // Debug.Log($" Tap {finger.Age} {finger.Index}");
             OnTap();
         }

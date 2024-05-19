@@ -9,8 +9,10 @@ namespace Runner.Player
     public class PlayerStateMachine
     {
         public IPlayerState currentState;
+        
         private InputManager inputManager;
         private PlayerController playerController;
+        
         private NormalState _normalState;
         private BounceState _bounceState;
         private DiveState _diveState;
@@ -18,6 +20,7 @@ namespace Runner.Player
         private ShrinkState _shrinkState;
 
         private float startTimeHold;
+        
         
         public PlayerStateMachine(PlayerController controller, InputManager inputManager)
         {
@@ -44,7 +47,7 @@ namespace Runner.Player
             currentState.OnEnterState(playerController);
         }
 
-        private void SubscribeToInput()
+        public void SubscribeToInput()
         {
             inputManager.OnStartTouch += Shrink;
             inputManager.OnEndTouch += Bounce;
@@ -62,14 +65,14 @@ namespace Runner.Player
 
         private void Shrink(float startTime)
         {
-            if (currentState is NormalState)
+            if (currentState is NormalState && playerController.IsOnGround())
             {
                 startTimeHold = startTime;
                 OnChangeState(_shrinkState);
             }
         }
 
-        private void Bounce(float endTime)
+        public void Bounce(float endTime)
         {
             if (currentState is ShrinkState)
             {
@@ -80,10 +83,10 @@ namespace Runner.Player
 
         private void Dive()
         {
-            if (currentState is NormalState)
-            {
+            // if (playerController.IsOnGround() == false)
+            // {
                 OnChangeState(_diveState);
-            }
+            // }
         }
 
         private void Jump()
@@ -92,6 +95,11 @@ namespace Runner.Player
             {
                 OnChangeState(_jumpState);
             }
+        }
+
+        public void NormalState()
+        {
+            OnChangeState(_normalState);
         }
     }
 }
