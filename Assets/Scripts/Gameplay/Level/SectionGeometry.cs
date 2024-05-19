@@ -1,31 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class LevelSection : MonoBehaviour
+public class SectionGeometry : MonoBehaviour
 {
     #region Serialized fields
-    [SerializeField] private ParallaxObject parallaxObject = null;
+    [SerializeField] private float width = 4f;
 
     [SerializeField] private SectionSlot[] startSlots = null;
 
     [SerializeField] private SectionSlot[] endSlots = null;
 
     [SerializeField] private float startLeftY = 5.06f;
-    [SerializeField] private float endLeftY  = 8.5f;
+    [SerializeField] private float endLeftY = 8.5f;
     #endregion
 
     #region API
-    public ParallaxObject ParallaxObject => parallaxObject;
+    public float Width => width;
+
+    public void Move(float speed)
+    {
+        transform.position = transform.position + Vector3.left * speed * Time.deltaTime;
+    }
     #endregion
 
     #region Unity methods
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 start = transform.childCount > 0 && transform.GetChild(0).name == "Renderer" ? transform.GetChild(0).position : transform.position;
+        Vector3 end = start + Vector3.right * Width;
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(start, end);
+    }
+
     private void OnDrawGizmos()
     {
         Vector3 startLeft = transform.position;
         startLeft -= Vector3.up * startLeftY;
-        Vector3 startRight = startLeft + Vector3.right * (parallaxObject.Width + 0.5f);
+        Vector3 startRight = startLeft + Vector3.right * (width + 0.5f);
 
         startLeft += 0.5f * Vector3.left;
 
@@ -54,7 +65,9 @@ public class LevelSection : MonoBehaviour
             Gizmos.DrawLine(slotStart, slotEnd);
         }
     }
+    #endregion
 
+    #region Private
     private int GetSlotHeight(SectionSlot slot)
     {
         switch (slot)

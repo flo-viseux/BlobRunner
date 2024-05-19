@@ -45,16 +45,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
-  offset: -5
-  initialWidth: 22
-  initialProps: {fileID: 7397602420422953816, guid: c07461f3c8a8e2e429087ceef0458950, type: 3}
-  props:
-  - {fileID: 8420843528657122789, guid: e73b4de94724f7f4db454afc46faefb7, type: 3}
-  - {fileID: 8420843528657122789, guid: 1cae9650d2cf6f541b2ef3080addb207, type: 3}
-  - {fileID: 8420843528657122789, guid: c84b36c4b1eec4d4b8f26025ec8ae2b6, type: 3}
-  - {fileID: 8420843528657122789, guid: ad4f11cee5358ed4ebd7e30c0232f65f, type: 3}
-  - {fileID: 7397602420422953816, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
-  - {fileID: 7397602420422953816, guid: 7788d09d8bc67fa499f89fc5e6f2a460, type: 3}
-  - {fileID: 7397602420422953816, guid: 90659fb6eceff6240899247721528541, type: 3}
-  - {fileID: 7397602420422953816, guid: 4d6eb043b515a274ba6a5002d636eebe, type: 3}
-  CurrentPosition: 0
+  initialSections:
+  - section: {fileID: 11400000, guid: 826790e367732164898032d1f6a441c8, type: 2}
+    weight: 1
+    cdDuration: 1
+  potentialSections:
+  - section: {fileID: 11400000, guid: 8c5bccd15dab6814f9a3fb1be95bb862, type: 2}
+    weight: 0.5
+    cdDuration: 0
+  - section: {fileID: 11400000, guid: 12e828e83176b10458f1cccbe42a330a, type: 2}
+    weight: 0.8
+    cdDuration: 3
+  - section: {fileID: 11400000, guid: ed1044ad1ecad95439bbce81e6b490d1, type: 2}
+    weight: 0.7
+    cdDuration: 2
+  - section: {fileID: 11400000, guid: 817fee1f67bc9374b83fa10b97140fff, type: 2}
+    weight: 0.5
+    cdDuration: 1
+  sectionRepetitionConstraints:
+  - section: {fileID: 11400000, guid: 8c5bccd15dab6814f9a3fb1be95bb862, type: 2}
+    maxRepetitions: 2
+    constraintHistoryDepth: 4

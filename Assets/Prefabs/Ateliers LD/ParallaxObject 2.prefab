@@ -326,7 +326,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8265892205530573804}
   - component: {fileID: 8946981311370764674}
-  - component: {fileID: 7397602420422953816}
   m_Layer: 0
   m_Name: ParallaxObject 2
   m_TagString: Untagged
@@ -368,24 +367,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34895df944dcbf442a6c5dc0b0b16e6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxObject: {fileID: 7397602420422953816}
-  startSlots: 01000000
-  endSlots: 01000000
+  width: 10
+  startSlots: 0000000001000000
+  endSlots: 0000000001000000
   startLeftY: 5.06
   endLeftY: 8.5
---- !u!114 &7397602420422953816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8111898030813779034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7debf087ff0c714bacd4efeab5351c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 10
 --- !u!1 &8644758819233149500
 GameObject:
   m_ObjectHideFlags: 0
