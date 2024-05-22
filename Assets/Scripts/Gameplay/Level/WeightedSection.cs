@@ -19,11 +19,16 @@ public class WeightedSection
     public Section Section => section;
     public float Weight => weight;
 
-    public float GetWeightAt()
+    public float GetWeightAt(Section lastSection = null)
     {
         float CdWeight = currentCd < 0 ? 1f : 0f;
 
-        return weight * CdWeight;
+        float sectionsValid = 1f;
+
+        if (lastSection != null)
+            sectionsValid = section.Geometry.SlotsValid(lastSection) ? 1f : 0f;
+
+        return weight * CdWeight * sectionsValid;
     }
 
     public void SetCooldown()

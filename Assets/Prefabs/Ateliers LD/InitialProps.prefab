@@ -364,6 +364,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 22
   startSlots: 0000000001000000
-  endSlots: 0000000001000000
+  endSlots: 01000000
   startLeftY: 5.06
   endLeftY: 8.5

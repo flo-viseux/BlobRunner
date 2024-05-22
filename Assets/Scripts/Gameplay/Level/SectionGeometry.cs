@@ -16,6 +16,27 @@ public class SectionGeometry : MonoBehaviour
     #region API
     public float Width => width;
 
+    public SectionSlot[] StartSlots => startSlots;
+    public SectionSlot[] EndSlots => endSlots;
+
+    public bool SlotsValid(Section lastSection)
+    {
+        if(lastSection == null) return true;
+        
+        if (lastSection.Geometry.EndSlots.Length == startSlots.Length)
+        {
+            for (int i = 0; i < startSlots.Length; ++i)
+            {
+                if (startSlots[i] != lastSection.Geometry.endSlots[i])
+                    return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     public void Move(float speed)
     {
         transform.position = transform.position + Vector3.left * speed * Time.deltaTime;

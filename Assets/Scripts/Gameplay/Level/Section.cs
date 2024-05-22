@@ -4,11 +4,10 @@ using UnityEngine;
 public class Section : ScriptableObject
 {
     #region Serialized fields
-    [SerializeField] private GameObject geometry;
+    [SerializeField] private SectionGeometry geometry;
     #endregion
 
     #region API
-    public GameObject Geometry => geometry;
+    public SectionGeometry Geometry => geometry;
     #endregion
-
 }
