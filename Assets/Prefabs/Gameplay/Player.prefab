@@ -253,52 +253,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 7962418247137918926}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ccf16cdada84c743afd169f8c38a092, type: 3}
+  m_Script: {fileID: 11500000, guid: a478a6a1763eac54aaaa239145b0971b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDatas: {fileID: 11400000, guid: f127d1eaf3a3d084cadfc7f0f8480d93, type: 2}
+  rb2D: {fileID: 219738332032548818}
+  gravityFall: 5
   inputManager: {fileID: 1824199248658129865}
-  minTimeHold: 0.2
-  maxTimeHold: 2
-  animController: {fileID: 5889826114997222806}
-  spriteTransform: {fileID: 9160605459590528789}
-  coefSize: 2
-  rb: {fileID: 219738332032548818}
-  jumpForce: 12.5
-  jumpForceFromMinHold: 12.5
-  jumpForceFromDefaultHold: 25
-  jumpForceFromMaxHold: 40
-  jumpCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.2
-      value: 15
-      inSlope: 24.466984
-      outSlope: 24.466984
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.08078604
-    - serializedVersion: 3
-      time: 2
-      value: 35
-      inSlope: 3.6276958
-      outSlope: 3.6276958
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.14410476
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  usingCurve: 0
-  dashDownForce: 25
-  groundCheckDistance: 0.1
+  jumpSpec: {fileID: 11400000, guid: 6fa0d1fbc6fdae249bdd3fd279f381f3, type: 2}
+  bounceSpec: {fileID: 11400000, guid: 638104de7379d5248810f424f4ab2916, type: 2}
+  bounceChemicalSpec: {fileID: 11400000, guid: 638104de7379d5248810f424f4ab2916, type: 2}
+  addSpeed: 1
+  delayBetweenAddSpeed: 0.5
+  checkCeilingDistNormal: 1
+  checkForwardDistNormal: 1
+  checkCeilingDistShrink: 0.5
+  checkForwardDistShrink: 0.5
+  diveForce: 5
+  checkFloorDist: 0.2
+  chemicalXTag: ChemicalX
+  plutoniumTag: Plutonium
+  plutoniumPoint: 10
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  bounceTotalCount: 3
+  obstaclesMask:
+    serializedVersion: 2
+    m_Bits: 0
+  isBouncingFromChemical: 0
+  startGravity: 0
 --- !u!114 &1824199248658129865
 MonoBehaviour:
   m_ObjectHideFlags: 0
