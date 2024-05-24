@@ -1,6 +1,7 @@
 using System;
 using Player;
 using UnityEngine;
+using Runner.Player;
 
 public class PlayerBehaviour : MonoBehaviour
 {
