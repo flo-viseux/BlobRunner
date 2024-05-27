@@ -8,6 +8,7 @@ public class LooseState : IGameBaseState
 
     public void OnEnterState()
     {
+        Debug.Log("Enter Loose State");
         UIManager.Instance.ShowUIPanel(Status);
     }
 

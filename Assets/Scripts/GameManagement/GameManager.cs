@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public string gameSceneName;
 
     public bool wasPaused;
+    public float loadingTime = 0.1f;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -59,6 +61,10 @@ public class GameManager : MonoBehaviour
                 {
                     StartCoroutine(LoadScreen());
                 }
+                else
+                {
+                    _gameState = new GameState(playerDatas, gameSceneName);
+                }
                 stateMachine.OnChangeState(_gameState);
                 return;
             case GameStatus.WIN : stateMachine.OnChangeState(_winState);
@@ -73,7 +79,19 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.ShowUIPanel(GameStatus.LOAD);
         AsyncOperation async = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Additive);
+        
+        float startLoadingTime = Time.time;
+        
         while (!async.isDone) yield return null;
+        
+        // Make sure the load screen doesn't flash if the loading is fast, wait 0.5s
+        float loadedTime = Time.time - startLoadingTime;
+        if (loadedTime < loadingTime)
+        {
+            yield return new WaitForSeconds(loadingTime - loadedTime);
+            // TODO : prevent game to start while loading panel isn't hidden
+        }
+
         UIManager.Instance.HideUIPanel(GameStatus.LOAD);
     }
     

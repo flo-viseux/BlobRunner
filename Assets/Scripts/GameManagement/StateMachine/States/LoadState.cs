@@ -8,6 +8,7 @@ public class LoadState : IGameBaseState
 
     public void OnEnterState()
     {
+        Debug.Log("Enter Load State");
         UIManager.Instance.ShowUIPanel(Status);
     }
 
