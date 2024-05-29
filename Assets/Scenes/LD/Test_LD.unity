@@ -207,6 +207,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1971168305}
     m_Modifications:
+    - target: {fileID: 219738332032548818, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: a6defb0f443613247a1eab366a01bff3, type: 2}
+    - target: {fileID: 219738332032548818, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: spriteTransform
+      value: 
+      objectReference: {fileID: 1781733902}
+    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: bounceMultiplier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: minBounceVelocity
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 1228329714641054801, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -1132,6 +1152,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1641122238}
   m_CullTransparentMesh: 1
+--- !u!4 &1781733902 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 115635309110398288, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+  m_PrefabInstance: {fileID: 350490924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1829392412
 GameObject:
   m_ObjectHideFlags: 0

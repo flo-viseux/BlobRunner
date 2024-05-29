@@ -8,23 +8,34 @@ namespace Runner.Player
     {
         private JumpSpec jumpSpec = null;
         private float jumpStartTime;
+
+        private bool isJumping;
+        private float startGravity;
         
         public void OnEnterState(PlayerController playerController)
         {
             Debug.Log("Jump State");
+
+            isJumping = false;
+
             
             if (jumpSpec == null)
                 jumpSpec = playerController.jumpSpec;
-            
+
             jumpStartTime = Time.time;
             playerController.rb2D.velocity = new Vector3(0, jumpSpec.initialJumpForce, 0);
             
-            // sound jump
+            // TODO :sound jump
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
         {
  
+        }
+
+        public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
+        {
+            
             float timeSinceJump = Time.time - jumpStartTime;
 
             if (playerController.rb2D.velocity.y > 0)
@@ -41,16 +52,16 @@ namespace Runner.Player
             {
                 playerController.stateMachine.NormalState();
             }
-        }
-
-        public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
-        {
-
+            
+            // if (!isJumping)
+            // {
+            //     playerController.rb2D.AddForce(Vector2.up, ForceMode2D.Impulse);
+            // }
         }
 
         public void OnExitState(PlayerController playerController)
         {
-            
+
         }
     }
 }

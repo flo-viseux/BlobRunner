@@ -15,18 +15,22 @@ namespace Runner.Player
         
         [Header("Jump State")]
         public JumpSpec jumpSpec;
-        
-        [Header("Bounce State")]
+
+        [Header("Bounce State")] 
+        public PhysicsMaterial2D physicsMaterial2D;
         public JumpSpec bounceSpec;
         public JumpSpec bounceChemicalSpec;
         public float addSpeed;
         public float delayBetweenAddSpeed;
+        public float minBounceVelocity = 2f;
+        public float bounceMultiplier = 1.5f;
         
         [Header("Normal State")] 
         [SerializeField] private float checkCeilingDistNormal = 1f;
         public float checkForwardDistNormal = 1f;
-        
-        [Header("Shrink State")]
+
+        [Header("Shrink State")] 
+        public Transform spriteTransform;
         [SerializeField] private float checkCeilingDistShrink = 0.5f;
         public float checkForwardDistShrink = 0.5f;
 
@@ -62,6 +66,11 @@ namespace Runner.Player
             CheckGround();
             stateMachine.currentState.LogicUpdate(this, Time.deltaTime);
 
+        }
+
+        private void FixedUpdate()
+        {
+            stateMachine.currentState.PhysicsUpdate(this, Time.fixedDeltaTime);
         }
 
         private void CheckGround()
