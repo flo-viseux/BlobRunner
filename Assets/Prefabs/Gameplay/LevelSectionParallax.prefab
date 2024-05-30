@@ -62,9 +62,7 @@ MonoBehaviour:
   - section: {fileID: 11400000, guid: 817fee1f67bc9374b83fa10b97140fff, type: 2}
     weight: 0.5
     cdDuration: 1
-  sectionRepetitionConstraints:
-  - section: {fileID: 11400000, guid: 8c5bccd15dab6814f9a3fb1be95bb862, type: 2}
-    maxRepetitions: 2
-    constraintHistoryDepth: 3
-  levelWidth: 100
+  sectionRepetitionConstraints: []
+  levelWidth: 400
+  offset: 22
   victoryUI: {fileID: 0}

@@ -2228,10 +2228,6 @@ PrefabInstance:
       propertyPath: victoryUI
       value: 
       objectReference: {fileID: 284590921}
-    - target: {fileID: 8943318966241501346, guid: 684467cdfa8457e458c44b7ce34abe17, type: 3}
-      propertyPath: sectionRepetitionConstraints.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

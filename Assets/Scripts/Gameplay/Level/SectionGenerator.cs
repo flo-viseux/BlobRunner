@@ -13,6 +13,7 @@ public class SectionGenerator : Parallax
 
     [SerializeField] private float levelWidth;
 
+    [SerializeField] private float offset;
 
     [Header("Test")]
     [SerializeField] private VictoryUI victoryUI;
@@ -24,6 +25,13 @@ public class SectionGenerator : Parallax
     private List<Section> sectionSequence = new List<Section>();
 
     private List<SectionGeometry> sectionGeoSequence = new List<SectionGeometry>();
+
+
+    private Dictionary<WeightedSection, Queue<SectionGeometry>> pools = new Dictionary<WeightedSection, Queue<SectionGeometry>>();
+
+    private Dictionary<SectionGeometry, WeightedSection> instanceToPrefab = new Dictionary<SectionGeometry, WeightedSection>();
+
+    private Queue<SectionGeometry> instances = new Queue<SectionGeometry>();
     #endregion
 
     #region API
@@ -49,13 +57,28 @@ public class SectionGenerator : Parallax
     {
         if (Scrolling)
         {
-            float f = speed * SpeedFactor;
+            transform.position = transform.position + Vector3.left * speed * SpeedFactor * Time.deltaTime;
+
+            CurrentPos = -transform.position.x;
+            /*float f = speed * SpeedFactor;
 
             CurrentPos += f * Time.deltaTime;
 
             foreach (SectionGeometry geo in sectionGeoSequence)
             {
                 geo.Move(f);
+            }*/
+        }
+
+        if (Spawning)
+            Fill();
+
+        if (instances.TryPeek(out SectionGeometry props))
+        {
+            if (props.transform.position.x + props.Width < -5f)
+            {
+                instances.Dequeue();
+                RemoveProps(props);
             }
         }
 
@@ -65,7 +88,6 @@ public class SectionGenerator : Parallax
             victoryUI.Show();
             Scrolling = false;
         }
-            
     }
     #endregion
 
@@ -80,6 +102,7 @@ public class SectionGenerator : Parallax
             Section instanciatedProps = initialSections[i].Section;
             sectionSequence.Add(instanciatedProps);
             sectionGeoSequence.Add(initialProps);
+            //instances.Enqueue(initialProps);
 
             currentLevelWidth += initialProps.Width;
         }
@@ -87,10 +110,17 @@ public class SectionGenerator : Parallax
 
     private void Fill()
     {
-        while (currentLevelWidth < levelWidth)
-            AddSection();
+        Debug.Log(CurrentPos + offset + ", " + currentLevelWidth);
 
-        InitialFill();
+        while (CurrentPos + offset >= currentLevelWidth)
+        {
+            Debug.Log("Fill");
+
+            if (currentLevelWidth < levelWidth)
+                AddSection();
+            else
+                InitialFill();
+        }
     }
 
     private void AddSection()
@@ -103,6 +133,7 @@ public class SectionGenerator : Parallax
 
         sectionSequence.Add(newSection.Section);
         sectionGeoSequence.Add(newGeo);
+        instances.Enqueue(newGeo);
 
 
         foreach (WeightedSection potentialSection in potentialSections)
@@ -139,11 +170,41 @@ public class SectionGenerator : Parallax
         return potentialSections.Last();
     }
 
-    private SectionGeometry InstantiateProps(WeightedSection weightedSection)
+    private SectionGeometry InstantiateProps(WeightedSection prefab)
+    {
+        if (pools.TryGetValue(prefab, out Queue<SectionGeometry> queue) && queue.Count > 0)
+        {
+            SectionGeometry instance = queue.Dequeue();
+            instance.gameObject.SetActive(true);
+
+            return instance;
+        }
+
+        SectionGeometry newInstance = Instantiate(prefab.Section.Geometry, transform);
+        instanceToPrefab[newInstance] = prefab;
+
+        return newInstance;
+    }
+
+    private void RemoveProps(SectionGeometry instance)
+    {
+        WeightedSection prefab = instanceToPrefab[instance];
+        instance.gameObject.SetActive(false);
+
+        if (!pools.TryGetValue(prefab, out Queue<SectionGeometry> queue))
+        {
+            queue = new Queue<SectionGeometry>();
+            pools[prefab] = queue;
+        }
+
+        queue.Enqueue(instance);
+    }
+
+    /*private SectionGeometry InstantiateProps(WeightedSection weightedSection)
     {
         SectionGeometry newGeo = Instantiate(weightedSection.Section.Geometry.gameObject, transform).GetComponent<SectionGeometry>();
 
         return newGeo;
-    }
+    }*/
     #endregion
 }
