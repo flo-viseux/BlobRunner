@@ -1,5 +1,7 @@
 ﻿
+using System;
 using UnityEngine;
+
 
 namespace Runner.Player
 {
@@ -14,6 +16,9 @@ namespace Runner.Player
         [HideInInspector] public float CurrentSpeed;
 
         private int CurrentScore;
+        public int Score => CurrentScore;
+
+        public event Action<int> OnScroreChange;
 
         public void InitPlayerDatas()
         {
@@ -25,6 +30,7 @@ namespace Runner.Player
         public void AddScore(int addValue)
         {
             CurrentScore += addValue;
+            OnScroreChange?.Invoke(addValue);
         }
 
         public void ResetSpeed()

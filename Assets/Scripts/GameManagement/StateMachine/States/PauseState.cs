@@ -11,12 +11,13 @@ public class PauseState : IGameBaseState
         Debug.Log("Enter Pause State");
         Time.timeScale = 0f;
         UIManager.Instance.ShowUIPanel(Status);
+        GameManager.Instance.wasPaused = true;
     }
 
     public void OnExitState()
     {
         Time.timeScale = 1f;
         UIManager.Instance.HideUIPanel(Status);
-        GameManager.Instance.wasPaused = true;
+
     }
 }
