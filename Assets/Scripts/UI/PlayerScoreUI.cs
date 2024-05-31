@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,16 +7,20 @@ using UnityEngine;
 public class PlayerScoreUI : MonoBehaviour
 {
     #region SerializedFields
-    [SerializeField] private PlayerScore playerScore = null;
-
     [SerializeField] private TMP_Text scoreLabel = null;
     #endregion
 
     #region UnityMethods
-    private void Awake()
+    private void OnEnable()
     {
-        playerScore.OnScoreChange += ScoreChange;
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("Game Manager Instance is null");
+            return;
+        }
+        GameManager.Instance.playerDatas.OnScroreChange += ScoreChange;
     }
+
     #endregion
 
     #region Private
