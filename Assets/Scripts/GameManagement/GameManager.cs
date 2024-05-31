@@ -91,7 +91,20 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.HideUIPanel(GameStatus.LOAD);
     }
-    
+
+
+    public void SetWasPaused(bool value)
+    {
+        StartCoroutine(SetWasPausedCoroutine(value));
+    }
+
+    public IEnumerator SetWasPausedCoroutine(bool value)
+    {
+        yield return null;
+
+        wasPaused = value;
+    }
+
     #region Buttons
 
     public void GoToMenu()

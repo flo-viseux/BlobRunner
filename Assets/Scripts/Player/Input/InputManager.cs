@@ -36,43 +36,57 @@ namespace Runner.Player
 
         void HandleFingerOld(Lean.Touch.LeanFinger finger)
         {
-            if (finger.Index != 0) return;
-            
-            //Debug.Log($"Hold {finger.Age} {finger.Index}");
-            
-            if (finger.Age > 2f) return;
-            OnStartTouch(finger.Age);
+            if (!GameManager.Instance.wasPaused)
+            {
+                if (finger.Index != 0) return;
+
+                //Debug.Log($"Hold {finger.Age} {finger.Index}");
+
+                if (finger.Age > 2f) return;
+                OnStartTouch(finger.Age);
+            }
         }
 
         void HandleFingerUp(Lean.Touch.LeanFinger finger)
         {
-            if (finger.Index != 0) return;
-            
-            //Debug.Log($"Hold stop {finger.Age} {finger.Index}");
-            OnEndTouch(finger.Age);
+            if (!GameManager.Instance.wasPaused)
+            {
+                if (finger.Index != 0) return;
+
+                //Debug.Log($"Hold stop {finger.Age} {finger.Index}");
+                OnEndTouch(finger.Age);
+            }
         }
 
         void HandleSwipe(Lean.Touch.LeanFinger finger)
         {
-            if (finger.Index != 0) return;
-            
-            Vector2 swipeDelta = finger.SwipeScreenDelta;
-            
-            if (swipeDelta.y < -Mathf.Abs(swipeDelta.x))
+            if (!GameManager.Instance.wasPaused)
             {
-                //Debug.Log("Swiped Down");
-                // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
-                OnSwipeSuccessful();
+                if (finger.Index != 0) return;
+
+                Vector2 swipeDelta = finger.SwipeScreenDelta;
+
+                if (swipeDelta.y < -Mathf.Abs(swipeDelta.x))
+                {
+                    //Debug.Log("Swiped Down");
+                    // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
+                    OnSwipeSuccessful();
+                }
             }
         }
 
         void HandleTap(Lean.Touch.LeanFinger finger)
         {
-            if (finger.Index != 0) return;
-            
-            //Debug.Log("Tap");
-            // Debug.Log($" Tap {finger.Age} {finger.Index}");
-            OnTap();
+            if (!GameManager.Instance.wasPaused)
+            {
+                if (finger.Index != 0) return;
+
+                //Debug.Log("Tap");
+                // Debug.Log($" Tap {finger.Age} {finger.Index}");
+                OnTap();
+            }
+
+
         }
     }
 }
