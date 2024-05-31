@@ -30,8 +30,6 @@ public class WeightedSection
         if (lastSection != null)
             sectionsValid = section.Geometry.SlotsValid(lastSection) ? 1f : 0f;
 
-        Debug.Log(curve.Evaluate(value));
-
         return weight * CdWeight * sectionsValid * curve.Evaluate(value);
     }
 

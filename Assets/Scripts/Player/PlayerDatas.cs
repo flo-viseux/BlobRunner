@@ -30,7 +30,7 @@ namespace Runner.Player
         public void AddScore(int addValue)
         {
             CurrentScore += addValue;
-            OnScroreChange?.Invoke(addValue);
+            OnScroreChange?.Invoke(CurrentScore);
         }
 
         public void ResetSpeed()
