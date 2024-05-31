@@ -24,6 +24,7 @@ public class GameState : IGameBaseState
             playerDatas.InitPlayerDatas();
         }
         UIManager.Instance.ShowUIPanel(Status);
+        if (GameManager.Instance.wasPaused) GameManager.Instance.wasPaused = false;
     }
 
     public void OnExitState()
@@ -32,7 +33,6 @@ public class GameState : IGameBaseState
         {
             SceneManager.UnloadSceneAsync(sceneName);
         }
-        GameManager.Instance.wasPaused = false;
         UIManager.Instance.HideUIPanel(Status);
     }
 

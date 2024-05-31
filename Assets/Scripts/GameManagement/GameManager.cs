@@ -60,9 +60,6 @@ public class GameManager : MonoBehaviour
                 if (!wasPaused)
                 {
                     StartCoroutine(LoadScreen());
-                }
-                else
-                {
                     _gameState = new GameState(playerDatas, gameSceneName);
                 }
                 stateMachine.OnChangeState(_gameState);
@@ -104,6 +101,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToPause()
     {
+        wasPaused = true;
         SwitchState(GameStatus.PAUSE);
     }
     public void GoToGame()
