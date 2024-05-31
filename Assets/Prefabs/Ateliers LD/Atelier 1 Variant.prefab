@@ -342,11 +342,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8946981311370764674, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: endSlots.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8946981311370764674, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: startSlots.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8946981311370764674, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: endSlots.Array.data[0]

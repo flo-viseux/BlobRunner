@@ -11,6 +11,8 @@ public class SectionGeometry : MonoBehaviour
 
     [SerializeField] private float startLeftY = 5.06f;
     [SerializeField] private float endLeftY = 8.5f;
+
+    [SerializeField] private Collectible[] collectibles = null;
     #endregion
 
     #region API
@@ -35,6 +37,12 @@ public class SectionGeometry : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Init()
+    {
+        foreach (Collectible collectible in collectibles)
+            collectible.Init();
     }
 
     public void Move(float speed)

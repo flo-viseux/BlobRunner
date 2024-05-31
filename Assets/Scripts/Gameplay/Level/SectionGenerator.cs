@@ -11,20 +11,18 @@ public class SectionGenerator : Parallax
 
     [SerializeField] private SectionRepetitionConstraints[] sectionRepetitionConstraints = null;
 
-    [SerializeField] private float levelWidth;
+    [SerializeField] private float levelWidth = 0f;
 
-    [SerializeField] private float offset;
+    [SerializeField] private float offset = 0f;
 
     [Header("Test")]
-    [SerializeField] private VictoryUI victoryUI;
+    [SerializeField] private VictoryUI victoryUI = null;
     #endregion
 
     #region Attributes
-    private float currentLevelWidth;
+    private float currentLevelWidth = 0f;
 
     private List<Section> sectionSequence = new List<Section>();
-
-    private List<SectionGeometry> sectionGeoSequence = new List<SectionGeometry>();
 
 
     private Dictionary<WeightedSection, Queue<SectionGeometry>> pools = new Dictionary<WeightedSection, Queue<SectionGeometry>>();
@@ -59,15 +57,9 @@ public class SectionGenerator : Parallax
         {
             transform.position = transform.position + Vector3.left * speed * SpeedFactor * Time.deltaTime;
 
+            PlayerScore.Instance.IncreaseScore(speed * SpeedFactor * Time.deltaTime);
+
             CurrentPos = -transform.position.x;
-            /*float f = speed * SpeedFactor;
-
-            CurrentPos += f * Time.deltaTime;
-
-            foreach (SectionGeometry geo in sectionGeoSequence)
-            {
-                geo.Move(f);
-            }*/
         }
 
         if (Spawning)
@@ -101,8 +93,6 @@ public class SectionGenerator : Parallax
 
             Section instanciatedProps = initialSections[i].Section;
             sectionSequence.Add(instanciatedProps);
-            sectionGeoSequence.Add(initialProps);
-            //instances.Enqueue(initialProps);
 
             currentLevelWidth += initialProps.Width;
         }
@@ -110,12 +100,8 @@ public class SectionGenerator : Parallax
 
     private void Fill()
     {
-        Debug.Log(CurrentPos + offset + ", " + currentLevelWidth);
-
         while (CurrentPos + offset >= currentLevelWidth)
         {
-            Debug.Log("Fill");
-
             if (currentLevelWidth < levelWidth)
                 AddSection();
             else
@@ -130,9 +116,9 @@ public class SectionGenerator : Parallax
 
         SectionGeometry newGeo = InstantiateProps(newSection);
         newGeo.transform.localPosition = Vector3.right * currentLevelWidth;
+        newGeo.Init();
 
         sectionSequence.Add(newSection.Section);
-        sectionGeoSequence.Add(newGeo);
         instances.Enqueue(newGeo);
 
 
@@ -199,12 +185,5 @@ public class SectionGenerator : Parallax
 
         queue.Enqueue(instance);
     }
-
-    /*private SectionGeometry InstantiateProps(WeightedSection weightedSection)
-    {
-        SectionGeometry newGeo = Instantiate(weightedSection.Section.Geometry.gameObject, transform).GetComponent<SectionGeometry>();
-
-        return newGeo;
-    }*/
     #endregion
 }

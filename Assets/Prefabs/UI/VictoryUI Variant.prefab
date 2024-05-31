@@ -88,6 +88,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4967090567114458263, guid: 83b9556090245e542885024b88c7b203, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8767806565051611598, guid: 83b9556090245e542885024b88c7b203, type: 3}
       propertyPath: m_Name
       value: VictoryUI Variant

@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    #region SerializedFields
-    //[SerializeField] private 
-    #endregion
-
     #region UnityMethods
     private void OnTriggerEnter2D(Collider2D collision)
     {

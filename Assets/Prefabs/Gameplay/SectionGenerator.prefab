@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8621970425197884051}
   - component: {fileID: 8943318966241501346}
   m_Layer: 0
-  m_Name: LevelSectionParallax
+  m_Name: SectionGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

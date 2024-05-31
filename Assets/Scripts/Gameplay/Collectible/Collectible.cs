@@ -4,10 +4,12 @@ public class Collectible : MonoBehaviour
 {
     #region Serialized fields
     [SerializeField] private CollectibleRenderer renderer = null;
+
+    [SerializeField] private CollectibleEffect effect = null;
     #endregion
 
     #region Attributes
-    private bool picked;
+    private bool picked = false;
     #endregion
 
     #region API
@@ -18,13 +20,13 @@ public class Collectible : MonoBehaviour
 
         picked = true;
 
+        effect.Effect();
         renderer.Picked();
     }
 
     public void Init()
     {
         picked = false;
-
         renderer.Init();
     }
     #endregion
@@ -33,10 +35,7 @@ public class Collectible : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
-        {
             Picked();
-            Debug.Log("Player Collectible");
-        }
     }
     #endregion
 }
