@@ -19,6 +19,7 @@ public class PlayerScoreUI : MonoBehaviour
             return;
         }
         GameManager.Instance.playerDatas.OnScroreChange += ScoreChange;
+        scoreLabel.text = "Score : " + GameManager.Instance.playerDatas.Score.ToString();
     }
 
     #endregion
