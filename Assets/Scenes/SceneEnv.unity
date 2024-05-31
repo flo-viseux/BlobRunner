@@ -454,11 +454,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 143965676}
   button: {fileID: 745157557}
---- !u!4 &281269032 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 115635309110398288, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
-  m_PrefabInstance: {fileID: 598123639}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &284590914 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1684025698439912553, guid: cb8e808d80db2cb4dbe2362e637fc8e2, type: 3}
@@ -926,22 +921,6 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
-      propertyPath: usingCurve
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
-      propertyPath: spriteTransform
-      value: 
-      objectReference: {fileID: 281269032}
-    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
-      propertyPath: minBounceVelocity
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
-      propertyPath: physicsMaterial2D
-      value: 
-      objectReference: {fileID: 6200000, guid: a6defb0f443613247a1eab366a01bff3, type: 2}
     - target: {fileID: 7962418247137918926, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
       propertyPath: m_Name
       value: Player
