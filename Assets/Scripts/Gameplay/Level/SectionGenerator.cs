@@ -138,14 +138,14 @@ public class SectionGenerator : Parallax
             }
         }
 
-        float totalWeights = potentialSections.Sum(x => x.GetWeightAt(sectionSequence[sectionSequence.Count - 1]));
+        float totalWeights = potentialSections.Sum(x => x.GetWeightAt(currentLevelWidth / levelWidth, sectionSequence[sectionSequence.Count - 1]));
 
 
         float rd = Random.value * totalWeights;
 
         for (int i = 0; i < potentialSections.Length; ++i)
         {
-            float weightAt = potentialSections[i].GetWeightAt(sectionSequence[sectionSequence.Count - 1]);
+            float weightAt = potentialSections[i].GetWeightAt(currentLevelWidth / levelWidth, sectionSequence[sectionSequence.Count - 1]);
 
             if (rd < weightAt)
                 return potentialSections[i];

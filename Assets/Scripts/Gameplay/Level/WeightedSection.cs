@@ -9,6 +9,8 @@ public class WeightedSection
     [SerializeField] private float weight = 1;
 
     [SerializeField] private int cdDuration = 1;
+
+    [SerializeField] private AnimationCurve curve = null;
     #endregion
 
     #region Attributes
@@ -19,7 +21,7 @@ public class WeightedSection
     public Section Section => section;
     public float Weight => weight;
 
-    public float GetWeightAt(Section lastSection = null)
+    public float GetWeightAt(float value, Section lastSection = null)
     {
         float CdWeight = currentCd < 0 ? 1f : 0f;
 
@@ -28,7 +30,9 @@ public class WeightedSection
         if (lastSection != null)
             sectionsValid = section.Geometry.SlotsValid(lastSection) ? 1f : 0f;
 
-        return weight * CdWeight * sectionsValid;
+        Debug.Log(curve.Evaluate(value));
+
+        return weight * CdWeight * sectionsValid * curve.Evaluate(value);
     }
 
     public void SetCooldown()
