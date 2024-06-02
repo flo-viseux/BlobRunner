@@ -6,7 +6,7 @@ namespace Runner.Player
 {
     public class ShrinkState : IPlayerState
     {
-        private float coefSize = 2f;
+        private float coefSize = 2f; // or switch sprite
         
         public void OnEnterState(PlayerController playerController)
         {
@@ -35,6 +35,8 @@ namespace Runner.Player
             
             Vector3 scale = playerController.spriteTransform.localScale * coefSize;
             playerController.spriteTransform.localScale = scale;
+            
+            // TODO : sound back to normal
         }
     }
 

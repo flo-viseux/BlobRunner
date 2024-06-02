@@ -14,7 +14,7 @@ namespace Runner.Player
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
         {
-            // sound walk  
+            // TODO : sound walk  
         }
 
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
@@ -25,7 +25,7 @@ namespace Runner.Player
         public void OnExitState(PlayerController playerController)
         {
             playerController.rb2D.gravityScale = playerController.startGravity;
-            // stop sound
+            // TODO :stop sound
         }
     }
 }

@@ -12,94 +12,91 @@ namespace Runner.Player
         public void SetDurationTime(float value) => durationTime = value;
         
         private float timer = 0f;
-        private float bounceForce;
-        private JumpSpec bounceSpec;
-
-        private float gravityBeforeBounce;
-        private float currentVelocity;
+        private Vector2 previousVelocity;
         private Vector2 direction;
+        private float multiplier;
+        
+        private float bounceVelocity;
+        private float maxVelocity;
+
+        private bool firstImpulse = false;
+        private int countBounce = 0;
+
+        private bool isAddingSpeedWithBouncingTime;
+        
+        // previous velocity (fixed update)
+        // relative velocity (collider2D)
+        // other script to handle OnCollisionEnter et s'abonner ici
         
         public void OnEnterState(PlayerController playerController)
         {
             Debug.Log("Bounce state");
-            
+            playerController.OnHitGround += SwitchDirection;
+
+            bounceVelocity = playerController.bounceVelocity;
+            maxVelocity = playerController.maxBounceVelocity;
+            multiplier = playerController.bounceMultiplier;
+            isAddingSpeedWithBouncingTime = playerController.addSpeedWithTime;
             
             timer = 0f;
-            /*
-            if (playerController.isBouncingFromChemical)
-            {
-                bounceSpec = playerController.bounceChemicalSpec;
-            }
-            else
-            {
-                bounceSpec = playerController.bounceSpec;
-            }
-
-            bounceForce = bounceSpec.gravityRise.Evaluate(durationTime);
-            */
-            // gravityBeforeBounce = playerController.rb2D.gravityScale;
-            // //playerController.rb2D.velocity = new Vector2(0f, playerController.minBounceVelocity);
-            // currentVelocity = playerController.minBounceVelocity;
-            // playerController.rb2D.gravityScale = 10f;
-            // direction = Vector2.up;
-            playerController.rb2D.sharedMaterial = playerController.physicsMaterial2D;
-            playerController.rb2D.AddForce(playerController.minBounceVelocity*Vector2.up,ForceMode2D.Impulse);
+            countBounce = 0;
+            direction = Vector2.up;
+            previousVelocity = direction * 10f;
+            
+            playerController.rb2D.AddForce(direction * bounceVelocity, ForceMode2D.Impulse);
+            firstImpulse = true;
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
         {
             // TODO : handle sounds
-            
-            
-            // Increase Speed
-            timer += deltaTime;
-            if (timer >= playerController.delayBetweenAddSpeed)
+
+            // TODO : GD & LD need to decide if speed evolve with time or bounce count
+            if (isAddingSpeedWithBouncingTime)
             {
-                timer = 0;
-                GameManager.Instance.playerDatas.IncreaseSpeed(playerController.addSpeed);
+                timer += deltaTime;
+                if (timer >= playerController.delayBetweenAddSpeed)
+                {
+                    timer = 0;
+                    GameManager.Instance.playerDatas.IncreaseSpeed(playerController.addSpeed);
+                }
+            }
+            else
+            {
+                if (countBounce % playerController.addSpeedBetweenNBounce == 0)
+                {
+                    GameManager.Instance.playerDatas.IncreaseSpeed(playerController.addSpeed);
+                }
             }
         }
 
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
-            
-            // Rigidbody2D rb = playerController.rb2D;
-            // Vector2 currentVelocity = rb.velocity;
-            // float verticalDistance = playerController.checkForwardDistNormal;
-            //
-            // // Collision with ceiling
-            // RaycastHit2D hitUp = Physics2D.Raycast(rb.position, Vector2.up, verticalDistance, playerController.groundMask);
-            // if (hitUp.collider != null && hitUp.normal.y < -0.9f)
-            // {
-            //     direction = Vector2.down;
-            //     currentVelocity.y *= playerController.bounceMultiplier;
-            //     // rb.velocity = currentVelocity;
-            //     rb.AddForce(direction * currentVelocity, ForceMode2D.Impulse);
-            // }
-            //
-            // // Collision with floor
-            // RaycastHit2D hitDown = Physics2D.Raycast(rb.position, Vector2.down, verticalDistance, playerController.groundMask);
-            // if (hitDown.collider != null && hitDown.normal.y < 0.9f)
-            // {
-            //     direction = Vector2.up;
-            //     currentVelocity.y *= playerController.bounceMultiplier;
-            //     // rb.velocity = currentVelocity;
-            //     rb.AddForce(direction * currentVelocity, ForceMode2D.Impulse);
-            // } 
-
-            if (playerController.IsOnGround() && playerController.rb2D.velocity.y == 0f)
+            if (firstImpulse)
             {
-                playerController.stateMachine.NormalState();
+                if (playerController.rb2D.velocity.y < bounceVelocity) return;
+                else firstImpulse = false;
             }
+            
+            playerController.rb2D.velocity = previousVelocity;
+        }
+
+        private void SwitchDirection(Vector2 newDirection)
+        {
+            // TODO : delete if speed evolve with time
+            if (!isAddingSpeedWithBouncingTime) countBounce++;
+            
+            if (newDirection.y > 0f) direction = Vector2.up;
+            else direction = Vector2.down;
+
+            previousVelocity = Mathf.Min(Mathf.Abs(previousVelocity.y) + multiplier,maxVelocity) * direction;
         }
 
 
         public void OnExitState(PlayerController playerController)
         {
             GameManager.Instance.playerDatas.ResetSpeed();
-            // playerController.rb2D.velocity = Vector2.zero;
-            // playerController.rb2D.gravityScale = gravityBeforeBounce;
-            playerController.rb2D.sharedMaterial = null;
+            playerController.OnHitGround -= SwitchDirection;
         }
         
     }

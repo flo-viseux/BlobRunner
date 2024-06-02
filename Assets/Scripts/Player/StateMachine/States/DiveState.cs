@@ -9,7 +9,7 @@ namespace Runner.Player
         public void OnEnterState(PlayerController playerController)
         {
             Debug.Log("Dive State");
-            // sound
+            // TODO : sound
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
@@ -19,7 +19,6 @@ namespace Runner.Player
             if (playerController.IsOnGround())
             {
                 playerController.stateMachine.NormalState();
-                
             }
         }
 
@@ -30,7 +29,7 @@ namespace Runner.Player
 
         public void OnExitState(PlayerController playerController)
         {
-            // sound land
+            // TODO : sound land
             
             if (playerController.isBouncingFromChemical)
                 playerController.isBouncingFromChemical = false;

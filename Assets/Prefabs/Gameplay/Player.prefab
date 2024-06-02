@@ -260,13 +260,13 @@ MonoBehaviour:
   gravityFall: 5
   inputManager: {fileID: 1824199248658129865}
   jumpSpec: {fileID: 11400000, guid: 6fa0d1fbc6fdae249bdd3fd279f381f3, type: 2}
-  physicsMaterial2D: {fileID: 6200000, guid: a6defb0f443613247a1eab366a01bff3, type: 2}
-  bounceSpec: {fileID: 11400000, guid: 638104de7379d5248810f424f4ab2916, type: 2}
-  bounceChemicalSpec: {fileID: 11400000, guid: 638104de7379d5248810f424f4ab2916, type: 2}
+  bounceVelocity: 10
+  maxBounceVelocity: 15
+  bounceMultiplier: 0.1
   addSpeed: 1
   delayBetweenAddSpeed: 0.5
-  minBounceVelocity: 40
-  bounceMultiplier: 2
+  addSpeedBetweenNBounce: 0
+  addSpeedWithTime: 0
   checkCeilingDistNormal: 1
   checkForwardDistNormal: 1
   spriteTransform: {fileID: 115635309110398288}
@@ -348,7 +348,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 5
 --- !u!70 &3901925363838674422
 CapsuleCollider2D:

@@ -913,17 +913,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1205972231}
     m_Modifications:
-    - target: {fileID: 219738332032548818, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: a6defb0f443613247a1eab366a01bff3, type: 2}
-    - target: {fileID: 219738332032548818, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
-      propertyPath: m_GravityScale
-      value: 1
+    - target: {fileID: 320417313174639445, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: diveForce
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7962418247137918926, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9160605459590528789, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9160605459590528789, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9160605459590528789, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9160605459590528789, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -964,6 +972,10 @@ PrefabInstance:
     - target: {fileID: 9160605459590528789, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9160605459590528789, guid: 95373ac0ed0743b44abf756f77a50ddc, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1246,7 +1258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1029103361
 Transform:
   m_ObjectHideFlags: 0
@@ -1559,7 +1571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 191863919819999714, guid: 751c048413843164dbc87a059c60c4b0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5052749044349542476, guid: 751c048413843164dbc87a059c60c4b0, type: 3}
       propertyPath: m_LocalPosition.x

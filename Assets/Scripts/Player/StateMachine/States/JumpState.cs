@@ -23,8 +23,10 @@ namespace Runner.Player
                 jumpSpec = playerController.jumpSpec;
 
             jumpStartTime = Time.time;
-            playerController.rb2D.velocity = new Vector3(0, jumpSpec.initialJumpForce, 0);
-            
+            //playerController.rb2D.velocity = new Vector3(0, jumpSpec.initialJumpForce, 0);
+            startGravity = playerController.rb2D.gravityScale;
+            playerController.rb2D.gravityScale = 2.5f;
+            playerController.rb2D.AddForce(Vector2.up * jumpSpec.initialJumpForce, ForceMode2D.Impulse);
             // TODO :sound jump
         }
 
@@ -36,16 +38,16 @@ namespace Runner.Player
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
             
-            float timeSinceJump = Time.time - jumpStartTime;
-
-            if (playerController.rb2D.velocity.y > 0)
-            {
-                playerController.rb2D.velocity += Vector2.up * (jumpSpec.gravityRise.Evaluate(timeSinceJump) * Time.deltaTime);
-            }
-            else if (playerController.rb2D.velocity.y < 0)
-            {
-                playerController.rb2D.velocity += Vector2.up * (jumpSpec.gravityFall.Evaluate(timeSinceJump) * Time.deltaTime);
-            }
+            // float timeSinceJump = Time.time - jumpStartTime;
+            //
+            // if (playerController.rb2D.velocity.y > 0)
+            // {
+            //     playerController.rb2D.velocity += Vector2.up * (jumpSpec.gravityRise.Evaluate(timeSinceJump) * Time.deltaTime);
+            // }
+            // else if (playerController.rb2D.velocity.y < 0)
+            // {
+            //     playerController.rb2D.velocity += Vector2.up * (jumpSpec.gravityFall.Evaluate(timeSinceJump) * Time.deltaTime);
+            // }
 
             // Stop jumping when the player lands
             if (playerController.rb2D.velocity.y == 0)
@@ -61,7 +63,7 @@ namespace Runner.Player
 
         public void OnExitState(PlayerController playerController)
         {
-
+            playerController.rb2D.gravityScale = startGravity;
         }
     }
 }

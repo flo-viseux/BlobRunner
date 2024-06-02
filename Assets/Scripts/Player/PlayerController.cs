@@ -16,14 +16,16 @@ namespace Runner.Player
         [Header("Jump State")]
         public JumpSpec jumpSpec;
 
-        [Header("Bounce State")] 
-        public PhysicsMaterial2D physicsMaterial2D;
-        public JumpSpec bounceSpec;
-        public JumpSpec bounceChemicalSpec;
+        [Header("Bounce State : Values")] 
+        public float bounceVelocity = 10f;
+        public float maxBounceVelocity = 15f;
+        public float bounceMultiplier = 0.1f;
+        [Header("Bounce State : Background Speed")]
         public float addSpeed;
         public float delayBetweenAddSpeed;
-        public float minBounceVelocity = 2f;
-        public float bounceMultiplier = 1.5f;
+        public int addSpeedBetweenNBounce;
+        [Tooltip("true test with time, false test with nb bounce")]
+        public bool addSpeedWithTime;
         
         [Header("Normal State")] 
         [SerializeField] private float checkCeilingDistNormal = 1f;
@@ -52,6 +54,8 @@ namespace Runner.Player
         
         public PlayerStateMachine stateMachine;
         [HideInInspector] public float startGravity;
+
+        public event Action<Vector2> OnHitGround;
 
         private void Start()
         {
@@ -94,6 +98,13 @@ namespace Runner.Player
             {
                 GameManager.Instance.playerDatas.CurrentHealth -= 1;
                 return;
+            }
+            
+            // 6 : Ground Layer
+            if (other.gameObject.layer == 6)
+            {
+                ContactPoint2D contact = other.contacts[0];
+                OnHitGround?.Invoke(contact.normal);
             }
         }
 
