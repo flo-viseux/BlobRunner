@@ -20,7 +20,7 @@ namespace Runner.Player
         private ShrinkState _shrinkState;
 
         private float startTimeHold;
-        
+        private float endTimeHold;
         
         public PlayerStateMachine(PlayerController controller, InputManager inputManager)
         {
@@ -50,7 +50,7 @@ namespace Runner.Player
         public void SubscribeToInput()
         {
             inputManager.OnStartTouch += Shrink;
-            inputManager.OnEndTouch += Bounce;
+            inputManager.OnEndTouch += GetHoldTime;
             inputManager.OnSwipeSuccessful += Dive;
             inputManager.OnTap += Jump;
         }
@@ -58,9 +58,15 @@ namespace Runner.Player
         public void UnsubscribeToInput()
         {
             inputManager.OnStartTouch -= Shrink;
-            inputManager.OnEndTouch -= Bounce;
+            inputManager.OnEndTouch -= GetHoldTime;
             inputManager.OnSwipeSuccessful -= Dive;
             inputManager.OnTap -= Jump;
+        }
+
+        private void GetHoldTime(float endTime)
+        {
+            endTimeHold = endTime;
+            Jump();
         }
 
         private void Shrink(float startTime)
@@ -72,27 +78,30 @@ namespace Runner.Player
             }
         }
 
-        public void Bounce(float endTime)
+        public void Bounce()
         {
-            if (currentState is ShrinkState)
+            if (currentState is JumpState)
             {
-                _bounceState.SetDurationTime(endTime - startTimeHold);
                 OnChangeState(_bounceState);
             }
         }
 
         private void Dive()
         {
-            // if (playerController.IsOnGround() == false)
-            // {
-                OnChangeState(_diveState);
-            // }
+            OnChangeState(_diveState);
         }
 
         private void Jump()
         {
             if (currentState is NormalState)
             {
+                _jumpState.isTap = true;
+                OnChangeState(_jumpState);
+            }
+            else if (currentState is ShrinkState)
+            {
+                _jumpState.isTap = false;
+                _jumpState.SetDurationTime(endTimeHold - startTimeHold);
                 OnChangeState(_jumpState);
             }
         }

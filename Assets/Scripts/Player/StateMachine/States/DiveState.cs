@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Runner.Player
 {
     public class DiveState : IPlayerState
@@ -10,12 +11,12 @@ namespace Runner.Player
         {
             Debug.Log("Dive State");
             // TODO : sound
+            Vector2 diveImpulse = new Vector2(0f,-1 * playerController.diveForce);
+            playerController.rb2D.AddForce(diveImpulse, ForceMode2D.Impulse);
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
         {
-            playerController.transform.Translate(Vector3.down * (playerController.diveForce * deltaTime));
-            
             if (playerController.IsOnGround())
             {
                 playerController.stateMachine.NormalState();

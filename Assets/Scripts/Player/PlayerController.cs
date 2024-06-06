@@ -12,13 +12,16 @@ namespace Runner.Player
 
         [Header("Input")]
         [SerializeField] private InputManager inputManager;
+
+        [Header("Jump State")] 
+        public float jumpForce = 10f;
+        public float maxHoldTime = 2f;
+        public float maxJumpForceMultiplier = 2f;
         
-        [Header("Jump State")]
-        public JumpSpec jumpSpec;
 
         [Header("Bounce State : Values")] 
-        public float bounceVelocity = 10f;
-        public float maxBounceVelocity = 15f;
+        public float bounceForce = 10f;
+        public float maxBounceForce = 15f;
         public float bounceMultiplier = 0.1f;
         [Header("Bounce State : Background Speed")]
         public float addSpeed;

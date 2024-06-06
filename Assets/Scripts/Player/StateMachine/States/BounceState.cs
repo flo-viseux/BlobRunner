@@ -8,16 +8,13 @@ namespace Runner.Player
 {
     public class BounceState : IPlayerState
     {
-        private float durationTime;
-        public void SetDurationTime(float value) => durationTime = value;
-        
         private float timer = 0f;
         private Vector2 previousVelocity;
         private Vector2 direction;
         private float multiplier;
         
-        private float bounceVelocity;
-        private float maxVelocity;
+        private float bounceForce;
+        private float maxForce;
 
         private bool firstImpulse = false;
         private int countBounce = 0;
@@ -33,8 +30,8 @@ namespace Runner.Player
             Debug.Log("Bounce state");
             playerController.OnHitGround += SwitchDirection;
 
-            bounceVelocity = playerController.bounceVelocity;
-            maxVelocity = playerController.maxBounceVelocity;
+            bounceForce = playerController.bounceForce;
+            maxForce = playerController.maxBounceForce;
             multiplier = playerController.bounceMultiplier;
             isAddingSpeedWithBouncingTime = playerController.addSpeedWithTime;
             
@@ -43,7 +40,7 @@ namespace Runner.Player
             direction = Vector2.up;
             previousVelocity = direction * 10f;
             
-            playerController.rb2D.AddForce(direction * bounceVelocity, ForceMode2D.Impulse);
+            playerController.rb2D.AddForce(direction * bounceForce, ForceMode2D.Impulse);
             firstImpulse = true;
         }
 
@@ -74,7 +71,7 @@ namespace Runner.Player
         {
             if (firstImpulse)
             {
-                if (playerController.rb2D.velocity.y < bounceVelocity) return;
+                if (playerController.rb2D.velocity.y < bounceForce) return;
                 else firstImpulse = false;
             }
             
@@ -89,7 +86,7 @@ namespace Runner.Player
             if (newDirection.y > 0f) direction = Vector2.up;
             else direction = Vector2.down;
 
-            previousVelocity = Mathf.Min(Mathf.Abs(previousVelocity.y) + multiplier,maxVelocity) * direction;
+            previousVelocity = Mathf.Min(Mathf.Abs(previousVelocity.y) + multiplier,maxForce) * direction;
         }
 
 

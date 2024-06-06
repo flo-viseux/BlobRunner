@@ -235,7 +235,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.5, y: -4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2747344632032235980}
@@ -259,20 +259,22 @@ MonoBehaviour:
   rb2D: {fileID: 219738332032548818}
   gravityFall: 5
   inputManager: {fileID: 1824199248658129865}
-  jumpSpec: {fileID: 11400000, guid: 6fa0d1fbc6fdae249bdd3fd279f381f3, type: 2}
-  bounceVelocity: 10
-  maxBounceVelocity: 15
+  jumpForce: 15
+  maxHoldTime: 2
+  maxJumpForceMultiplier: 3
+  bounceForce: 10
+  maxBounceForce: 15
   bounceMultiplier: 0.1
   addSpeed: 1
   delayBetweenAddSpeed: 0.5
-  addSpeedBetweenNBounce: 0
+  addSpeedBetweenNBounce: 1
   addSpeedWithTime: 0
   checkCeilingDistNormal: 1
   checkForwardDistNormal: 1
   spriteTransform: {fileID: 115635309110398288}
   checkCeilingDistShrink: 0.5
   checkForwardDistShrink: 0.5
-  diveForce: 5
+  diveForce: 30
   checkFloorDist: 0.2
   chemicalXTag: ChemicalX
   plutoniumTag: Plutonium
@@ -338,7 +340,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
