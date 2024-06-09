@@ -13,8 +13,7 @@ namespace Runner.Player
             Debug.Log("Shrink state");
             // TODO :sound shrink
             
-            playerController.rb2D.gravityScale = playerController.gravityFall;
-            
+            // change scale for now
             Vector3 scale = playerController.spriteTransform.localScale / coefSize;
             playerController.spriteTransform.localScale = scale;
         }
@@ -31,8 +30,8 @@ namespace Runner.Player
 
         public void OnExitState(PlayerController playerController)
         {
-            playerController.rb2D.gravityScale = playerController.startGravity;
             
+            // switch scale back to normal
             Vector3 scale = playerController.spriteTransform.localScale * coefSize;
             playerController.spriteTransform.localScale = scale;
             

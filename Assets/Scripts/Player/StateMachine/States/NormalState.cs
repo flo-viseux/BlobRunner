@@ -9,7 +9,6 @@ namespace Runner.Player
         public void OnEnterState(PlayerController playerController)
         {
             Debug.Log("Normal State");
-            //playerController.rb2D.gravityScale = playerController.gravityFall;
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
@@ -24,7 +23,6 @@ namespace Runner.Player
 
         public void OnExitState(PlayerController playerController)
         {
-            //playerController.rb2D.gravityScale = playerController.startGravity;
             // TODO :stop sound
         }
     }

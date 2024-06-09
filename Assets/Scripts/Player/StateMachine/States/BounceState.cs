@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Runner.Player;
+
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Runner.Player
 {
@@ -12,36 +9,26 @@ namespace Runner.Player
         private Vector2 previousVelocity;
         private Vector2 direction;
         private float multiplier;
-        
-        private float bounceForce;
         private float maxForce;
-
-        private bool firstImpulse = false;
+        
         private int countBounce = 0;
 
         private bool isAddingSpeedWithBouncingTime;
-        
-        // previous velocity (fixed update)
-        // relative velocity (collider2D)
-        // other script to handle OnCollisionEnter et s'abonner ici
-        
+
         public void OnEnterState(PlayerController playerController)
         {
             Debug.Log("Bounce state");
+            
             playerController.OnHitGround += SwitchDirection;
-
-            bounceForce = playerController.bounceForce;
+            
             maxForce = playerController.maxBounceForce;
             multiplier = playerController.bounceMultiplier;
             isAddingSpeedWithBouncingTime = playerController.addSpeedWithTime;
-            
+
             timer = 0f;
             countBounce = 0;
-            direction = Vector2.up;
-            previousVelocity = direction * 10f;
             
-            playerController.rb2D.AddForce(direction * bounceForce, ForceMode2D.Impulse);
-            firstImpulse = true;
+            previousVelocity = playerController.rb2D.velocity;
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
@@ -69,12 +56,6 @@ namespace Runner.Player
 
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
-            if (firstImpulse)
-            {
-                if (playerController.rb2D.velocity.y < bounceForce) return;
-                else firstImpulse = false;
-            }
-            
             playerController.rb2D.velocity = previousVelocity;
         }
 
@@ -82,11 +63,16 @@ namespace Runner.Player
         {
             // TODO : delete if speed evolve with time
             if (!isAddingSpeedWithBouncingTime) countBounce++;
-            
-            if (newDirection.y > 0f) direction = Vector2.up;
-            else direction = Vector2.down;
 
-            previousVelocity = Mathf.Min(Mathf.Abs(previousVelocity.y) + multiplier,maxForce) * direction;
+            if (newDirection.y > 0f)
+            {
+                direction = Vector2.up;
+            }
+            else
+            {
+                direction = Vector2.down;
+            }
+            previousVelocity = Mathf.Min(Mathf.Abs(previousVelocity.y) + multiplier, maxForce) * direction;
         }
 
 
@@ -95,6 +81,5 @@ namespace Runner.Player
             GameManager.Instance.playerDatas.ResetSpeed();
             playerController.OnHitGround -= SwitchDirection;
         }
-        
     }
 }

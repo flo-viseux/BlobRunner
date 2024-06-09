@@ -8,26 +8,29 @@ namespace Runner.Player
     public class PlayerController : MonoBehaviour
     {
         public Rigidbody2D rb2D;
-        public float gravityFall = 5f;
-
+        
         [Header("Input")]
         [SerializeField] private InputManager inputManager;
 
         [Header("Jump State")] 
         public float jumpForce = 10f;
         public float maxHoldTime = 2f;
+        [Tooltip("Used for hold")]
         public float maxJumpForceMultiplier = 2f;
         
 
         [Header("Bounce State : Values")] 
         public float bounceForce = 10f;
         public float maxBounceForce = 15f;
+        [Tooltip("Force added to current NOT multiplied")]
         public float bounceMultiplier = 0.1f;
         [Header("Bounce State : Background Speed")]
+        [Tooltip("Speed added to background")]
         public float addSpeed;
         public float delayBetweenAddSpeed;
+        [Tooltip("N is the nb bounce when the speed is being added")]
         public int addSpeedBetweenNBounce;
-        [Tooltip("true test with time, false test with nb bounce")]
+        [Tooltip("True test with time, False test with nb bounce")]
         public bool addSpeedWithTime;
         
         [Header("Normal State")] 
@@ -86,17 +89,16 @@ namespace Runner.Player
             if (hit2d.collider != null)
             {
                 isOnGround = true;
-                //Debug.Log("is on ground "+ hit2d.collider.name);
             }
             else
             {
-                //Debug.Log("is in air ");
                 isOnGround = false;
             }
         }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
+          
             if (!isBouncingFromChemical && other.gameObject.CompareTag("Obstacles"))
             {
                 GameManager.Instance.playerDatas.CurrentHealth -= 1;
