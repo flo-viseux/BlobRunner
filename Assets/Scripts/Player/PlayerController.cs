@@ -8,22 +8,30 @@ namespace Runner.Player
     public class PlayerController : MonoBehaviour
     {
         public Rigidbody2D rb2D;
-        public float gravityFall = 5f;
-
+        
         [Header("Input")]
         [SerializeField] private InputManager inputManager;
-        
-        [Header("Jump State")]
-        public JumpSpec jumpSpec;
 
-        [Header("Bounce State")] 
-        public PhysicsMaterial2D physicsMaterial2D;
-        public JumpSpec bounceSpec;
-        public JumpSpec bounceChemicalSpec;
+        [Header("Jump State")] 
+        public float jumpForce = 10f;
+        public float maxHoldTime = 2f;
+        [Tooltip("Used for hold")]
+        public float maxJumpForceMultiplier = 2f;
+        
+
+        [Header("Bounce State : Values")] 
+        public float bounceForce = 10f;
+        public float maxBounceForce = 15f;
+        [Tooltip("Force added to current NOT multiplied")]
+        public float bounceMultiplier = 0.1f;
+        [Header("Bounce State : Background Speed")]
+        [Tooltip("Speed added to background")]
         public float addSpeed;
         public float delayBetweenAddSpeed;
-        public float minBounceVelocity = 2f;
-        public float bounceMultiplier = 1.5f;
+        [Tooltip("N is the nb bounce when the speed is being added")]
+        public int addSpeedBetweenNBounce;
+        [Tooltip("True test with time, False test with nb bounce")]
+        public bool addSpeedWithTime;
         
         [Header("Normal State")] 
         [SerializeField] private float checkCeilingDistNormal = 1f;
@@ -53,6 +61,8 @@ namespace Runner.Player
         public PlayerStateMachine stateMachine;
         [HideInInspector] public float startGravity;
 
+        public event Action<Vector2> OnHitGround;
+
         private void Start()
         {
             startGravity = rb2D.gravityScale;
@@ -79,21 +89,27 @@ namespace Runner.Player
             if (hit2d.collider != null)
             {
                 isOnGround = true;
-                //Debug.Log("is on ground "+ hit2d.collider.name);
             }
             else
             {
-                //Debug.Log("is in air ");
                 isOnGround = false;
             }
         }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
+          
             if (!isBouncingFromChemical && other.gameObject.CompareTag("Obstacles"))
             {
                 GameManager.Instance.playerDatas.CurrentHealth -= 1;
                 return;
+            }
+            
+            // 6 : Ground Layer
+            if (other.gameObject.layer == 6)
+            {
+                ContactPoint2D contact = other.contacts[0];
+                OnHitGround?.Invoke(contact.normal);
             }
         }
 

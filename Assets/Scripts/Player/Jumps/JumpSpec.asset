@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7630ea18f26344889b74a6f5349c8e91, type: 3}
   m_Name: JumpSpec
   m_EditorClassIdentifier: 
-  initialJumpForce: 8
+  initialJumpForce: 10
   gravityRise:
     serializedVersion: 2
     m_Curve:

@@ -6,26 +6,38 @@ namespace Runner.Player
 {
     public class JumpState : IPlayerState
     {
-        private JumpSpec jumpSpec = null;
-        private float jumpStartTime;
+        private float durationTime;
+        public void SetDurationTime(float value) => durationTime = value;
 
-        private bool isJumping;
-        private float startGravity;
+        private PlayerController controller;
+        private float jumpForceMultiplier;
+        public bool isTap;
+
+        private Vector2 normal;
+        private bool isBouncing;
         
         public void OnEnterState(PlayerController playerController)
         {
             Debug.Log("Jump State");
-
-            isJumping = false;
-
-            
-            if (jumpSpec == null)
-                jumpSpec = playerController.jumpSpec;
-
-            jumpStartTime = Time.time;
-            playerController.rb2D.velocity = new Vector3(0, jumpSpec.initialJumpForce, 0);
+            if (controller == null)
+                controller = playerController;
             
             // TODO :sound jump
+            
+            playerController.OnHitGround += GoToBounce;
+            
+            if (!isTap)
+            {
+                durationTime = Mathf.Clamp(durationTime, 0, playerController.maxHoldTime);
+                jumpForceMultiplier = Mathf.Lerp(1f, playerController.maxJumpForceMultiplier,
+                    durationTime / playerController.maxHoldTime);
+            }
+            else
+            {
+                jumpForceMultiplier = 1f;
+            }
+            Vector2 jumpImpulse = new Vector2(0f, playerController.jumpForce * jumpForceMultiplier);
+            playerController.rb2D.AddForce(jumpImpulse, ForceMode2D.Impulse);
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
@@ -36,32 +48,32 @@ namespace Runner.Player
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
             
-            float timeSinceJump = Time.time - jumpStartTime;
-
-            if (playerController.rb2D.velocity.y > 0)
-            {
-                playerController.rb2D.velocity += Vector2.up * (jumpSpec.gravityRise.Evaluate(timeSinceJump) * Time.deltaTime);
-            }
-            else if (playerController.rb2D.velocity.y < 0)
-            {
-                playerController.rb2D.velocity += Vector2.up * (jumpSpec.gravityFall.Evaluate(timeSinceJump) * Time.deltaTime);
-            }
-
-            // Stop jumping when the player lands
-            if (playerController.rb2D.velocity.y == 0)
-            {
-                playerController.stateMachine.NormalState();
-            }
-            
-            // if (!isJumping)
-            // {
-            //     playerController.rb2D.AddForce(Vector2.up, ForceMode2D.Impulse);
-            // }
         }
 
         public void OnExitState(PlayerController playerController)
         {
+            playerController.OnHitGround -= GoToBounce;
+            if (isBouncing)
+            {
+                normal = normal.y > 0f ? Vector2.up : Vector2.down;
+                Vector2 bounceForce = playerController.bounceForce * normal;
+                playerController.rb2D.AddForce(bounceForce, ForceMode2D.Impulse);
+            }
+        }
 
+        private void GoToBounce(Vector2 newDirection)
+        {
+            if (newDirection.y < 0f)
+            {
+                isBouncing = true;
+                normal = newDirection;
+                controller.stateMachine.Bounce();
+            }
+            else
+            {
+                isBouncing = false;
+                controller.stateMachine.NormalState();
+            }
         }
     }
 }
