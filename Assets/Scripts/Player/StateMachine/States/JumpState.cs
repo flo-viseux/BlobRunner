@@ -21,7 +21,7 @@ namespace Runner.Player
         
         public void OnEnterState(PlayerController playerController)
         {
-            Debug.Log("Jump State");
+            //Debug.Log("Jump State");
             if (controller == null)
                 controller = playerController;
             
@@ -52,7 +52,7 @@ namespace Runner.Player
         {
             if (playerController.rb2D.velocity != Vector2.zero)
                 _velocity = playerController.rb2D.velocity;
-            Debug.Log($"on exit state velocity force : {playerController.rb2D.velocity}");
+            //Debug.Log($"on exit state velocity force : {playerController.rb2D.velocity}");
             
         }
 
