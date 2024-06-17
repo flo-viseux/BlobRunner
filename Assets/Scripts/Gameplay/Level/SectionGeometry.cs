@@ -13,6 +13,7 @@ public class SectionGeometry : MonoBehaviour
     [SerializeField] private float endLeftY = 8.5f;
 
     [SerializeField] private Collectible[] collectibles = null;
+    [SerializeField] private SpecialTile[] specialTiles = null;
     #endregion
 
     #region API
@@ -43,6 +44,9 @@ public class SectionGeometry : MonoBehaviour
     {
         foreach (Collectible collectible in collectibles)
             collectible.Init();
+
+        foreach (SpecialTile specialTile in specialTiles)
+            specialTile.Init();
     }
 
     public void Move(float speed)

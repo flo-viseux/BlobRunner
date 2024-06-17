@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class CollectibleRenderer : MonoBehaviour
+public class BreakableGlassRenderer : MonoBehaviour
 {
     #region Constants
-    private static int pickedVar = Animator.StringToHash("picked");
+    private static int triggeredVar = Animator.StringToHash("triggered");
     #endregion
 
     #region Serialized fields
@@ -11,9 +11,9 @@ public class CollectibleRenderer : MonoBehaviour
     #endregion
 
     #region API
-    public void Picked()
+    public void Triggered()
     {
-        animator.SetTrigger(pickedVar);
+        animator.SetTrigger(triggeredVar);
     }
 
     public void Init()
