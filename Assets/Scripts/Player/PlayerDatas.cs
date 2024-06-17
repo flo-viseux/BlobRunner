@@ -27,9 +27,15 @@ namespace Runner.Player
             CurrentScore = 0;
         }
 
-        public void AddScore(int addValue)
+        public void IncreaseScore(int addValue)
         {
             CurrentScore += addValue;
+            OnScroreChange?.Invoke(CurrentScore);
+        }
+
+        public void DecreaseScore(int addValue)
+        {
+            CurrentScore -= addValue;
             OnScroreChange?.Invoke(CurrentScore);
         }
 
@@ -41,6 +47,21 @@ namespace Runner.Player
         public void IncreaseSpeed(float value)
         {
             CurrentSpeed += value;
+        }
+
+        public void IncreaseHealth()
+        {
+            CurrentHealth ++;
+        }
+
+        public void DecreaseHealth()
+        {
+            CurrentHealth--;
+
+            if (CurrentHealth <= 0)
+                GameManager.Instance.GoToLoose();
+            else
+                DecreaseScore(1000);
         }
     }
 }
