@@ -57,7 +57,7 @@ public class SectionGenerator : Parallax
         {
             transform.position = transform.position + Vector3.left * speed * SpeedFactor * Time.deltaTime;
 
-            PlayerScore.Instance.IncreaseScore(speed * SpeedFactor * Time.deltaTime);
+           // PlayerScore.Instance.IncreaseScore(speed * SpeedFactor * Time.deltaTime);
 
             CurrentPos = -transform.position.x;
         }
