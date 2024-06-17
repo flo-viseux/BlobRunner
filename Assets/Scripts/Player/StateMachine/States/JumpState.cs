@@ -67,12 +67,14 @@ namespace Runner.Player
             {
                 isBouncing = true;
                 normal = newDirection;
-                controller.stateMachine.Bounce();
+                //controller.stateMachine.Bounce();
+                PlayerController.stateMachine.Bounce();
             }
             else
             {
                 isBouncing = false;
-                controller.stateMachine.NormalState();
+                //controller.stateMachine.NormalState();
+                PlayerController.stateMachine.NormalState();
             }
         }
     }

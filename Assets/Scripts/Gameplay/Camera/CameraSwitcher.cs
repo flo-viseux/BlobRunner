@@ -15,17 +15,10 @@ public class CameraSwitcher : MonoBehaviour
     private bool isDefaultCamera = true;
     #endregion
 
-    #region UnityMethods
-    private void Awake()
-    {
-        isDefaultCamera = true;
+    #region API
+    public static CameraSwitcher Instance = null;
 
-        button.onClick.AddListener(SwitchCamera);
-    }
-    #endregion
-
-    #region Private
-    private void SwitchCamera()
+    public void SwitchCamera()
     {
         Debug.Log("SwitchCamera");
 
@@ -35,6 +28,19 @@ public class CameraSwitcher : MonoBehaviour
             animator.Play("Default");
         else
             animator.Play("Large");
+    }
+    #endregion
+
+    #region UnityMethods
+    private void Awake()
+    {
+        if(Instance == null) 
+            Instance = this;
+        else
+            Destroy(this);
+        
+        isDefaultCamera = true;
+        button.onClick.AddListener(SwitchCamera);
     }
     #endregion
 }

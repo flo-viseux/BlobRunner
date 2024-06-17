@@ -75,6 +75,7 @@ namespace Runner.Player
             {
                 startTimeHold = startTime;
                 OnChangeState(_shrinkState);
+                CameraSwitcher.Instance.SwitchCamera();
             }
         }
 
@@ -103,6 +104,9 @@ namespace Runner.Player
                 _jumpState.isTap = false;
                 _jumpState.SetDurationTime(endTimeHold - startTimeHold);
                 OnChangeState(_jumpState);
+
+                CameraSwitcher.Instance.SwitchCamera();
+                CameraShaker.Instance.Shake();
             }
         }
 

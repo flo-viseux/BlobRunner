@@ -1,3 +1,4 @@
+using Runner.Player;
 using UnityEngine;
 
 public class BreakableGlassEffect : SpecialTileEffect
@@ -18,6 +19,9 @@ public class BreakableGlassEffect : SpecialTileEffect
     public override void Effect()
     {
         //TODO Check if player is dashing to the bottom
+        if (PlayerController.stateMachine.currentState.GetType() != new DiveState().GetType())
+            return;
+
         collider.enabled = false;
         renderer.Triggered();
     }

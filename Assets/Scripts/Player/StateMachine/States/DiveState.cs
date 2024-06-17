@@ -9,7 +9,7 @@ namespace Runner.Player
     {
         public void OnEnterState(PlayerController playerController)
         {
-            Debug.Log("Dive State");
+            Debug.Log("Dive State / " + PlayerController.stateMachine.currentState);
             // TODO : sound
             Vector2 diveImpulse = new Vector2(0f,-1 * playerController.diveForce);
             playerController.rb2D.AddForce(diveImpulse, ForceMode2D.Impulse);
@@ -19,7 +19,8 @@ namespace Runner.Player
         {
             if (playerController.IsOnGround())
             {
-                playerController.stateMachine.NormalState();
+                //playerController.stateMachine.NormalState();
+                PlayerController.stateMachine.NormalState();
             }
         }
 

@@ -34,14 +34,6 @@ public class CameraShaker : MonoBehaviour
 
         perlin = camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            Shake();
-        }
-    }
     #endregion
 
     #region Private

@@ -48,7 +48,7 @@ namespace Runner.Player
         [Header("")] 
         [SerializeField] private float checkFloorDist = 1f;
         [SerializeField] private string chemicalXTag = "ChemicalX";
-        [SerializeField] private string plutoniumTag = "Plutonium";
+        /*[SerializeField] private string plutoniumTag = "Plutonium";*/
         [SerializeField] private int plutoniumPoint = 10;
         public LayerMask groundMask;
         public LayerMask obstaclesMask;
@@ -58,7 +58,7 @@ namespace Runner.Player
 
         [HideInInspector] public bool isBouncingFromChemical;
         
-        public PlayerStateMachine stateMachine;
+        public static PlayerStateMachine stateMachine;
         [HideInInspector] public float startGravity;
 
         public event Action<Vector2> OnHitGround;
@@ -119,10 +119,10 @@ namespace Runner.Player
             {
                 isBouncingFromChemical = true;
             }
-            else if (other.gameObject.CompareTag(plutoniumTag))
+            /*else if (other.gameObject.CompareTag(plutoniumTag)) // Already check in collectible effect
             {
                 GameManager.Instance.playerDatas.AddScore(plutoniumPoint);
-            }
+            }*/
         }
 
         private void OnDestroy()
