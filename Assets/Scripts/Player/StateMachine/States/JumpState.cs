@@ -15,10 +15,13 @@ namespace Runner.Player
 
         private Vector2 normal;
         private bool isBouncing;
+
+        private Vector2 _velocity;
+
         
         public void OnEnterState(PlayerController playerController)
         {
-            Debug.Log("Jump State");
+            //Debug.Log("Jump State");
             if (controller == null)
                 controller = playerController;
             
@@ -47,6 +50,9 @@ namespace Runner.Player
 
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
+            if (playerController.rb2D.velocity != Vector2.zero)
+                _velocity = playerController.rb2D.velocity;
+            //Debug.Log($"on exit state velocity force : {playerController.rb2D.velocity}");
             
         }
 
@@ -56,7 +62,7 @@ namespace Runner.Player
             if (isBouncing)
             {
                 normal = normal.y > 0f ? Vector2.up : Vector2.down;
-                Vector2 bounceForce = playerController.bounceForce * normal;
+                Vector2 bounceForce = (_velocity.y + playerController.bounceMultiplier)* normal ;
                 playerController.rb2D.AddForce(bounceForce, ForceMode2D.Impulse);
             }
         }

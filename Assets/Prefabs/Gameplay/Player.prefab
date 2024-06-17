@@ -257,13 +257,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb2D: {fileID: 219738332032548818}
-  gravityFall: 5
   inputManager: {fileID: 1824199248658129865}
   jumpForce: 15
   maxHoldTime: 2
   maxJumpForceMultiplier: 3
   bounceForce: 10
-  maxBounceForce: 15
+  maxBounceForce: 25
   bounceMultiplier: 0.1
   addSpeed: 1
   delayBetweenAddSpeed: 0.5

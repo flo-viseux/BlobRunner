@@ -8,7 +8,7 @@ public class Obstacle : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null && collision.gameObject.name == "Player")
-            Debug.Log("Player Touched");
+            Debug.Log("Player Touched",gameObject);
     }
     #endregion
 }

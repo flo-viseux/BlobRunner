@@ -18,7 +18,7 @@ public class GameState : IGameBaseState
     
     public void OnEnterState()
     {
-        Debug.Log("Enter Game State");
+        //Debug.Log("Enter Game State");
         if (!GameManager.Instance.wasPaused)
         {
             playerDatas.InitPlayerDatas();

@@ -9,7 +9,7 @@ public class PauseState : IGameBaseState
 
     public void OnEnterState()
     {
-        Debug.Log("Enter Pause State");
+        //Debug.Log("Enter Pause State");
         Time.timeScale = 0f;
         UIManager.Instance.ShowUIPanel(Status);
         
