@@ -1,6 +1,5 @@
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraShaker : MonoBehaviour
@@ -9,6 +8,8 @@ public class CameraShaker : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera camera = null;
 
     [SerializeField] private float shakeDuration = .5f;
+
+    [SerializeField] private float amplitude = 1f;
     #endregion
 
     #region Attributes
@@ -34,20 +35,12 @@ public class CameraShaker : MonoBehaviour
 
         perlin = camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            Shake();
-        }
-    }
     #endregion
 
     #region Private
     private IEnumerator OnShake()
     {
-        perlin.m_AmplitudeGain = 1.0f;
+        perlin.m_AmplitudeGain = amplitude;
         
         yield return new WaitForSeconds(shakeDuration);
 

@@ -17,7 +17,7 @@ namespace Runner.Player
 
         public void OnEnterState(PlayerController playerController)
         {
-            Debug.Log("Bounce state");
+            //Debug.Log("Bounce state");
             
             playerController.OnHitGround += SwitchDirection;
             
@@ -28,8 +28,8 @@ namespace Runner.Player
             timer = 0f;
             countBounce = 0;
             previousVelocity = playerController.rb2D.velocity;
-            Debug.Log($"on enter state player velocity : {previousVelocity}");
-            Debug.Log("STOP");
+            // Debug.Log($"on enter state player velocity : {previousVelocity}");
+            // Debug.Log("STOP");
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
@@ -58,7 +58,7 @@ namespace Runner.Player
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
             playerController.rb2D.velocity = previousVelocity;
-            Debug.Log($"on fixed update player velocity : {previousVelocity}");
+            //Debug.Log($"on fixed update player velocity : {previousVelocity}");
         }
 
         private void SwitchDirection(Vector2 newDirection)

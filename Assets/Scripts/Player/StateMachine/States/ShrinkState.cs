@@ -10,7 +10,7 @@ namespace Runner.Player
         
         public void OnEnterState(PlayerController playerController)
         {
-            Debug.Log("Shrink state");
+            //Debug.Log("Shrink state");
             // TODO :sound shrink
             
             // change scale for now

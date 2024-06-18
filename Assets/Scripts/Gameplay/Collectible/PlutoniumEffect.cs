@@ -1,6 +1,6 @@
-using UnityEditor.Experimental.RestService;
+
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+
 
 public class PlutoniumEffect : CollectibleEffect
 {
@@ -11,7 +11,8 @@ public class PlutoniumEffect : CollectibleEffect
     #region API
     public override void Effect()
     {
-        GameManager.Instance.playerDatas.AddScore(score);
+        GameManager.Instance.playerDatas.IncreaseScore(score);
+        GameManager.Instance.playerDatas.IncreaseHealth();
     }
     #endregion
 }

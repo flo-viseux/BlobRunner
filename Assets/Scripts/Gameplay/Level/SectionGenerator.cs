@@ -14,9 +14,6 @@ public class SectionGenerator : Parallax
     [SerializeField] private float levelWidth = 0f;
 
     [SerializeField] private float offset = 0f;
-
-    [Header("Test")]
-    [SerializeField] private VictoryUI victoryUI = null;
     #endregion
 
     #region Attributes
@@ -77,7 +74,7 @@ public class SectionGenerator : Parallax
 
         if (CurrentPos >= levelWidth)
         {
-            victoryUI.Show();
+            GameManager.Instance.GoToWin();
             Scrolling = false;
         }
     }

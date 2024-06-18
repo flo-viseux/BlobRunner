@@ -18,6 +18,7 @@ public class PlayerScoreUI : MonoBehaviour
             Debug.LogError("Game Manager Instance is null");
             return;
         }
+
         GameManager.Instance.playerDatas.OnScroreChange += ScoreChange;
         scoreLabel.text = "Score : " + GameManager.Instance.playerDatas.Score.ToString();
     }

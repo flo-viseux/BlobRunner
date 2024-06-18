@@ -15,6 +15,9 @@ public class ObstacleVerticalMovement : MonoBehaviour
     #region Unity methods
     private void Update()
     {
+        if (!transform.parent && (CheckVisibility.IsVisible(this.gameObject) || CheckVisibility.IsVisible(this.transform.parent.gameObject)))
+            return;
+
         float currentOffset = offset - transform.parent.position.x * speed * 0.02f;
         float iterations = currentOffset / (maxY - minY);
 

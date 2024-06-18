@@ -8,7 +8,7 @@ public class MenuState : IGameBaseState
 
     public void OnEnterState()
     {
-        Debug.Log("Enter Menu State");
+        //Debug.Log("Enter Menu State");
         UIManager.Instance.ShowUIPanel(Status);
     }
 
