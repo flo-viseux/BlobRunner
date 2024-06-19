@@ -20,7 +20,7 @@ public class CameraSwitcher : MonoBehaviour
 
     public void SwitchCamera()
     {
-        Debug.Log("SwitchCamera");
+        //Debug.Log("SwitchCamera");
 
         isDefaultCamera = !isDefaultCamera;
 

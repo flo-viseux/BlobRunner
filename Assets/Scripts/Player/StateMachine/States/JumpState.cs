@@ -21,26 +21,27 @@ namespace Runner.Player
         
         public void OnEnterState(PlayerController playerController)
         {
-            //Debug.Log("Jump State");
+            Debug.Log("Jump State");
             if (controller == null)
                 controller = playerController;
             
             // TODO :sound jump
             
-            playerController.OnHitGround += GoToBounce;
+            // playerController.OnHitGround += GoToBounce;
             
-            if (!isTap)
-            {
-                durationTime = Mathf.Clamp(durationTime, 0, playerController.maxHoldTime);
-                jumpForceMultiplier = Mathf.Lerp(1f, playerController.maxJumpForceMultiplier,
-                    durationTime / playerController.maxHoldTime);
-            }
-            else
-            {
-                jumpForceMultiplier = 1f;
-            }
+            // if (!isTap)
+            // {
+            durationTime = Mathf.Clamp(durationTime, 0, playerController.maxHoldTime);
+            jumpForceMultiplier = Mathf.Lerp(1f, playerController.maxJumpForceMultiplier,
+                durationTime / playerController.maxHoldTime);
+            // }
+            // else
+            // {
+            //     jumpForceMultiplier = 1f;
+            // }
             Vector2 jumpImpulse = new Vector2(0f, playerController.jumpForce * jumpForceMultiplier);
             playerController.rb2D.AddForce(jumpImpulse, ForceMode2D.Impulse);
+            PlayerController.stateMachine.InAir();
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
@@ -50,38 +51,38 @@ namespace Runner.Player
 
         public void PhysicsUpdate(PlayerController playerController, float fixedDeltaTime)
         {
-            if (playerController.rb2D.velocity != Vector2.zero)
-                _velocity = playerController.rb2D.velocity;
-            //Debug.Log($"on exit state velocity force : {playerController.rb2D.velocity}");
-            
+            // if (playerController.rb2D.velocity != Vector2.zero)
+            //     _velocity = playerController.rb2D.velocity;
+            // //Debug.Log($"on exit state velocity force : {playerController.rb2D.velocity}");
+            //
         }
 
         public void OnExitState(PlayerController playerController)
         {
-            playerController.OnHitGround -= GoToBounce;
-            if (isBouncing)
-            {
-                normal = normal.y > 0f ? Vector2.up : Vector2.down;
-                Vector2 bounceForce = (_velocity.y + playerController.bounceMultiplier)* normal ;
-                playerController.rb2D.AddForce(bounceForce, ForceMode2D.Impulse);
-            }
+            // playerController.OnHitGround -= GoToBounce;
+            // if (isBouncing)
+            // {
+            //     normal = normal.y > 0f ? Vector2.up : Vector2.down;
+            //     Vector2 bounceForce = (_velocity.y + playerController.bounceMultiplier)* normal ;
+            //     playerController.rb2D.AddForce(bounceForce, ForceMode2D.Impulse);
+            // }
         }
 
-        private void GoToBounce(Vector2 newDirection)
-        {
-            if (newDirection.y < 0f)
-            {
-                isBouncing = true;
-                normal = newDirection;
-                //controller.stateMachine.Bounce();
-                PlayerController.stateMachine.Bounce();
-            }
-            else
-            {
-                isBouncing = false;
-                //controller.stateMachine.NormalState();
-                PlayerController.stateMachine.NormalState();
-            }
-        }
+        // private void GoToBounce(Vector2 newDirection)
+        // {
+        //     if (newDirection.y < 0f)
+        //     {
+        //         isBouncing = true;
+        //         normal = newDirection;
+        //         //controller.stateMachine.Bounce();
+        //         PlayerController.stateMachine.Bounce();
+        //     }
+        //     else
+        //     {
+        //         isBouncing = false;
+        //         //controller.stateMachine.NormalState();
+        //         PlayerController.stateMachine.NormalState();
+        //     }
+        // }
     }
 }

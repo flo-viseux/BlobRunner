@@ -19,8 +19,10 @@ public class BreakableGlassEffect : SpecialTileEffect
     public override void Effect()
     {
         //TODO Check if player is dashing to the bottom
-        if (PlayerController.stateMachine.currentState.GetType() != new DiveState().GetType())
+        if (Controller.currentState == Controller.EState.Dive)
             return;
+        // if (PlayerController.stateMachine.currentState.GetType() != new DiveState().GetType())
+        //     return;
 
         collider.enabled = false;
         renderer.Triggered();

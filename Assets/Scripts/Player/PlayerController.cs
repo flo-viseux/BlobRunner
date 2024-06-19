@@ -17,8 +17,9 @@ namespace Runner.Player
         public float maxHoldTime = 2f;
         [Tooltip("Used for hold")]
         public float maxJumpForceMultiplier = 2f;
-        
 
+        public float windowDurationBounce = 0.2f;
+            
         [Header("Bounce State : Values")] 
         public float bounceForce = 10f;
         public float maxBounceForce = 15f;
@@ -61,6 +62,8 @@ namespace Runner.Player
         public static PlayerStateMachine stateMachine;
         [HideInInspector] public float startGravity;
 
+        private JumpChargeUI _jumpChargeUI;
+        public JumpChargeUI GetJumpChargeUI() => _jumpChargeUI;
         public event Action<Vector2> OnHitGround;
 
         private void Start()
@@ -68,14 +71,14 @@ namespace Runner.Player
             startGravity = rb2D.gravityScale;
             stateMachine = new PlayerStateMachine(this, inputManager);
             stateMachine.SubscribeToInput();
-
+            _jumpChargeUI = UIManager.Instance.gameObject.GetComponent<JumpChargeUI>();
+            _jumpChargeUI.InitChargeSlider(maxHoldTime);
         }
 
         private void Update()
         {
             CheckGround();
             stateMachine.currentState.LogicUpdate(this, Time.deltaTime);
-
         }
 
         private void FixedUpdate()
@@ -127,7 +130,7 @@ namespace Runner.Player
 
         private void OnDestroy()
         {
-            stateMachine.UnsubscribeToInput();
+//            stateMachine.UnsubscribeToInput();
         }
         
         void OnDrawGizmos()
