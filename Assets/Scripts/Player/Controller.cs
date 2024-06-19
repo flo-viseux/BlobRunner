@@ -8,7 +8,6 @@ namespace Runner.Player
 {
     public class Controller : MonoBehaviour
     {
-
         public enum EState
         {
             Normal,
@@ -33,9 +32,18 @@ namespace Runner.Player
         [SerializeField] private float checkFloorDist;
         [SerializeField] private LayerMask groundMask;
         
-        [Header("Jump")] 
-        [Tooltip("x : time, y : jumpForce")]
-        [SerializeField] private Vector2[] jumpSteps;
+        [Header("Jump")]
+        public float JumpHeight = 5.0f;  // Hauteur du saut du joueur
+        public float jumpStartY = 0f;
+        private float jumpTime;  // Temps de saut total
+        private float jumpProgress = 0.0f;  // Progression du saut
+        /*[Tooltip("x : time, y : jumpLength")]
+        [SerializeField] private Vector2[] jumpSteps = new Vector2[3];*/
+
+        [Tooltip("trajectoire de saut en fonction de la distance parcourue")]
+        [SerializeField] private AnimationCurve jumpCurve;
+        [SerializeField] private AnimationCurve jumpTrajectoryCurve;
+        [SerializeField] private float maxJumpLength = 5f;
 
         [Header("Bounce")] 
         [SerializeField] private float bounceForceMin = 15f;
@@ -49,11 +57,14 @@ namespace Runner.Player
         [Header("Dive")]
         [SerializeField] private float diveForce;
 
+        
+
         // hold
         private float startTimeHold;
         private float holdDuration;
         private float maxHoldTime;
         // ground
+        private bool isJumping;
         private bool isOnGround;
         // tap input
         private bool HasTap = false;
@@ -72,20 +83,20 @@ namespace Runner.Player
         private void Start()
         {
             currentState = EState.Normal;
-            int lastIndex = jumpSteps.Length - 1;
-            maxHoldTime = jumpSteps[lastIndex].x;
+            /*int lastIndex = jumpSteps.Length - 1;
+            maxHoldTime = jumpSteps[lastIndex].x;*/
             HasTap = false;
             CanTap = false;
+
+            jumpStartY = transform.position.y;
         }
-        
-        
 
         private void OnEnable()
         {
             inputManager.OnStartTouch += Shrink;
             inputManager.OnEndTouch += Jump;
             inputManager.OnSwipeSuccessful += Dive;
-            inputManager.OnTap += JumpBack;
+            inputManager.OnTap += Jump;
         }
 
         private void OnDisable()
@@ -93,7 +104,7 @@ namespace Runner.Player
             inputManager.OnStartTouch -= Shrink;
             inputManager.OnEndTouch -= Jump;
             inputManager.OnSwipeSuccessful -= Dive;
-            inputManager.OnTap -= JumpBack;
+            inputManager.OnTap -= Jump;
         }
 
         private void Update()
@@ -106,6 +117,7 @@ namespace Runner.Player
             
             CheckGround();
             
+            // debug, charge ui
             if (currentState == EState.Shrink)
             {
                 if (holdDuration > maxHoldTime) return;
@@ -114,6 +126,7 @@ namespace Runner.Player
                 return;
             }
 
+            // fait repasser en état normal après un dive
             if (currentState == EState.Dive && isOnGround)
             {
                 currentState = EState.Normal;
@@ -143,9 +156,9 @@ namespace Runner.Player
             previousVelocity = rb2D.velocity;
         }
 
-        private void Jump(float endTime)
+        private void Jump() //(float endTime)
         {
-            if (currentState == EState.Shrink)
+            /*if (currentState == EState.Shrink)
             {
                 // STOP SHRINK
                 holdDuration = 0f;
@@ -157,37 +170,86 @@ namespace Runner.Player
                 // JUMP
                 CameraSwitcher.Instance.SwitchCamera();
                 CameraShaker.Instance.Shake();
-                
+
                 float durationTime = endTime - startTimeHold;
                 float jumpForce = GetJumpForceFromTime(durationTime);
                 rb2D.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
+            }
+            else if (currentState == EState.Normal)
+            {
+                float jumpForce = GetJumpForceFromTime(0);
+                rb2D.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
+            }*/
 
-                currentState = EState.Jump;
+            if (!isOnGround || isJumping)
+                return;
+
+            StartCoroutine(JumpTrajectory(SectionGenerator.Instance.CurrentPos));
+            currentState = EState.Jump;
+        }
+
+        private void Jump(float endTime)
+        {
+            if (!isOnGround || isJumping)
+                return;
+
+            StartCoroutine(JumpTrajectory(SectionGenerator.Instance.CurrentPos));
+            currentState = EState.Jump;
+        }
+
+        private IEnumerator JumpTrajectory(float startJumpPos)
+        {
+            int t = 0;
+
+            isJumping = true;
+            isOnGround = false;
+            jumpProgress = 0;
+
+            while (isJumping)
+            {
+                // Calculer la progression du saut en fonction de la distance parcourue
+                jumpProgress += SectionGenerator.Instance.Speed * Time.deltaTime;
+
+                // Calculer la nouvelle position en Y du joueur en fonction de la hauteur de saut théorique
+                float newY = jumpStartY + JumpHeight * (Mathf.Sin(Mathf.PI * (jumpProgress / maxJumpLength)));
+                Debug.Log(newY);
+
+                // Mettre à jour la position du joueur
+                transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
+                // Vérifier si le saut est terminé
+                if (jumpProgress >= maxJumpLength)
+                {
+                    isJumping = false;
+                    jumpProgress = 0.0f;
+                    transform.position = new Vector3(transform.position.x, jumpStartY, transform.position.z);
+                }
+                yield return null;
             }
         }
-        
+
         private void Shrink(float startTime)
         {
-            if (currentState == EState.Normal && isOnGround)
+            /*if (currentState == EState.Normal && isOnGround)
             {
                 currentState = EState.Shrink;
-                
+
                 if (_jumpChargeUI == null)
                 {
                     _jumpChargeUI = UIManager.Instance.gameObject.GetComponent<JumpChargeUI>();
                     _jumpChargeUI.InitChargeSlider(maxHoldTime);
                 }
-                
+
                 startTimeHold = startTime;
                 CameraSwitcher.Instance.SwitchCamera();
-                
+
                 holdDuration = 0f;
                 Vector3 scale = spriteTransform.localScale / coefSize;
                 spriteTransform.localScale = scale;
-            }
+            }*/
         }
 
-        
+
         private void Dive()
         {
             // DIVE
@@ -211,7 +273,7 @@ namespace Runner.Player
             }
         }
 
-        private float GetJumpForceFromTime(float t)
+        /*private float GetJumpForceFromTime(float t)
         {
             int length = jumpSteps.Length;
             
@@ -223,13 +285,29 @@ namespace Runner.Player
 
             return jumpSteps[0].y;
         }
-        
+
+        private int GetJumpTypeFromTime(float t)
+        {
+            int length = jumpSteps.Length;
+
+            for (int i = 0; i < length; i++)
+            {
+                if (i == length - 1) return i;
+                if (t >= jumpSteps[i].x && t < jumpSteps[i + 1].x) return i;
+            }
+
+            return 0;
+        }
+*/
         private void CheckGround()
         {
             RaycastHit2D hit2d = Physics2D.Raycast(transform.position, Vector2.down, checkFloorDist, groundMask);
 
             if (hit2d.collider != null)
             {
+                /*if (isJumping)
+                    isJumping = false;*/
+
                 isOnGround = true;
             }
             else
@@ -312,6 +390,9 @@ namespace Runner.Player
                 Gizmos.color = Color.green;
                 Gizmos.DrawSphere(transform.position,0.5f);
             }
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(transform.position, Vector2.down * checkFloorDist);
         }
     }
 }

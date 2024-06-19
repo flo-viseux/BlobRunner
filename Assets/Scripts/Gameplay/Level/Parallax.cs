@@ -7,8 +7,6 @@ public class Parallax : MonoBehaviour
     #endregion
 
     #region API
-    public float SpeedFactor { get; set; }
-
     public bool Scrolling { get; set; }
 
     public bool Spawning { get; set; }
@@ -18,8 +16,6 @@ public class Parallax : MonoBehaviour
     protected virtual void Awake()
     {
         Spawning = true;
-
-        SpeedFactor = 1f;
     }
     #endregion
 }
