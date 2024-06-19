@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+    [Header("UI Panels")]
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private GameObject gamePanel;

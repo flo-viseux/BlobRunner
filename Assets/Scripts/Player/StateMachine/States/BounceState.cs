@@ -14,7 +14,15 @@ namespace Runner.Player
         private int countBounce = 0;
 
         private bool isAddingSpeedWithBouncingTime;
-
+        
+        private bool HasTapped = false;
+        private bool TapAllowed = false;
+        
+        public void OnTapDetected()
+        {
+            HasTapped = true;
+        }
+        
         public void OnEnterState(PlayerController playerController)
         {
             //Debug.Log("Bounce state");

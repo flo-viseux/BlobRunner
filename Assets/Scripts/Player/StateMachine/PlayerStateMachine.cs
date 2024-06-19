@@ -18,9 +18,12 @@ namespace Runner.Player
         private DiveState _diveState;
         private JumpState _jumpState;
         private ShrinkState _shrinkState;
+        private InAirState _inAirState;
 
         private float startTimeHold;
         private float endTimeHold;
+
+        public bool tapAllowed = false;
         
         public PlayerStateMachine(PlayerController controller, InputManager inputManager)
         {
@@ -32,8 +35,10 @@ namespace Runner.Player
             _diveState = new DiveState();
             _jumpState = new JumpState();
             _shrinkState = new ShrinkState();
+            _inAirState = new InAirState();
             
             OnChangeState(_normalState);
+            tapAllowed = false;
         }
         
         public void OnChangeState(IPlayerState newState)
@@ -52,7 +57,7 @@ namespace Runner.Player
             inputManager.OnStartTouch += Shrink;
             inputManager.OnEndTouch += GetHoldTime;
             inputManager.OnSwipeSuccessful += Dive;
-            inputManager.OnTap += Jump;
+            inputManager.OnTap += JumpBack;
         }
 
         public void UnsubscribeToInput()
@@ -60,7 +65,7 @@ namespace Runner.Player
             inputManager.OnStartTouch -= Shrink;
             inputManager.OnEndTouch -= GetHoldTime;
             inputManager.OnSwipeSuccessful -= Dive;
-            inputManager.OnTap -= Jump;
+            inputManager.OnTap -= JumpBack;
         }
 
         private void GetHoldTime(float endTime)
@@ -110,9 +115,26 @@ namespace Runner.Player
             }
         }
 
+        private void JumpBack()
+        {
+            Debug.Log($"jump back tap allowed : {tapAllowed}");
+            if (currentState is InAirState && tapAllowed)
+            {
+                ((InAirState)currentState).hasTapped = true;
+            }
+        }
+
         public void NormalState()
         {
             OnChangeState(_normalState);
+        }
+
+        public void InAir()
+        {
+            if (currentState is JumpState)
+            {
+                OnChangeState(_inAirState);
+            }
         }
     }
 }

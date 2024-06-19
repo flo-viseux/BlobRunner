@@ -8,7 +8,7 @@ namespace Runner.Player
     {
         public void OnEnterState(PlayerController playerController)
         {
-            //Debug.Log("Normal State");
+            Debug.Log("Normal State");
         }
 
         public void LogicUpdate(PlayerController playerController, float deltaTime)
