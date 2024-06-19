@@ -15,14 +15,13 @@ public class ObstacleHorizontalMovement : MonoBehaviour
     #region Unity methods
     private void Update()
     {
-        if (!transform.parent)
+        if (!transform.parent && (CheckVisibility.IsVisible(this.gameObject) || CheckVisibility.IsVisible(this.transform.parent.gameObject)))
             return;
 
         float currentOffset = offset - transform.parent.position.x * speed * 0.02f;
         float iterations = currentOffset / (maxX - minX);
 
         float remaining = iterations - Mathf.FloorToInt(iterations);
-
         bool goingUp = Mathf.FloorToInt(iterations) % 2 == 0;
 
         float x = goingUp ? Mathf.Lerp(minX, maxX, remaining) : Mathf.Lerp(maxX, minX, remaining);

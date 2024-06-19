@@ -7,10 +7,11 @@ public class Obstacle : MonoBehaviour
     #region UnityMethods
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision != null && collision.gameObject.name == "Player")
+        if (collision != null && collision.gameObject.name == "Player" && !PlayerInvulnerability.Instance.PlayerIsInvulnerabled)
         {
-//            Debug.Log("Player Touched");
-            
+            GameManager.Instance.playerDatas.DecreaseHealth();
+            PlayerInvulnerability.Instance.SetInvulerability();
+            Debug.Log("Player Touched", gameObject);
         }
     }
     #endregion
