@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6968491732674813548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4161374448579468571}
+  - component: {fileID: 1186952750355004449}
+  - component: {fileID: 7101529360799118747}
+  m_Layer: 0
+  m_Name: FXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4161374448579468571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6968491732674813548}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1186952750355004449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6968491732674813548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41bcb5a0fdeab614dbec7cbafd067d1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounceVFX: {fileID: 7330638445543741582, guid: cfa17ca2559c5db48a5bb4edd229fee2, type: 3}
+  diveVFX: {fileID: 570832250925526149, guid: dcd90c4976197424b9958a7c54b6bb8c, type: 3}
+--- !u!114 &7101529360799118747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6968491732674813548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd6501a3b4b7a64598e43d55ecef13f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounceSFX:
+  - {fileID: 8300000, guid: 15de6fa77a933174faebeb442a1cc637, type: 3}
+  - {fileID: 8300000, guid: ff5b9310223775c43afdd55bd011df6d, type: 3}
+  - {fileID: 8300000, guid: 1d953227388ada54981d0f59f37364f3, type: 3}
+  jumpSFX:
+  - {fileID: 8300000, guid: 6e0135081f827874d9c2e47dee8f465d, type: 3}
+  - {fileID: 8300000, guid: c4eac4ddd8a0e3048b3be69e17266ca4, type: 3}
+  - {fileID: 8300000, guid: 8d78a256dfb8ee24dadca308c04d3ab9, type: 3}
+  - {fileID: 8300000, guid: be586bb4ee866624ab390c150e58ce0c, type: 3}
+  diveSFX:
+  - {fileID: 8300000, guid: e2d997985f16a7a49bb5b848715927f6, type: 3}
+  - {fileID: 8300000, guid: bc64aab0f0c0c434e9b3c3a9a3420e00, type: 3}
+  _source: {fileID: 0}

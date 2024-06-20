@@ -39,12 +39,6 @@ namespace Runner.Player
         [Header("Jump")]
         [Tooltip("x : time, y : jumpHeight, z : jumpLength")]
         [SerializeField] private Vector3[] jumpSteps = new Vector3[3];
-
-        /*[Header("Bounce")] 
-        [SerializeField] private float bounceForceMin = 15f;
-        [SerializeField] private float distanceFromGroundToTap = 0.2f;
-        [SerializeField] private float addBounceForce = 0.1f;
-        [SerializeField] private float reactionTime = 0.5f;*/
         
         [Header("Shrink")]
         [SerializeField] private float coefSize;
@@ -75,10 +69,10 @@ namespace Runner.Player
 
         #region Delegates
         public delegate void OnDiveStart(Vector3 playerPos);
-        public OnDiveStart onDiveStart;
+        public static OnDiveStart onDiveStart;
 
         public delegate void OnBounce(Vector3 playerPos);
-        public OnBounce onBounce;
+        public static OnBounce onBounce;
         #endregion
 
         // UI : slider 
@@ -89,10 +83,6 @@ namespace Runner.Player
         private void Start()
         {
             currentState = EState.Normal;
-            /*int lastIndex = jumpSteps.Length - 1;
-            maxHoldTime = jumpSteps[lastIndex].x;
-            HasTap = false;
-            CanTap = false;*/
             WillJumpAgain = false;
             jumpStartY = transform.position.y;
         }
@@ -153,15 +143,11 @@ namespace Runner.Player
 
             if (other.gameObject.layer == 6)
             {
-                isOnGround = true;
-                isJumping = false;
-                jumpAgainCd = initialJumpAgainCd;
-                currentState = EState.Normal;
-                StopCoroutine(JumpTrajectory());
-                Debug.Log("collision - ground no normal state");
+                StartCoroutine(StopJump());
             }
         }
 
+       
         private void OnDrawGizmos()
         {
             /*if (CanTap)
@@ -225,17 +211,6 @@ namespace Runner.Player
                     isJumping = false;
                     StopCoroutine(JumpTrajectory());
                 }
-
-                /*if (WillJumpAgain)
-                {
-                    jumpStepIndex = Mathf.Min(jumpStepIndex + 1, jumpSteps.Length - 1);
-
-                    Debug.Log("WillJumpAgain, " + jumpStepIndex);
-                    StartCoroutine(JumpTrajectory());
-                    return;
-                }*/
-
-                //jumpStepIndex = 0;
                 isOnGround = true;
             }
             else
@@ -251,21 +226,12 @@ namespace Runner.Player
             //Debug.Log("Jump");
 
             if (!isOnGround || isJumping)
-            {
-                WillJumpAgain = IsWillJumpAgain();
                 return;
-            }
 
-            if (jumpAgainCd > 0f || WillJumpAgain)
-            {
+            if (jumpAgainCd > 0f)
                 jumpStepIndex = Mathf.Min(jumpStepIndex + 1, jumpSteps.Length - 1);
-
-                Debug.Log("JumpAgain, " + jumpStepIndex);
-            }
             else
-            {
                 jumpStepIndex = 0;
-            }
             
             JumpHeight = jumpSteps[jumpStepIndex].y;
             maxJumpLength = jumpSteps[jumpStepIndex].z;
@@ -297,6 +263,7 @@ namespace Runner.Player
                 maxJumpLength = jumpSteps[jumpStepIndex].z;
             }
 
+            jumpStartY = transform.position.y;
             StartCoroutine(JumpTrajectory());
         }
         private IEnumerator JumpTrajectory()
@@ -343,11 +310,17 @@ namespace Runner.Player
 
             return 0;
         }
-        private bool IsWillJumpAgain()
+        private IEnumerator StopJump()
         {
-            RaycastHit2D hit2d = Physics2D.Raycast(transform.position, Vector2.down, checkFloorJumpAgainDist, groundMask);
-            return (hit2d.collider != null);
+            yield return null;
+            isOnGround = true;
+            //isJumping = false;
+            jumpAgainCd = initialJumpAgainCd;
+            currentState = EState.Normal;
+            //StopCoroutine(JumpTrajectory());
+            Debug.Log("collision - ground no normal state");
         }
+
         #endregion
 
 
