@@ -11,7 +11,7 @@ public class Obstacle : MonoBehaviour
         {
             GameManager.Instance.playerDatas.DecreaseHealth();
             PlayerInvulnerability.Instance.SetInvulerability();
-            Debug.Log("Player Touched", gameObject);
+            //Debug.Log("Player Touched", gameObject);
         }
     }
     #endregion

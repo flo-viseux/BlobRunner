@@ -42,7 +42,7 @@ namespace Runner.Player
 
                 //Debug.Log($"Hold {finger.Age} {finger.Index}");
 
-                if (finger.Age > 2f) return;
+                if (finger.Age > 1f) return;
                 OnStartTouch(finger.Age);
             }
         }
