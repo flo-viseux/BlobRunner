@@ -73,6 +73,10 @@ namespace Runner.Player
 
         public delegate void OnBounce(Vector3 playerPos);
         public static OnBounce onBounce;
+
+        public static event Action<AudioManager.EType> OnBounceSFX;
+        public static event Action<AudioManager.EType> OnJumpSFX;
+        public static event Action<AudioManager.ETypeDive> OnDiveSFX;
         #endregion
 
         // UI : slider 
@@ -125,6 +129,7 @@ namespace Runner.Player
             // fait repasser en état normal après un dive
             if (currentState == EState.Dive && isOnGround)
             {
+                OnDiveSFX?.Invoke(AudioManager.ETypeDive.HitGround);
                 currentState = EState.Normal;
                 return;
             }
@@ -218,6 +223,7 @@ namespace Runner.Player
                 isOnGround = false;
             }
         }
+        
         private void Jump()
         {
         }
@@ -346,10 +352,15 @@ namespace Runner.Player
 
         private void Dive()
         {
-            // DIVE
+            if (currentState == EState.Normal) return;
+            
+            // VFX
             if (onDiveStart != null)
                 onDiveStart(transform.position);
-
+            // SFX
+            OnDiveSFX?.Invoke(AudioManager.ETypeDive.Dive);
+            
+            // DIVE
             currentState = EState.Dive;
             isJumping = false;
             Vector2 diveImpulse = new Vector2(0f,-1 * diveForce);

@@ -18,8 +18,8 @@ public class VFX_Manager : MonoBehaviour
         Controller.onBounce += EnableBounceVFX;
         Controller.onDiveStart += EnableDiveVFX;
 
-        bounceVFXInstance = Instantiate(bounceVFX);
-        diveVFXInstance = Instantiate(diveVFX);
+        bounceVFXInstance = Instantiate(bounceVFX, new Vector3(-10f,0f,0f),Quaternion.identity);
+        diveVFXInstance = Instantiate(diveVFX, new Vector3(-10f,0f,0f),Quaternion.identity);
     }
 
     private void OnDisable()

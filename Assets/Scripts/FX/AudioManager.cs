@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Runner.Player;
 
 public class AudioManager : MonoBehaviour
 {
@@ -26,7 +28,17 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] diveSFX;
 
     [SerializeField] private AudioSource _source;
-    
+
+    private void OnEnable()
+    {
+        Controller.OnDiveSFX += PlayDive;
+    }
+
+    private void OnDisable()
+    {
+        Controller.OnDiveSFX -= PlayDive;
+    }
+
     private void PlayBounce(EType type)
     {
         _source.PlayOneShot(bounceSFX[(int)type]);
@@ -40,5 +52,6 @@ public class AudioManager : MonoBehaviour
     private void PlayDive(ETypeDive type)
     {
         _source.PlayOneShot(diveSFX[(int)type]);
+        Debug.Log($"Play sound : {type.ToString()}");
     }
 }
