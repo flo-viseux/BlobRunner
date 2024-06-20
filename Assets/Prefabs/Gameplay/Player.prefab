@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 5776943529971279798}
   - component: {fileID: 219738332032548818}
   - component: {fileID: 3901925363838674422}
+  - component: {fileID: 3402193882066525143}
   - component: {fileID: 5953238197510767872}
   - component: {fileID: 416229160269572248}
   m_Layer: 7
@@ -351,7 +352,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 5
 --- !u!70 &3901925363838674422
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -384,9 +385,44 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0036281766, y: 0.8474571}
-  m_Size: {x: 1.6951693, y: 1.6951693}
+  m_Offset: {x: 0.02003852, y: 0.27593145}
+  m_Size: {x: 1.8811338, y: 0.55214185}
   m_Direction: 1
+--- !u!58 &3402193882066525143
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962418247137918926}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1}
+  serializedVersion: 2
+  m_Radius: 0.7
 --- !u!58 &5953238197510767872
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -394,7 +430,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7962418247137918926}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -421,7 +457,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.75}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.14
 --- !u!114 &416229160269572248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,84 +479,18 @@ MonoBehaviour:
   rb2D: {fileID: 219738332032548818}
   spriteTransform: {fileID: 115635309110398288}
   checkFloorDist: 0.01
+  checkFloorJumpAgainDist: 0.25
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  JumpHeight: 3
-  jumpStartY: 0
-  jumpCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: -0.02406455
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.31333333
-    - serializedVersion: 3
-      time: 0.5
-      value: 0
-      inSlope: -6.6917996
-      outSlope: -6.4518814
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.060000002
-      outWeight: 0.073824525
-    - serializedVersion: 3
-      time: 0.9966736
-      value: -1
-      inSlope: 0.0070683304
-      outSlope: -2.0133948
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.5369193
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  jumpTrajectoryCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: -0.0018920898
-      inSlope: 0.6088443
-      outSlope: 0.6088443
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.20530087
-    - serializedVersion: 3
-      time: 0.5033264
-      value: 0.1
-      inSlope: -0.0000001184182
-      outSlope: -0.0000001184182
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1
-      value: -0.0009460449
-      inSlope: -0.5939246
-      outSlope: -0.5939246
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1812056
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  maxJumpLength: 5
-  bounceForceMin: 30
-  distanceFromGroundToTap: 0.2
-  addBounceForce: 0.1
-  reactionTime: 0.5
+  initialJumpAgainCd: 0.2
+  jumpSteps:
+  - {x: 0, y: 2, z: 3.5}
+  - {x: 0.3, y: 4, z: 8}
+  - {x: 0.6, y: 6, z: 12}
   coefSize: 2
-  diveForce: 25
+  diveForce: 30
+  jumpStartY: 0
 --- !u!1 &8689511015927295859
 GameObject:
   m_ObjectHideFlags: 0
