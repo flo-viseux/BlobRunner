@@ -30,13 +30,21 @@ public class SectionGenerator : Parallax
     #endregion
 
     #region API
+    public static SectionGenerator Instance = null;
     public float CurrentPos { get; private set; }
+
+    public float Speed => speed;
     #endregion
 
     #region Unity methods
     protected override void Awake()
     {
         base.Awake();
+
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this.gameObject);
 
         Scrolling = true;
 
@@ -52,7 +60,7 @@ public class SectionGenerator : Parallax
     {
         if (Scrolling)
         {
-            transform.position = transform.position + Vector3.left * speed * SpeedFactor * Time.deltaTime;
+            transform.position = transform.position + Vector3.left * speed * Time.deltaTime;
 
            // PlayerScore.Instance.IncreaseScore(speed * SpeedFactor * Time.deltaTime);
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4912128919538292523}
   - component: {fileID: 2248233647701962492}
   - component: {fileID: 5889826114997222806}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1228329714641054801}
   - component: {fileID: 5326519436144028849}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,8 +217,9 @@ GameObject:
   - component: {fileID: 5776943529971279798}
   - component: {fileID: 219738332032548818}
   - component: {fileID: 3901925363838674422}
-  - component: {fileID: 5621253273229485149}
-  m_Layer: 0
+  - component: {fileID: 5953238197510767872}
+  - component: {fileID: 416229160269572248}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7962418247137918926}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a478a6a1763eac54aaaa239145b0971b, type: 3}
   m_Name: 
@@ -261,6 +262,7 @@ MonoBehaviour:
   jumpForce: 15
   maxHoldTime: 2
   maxJumpForceMultiplier: 3
+  windowDurationBounce: 0.2
   bounceForce: 10
   maxBounceForce: 25
   bounceMultiplier: 0.1
@@ -276,7 +278,6 @@ MonoBehaviour:
   diveForce: 30
   checkFloorDist: 0.2
   chemicalXTag: ChemicalX
-  plutoniumTag: Plutonium
   plutoniumPoint: 10
   groundMask:
     serializedVersion: 2
@@ -350,7 +351,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 4
 --- !u!70 &3901925363838674422
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -386,8 +387,8 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0036281766, y: 0.8474571}
   m_Size: {x: 1.6951693, y: 1.6951693}
   m_Direction: 1
---- !u!61 &5621253273229485149
-BoxCollider2D:
+--- !u!58 &5953238197510767872
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -415,22 +416,111 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.7822819}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0.75}
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.6621513}
-  m_EdgeRadius: 0
+  m_Radius: 0.5
+--- !u!114 &416229160269572248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962418247137918926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a886837fef4a646bdc46b8d95f3cb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateColor:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0.8880043, g: 0, b: 1, a: 1}
+  _renderer: {fileID: 4912128919538292523}
+  inputManager: {fileID: 1824199248658129865}
+  rb2D: {fileID: 219738332032548818}
+  spriteTransform: {fileID: 115635309110398288}
+  checkFloorDist: 0.01
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  JumpHeight: 3
+  jumpStartY: 0
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -0.02406455
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.31333333
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: -6.6917996
+      outSlope: -6.4518814
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.060000002
+      outWeight: 0.073824525
+    - serializedVersion: 3
+      time: 0.9966736
+      value: -1
+      inSlope: 0.0070683304
+      outSlope: -2.0133948
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.5369193
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpTrajectoryCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -0.0018920898
+      inSlope: 0.6088443
+      outSlope: 0.6088443
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.20530087
+    - serializedVersion: 3
+      time: 0.5033264
+      value: 0.1
+      inSlope: -0.0000001184182
+      outSlope: -0.0000001184182
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: -0.0009460449
+      inSlope: -0.5939246
+      outSlope: -0.5939246
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1812056
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxJumpLength: 5
+  bounceForceMin: 30
+  distanceFromGroundToTap: 0.2
+  addBounceForce: 0.1
+  reactionTime: 0.5
+  coefSize: 2
+  diveForce: 25
 --- !u!1 &8689511015927295859
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,7 +530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5407971525940720135}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,13 +616,29 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7640558969779515294, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -2821761757288588400, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
       propertyPath: m_Name
       value: Blob
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790183945725220954, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2854563699051640978, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -545,6 +651,14 @@ PrefabInstance:
     - target: {fileID: 2854563699051640978, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -15.000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6905609870639353253, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7036213049465896255, guid: a81bf82b72a4404499222f7c620abe96, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
