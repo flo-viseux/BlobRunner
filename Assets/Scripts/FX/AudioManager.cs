@@ -32,11 +32,15 @@ public class AudioManager : MonoBehaviour
     private void OnEnable()
     {
         Controller.OnDiveSFX += PlayDive;
+        Controller.OnJumpSFX += PlayJump;
+        Controller.OnBounceSFX += PlayBounce;
     }
 
     private void OnDisable()
     {
         Controller.OnDiveSFX -= PlayDive;
+        Controller.OnJumpSFX -= PlayJump;
+        Controller.OnBounceSFX -= PlayBounce;
     }
 
     private void PlayBounce(EType type)
@@ -52,6 +56,5 @@ public class AudioManager : MonoBehaviour
     private void PlayDive(ETypeDive type)
     {
         _source.PlayOneShot(diveSFX[(int)type]);
-        Debug.Log($"Play sound : {type.ToString()}");
     }
 }

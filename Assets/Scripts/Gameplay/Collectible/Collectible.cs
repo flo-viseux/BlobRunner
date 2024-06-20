@@ -20,8 +20,11 @@ public class Collectible : MonoBehaviour
 
         picked = true;
 
-        effect.Effect();
+        if (effect != null)
+            effect.Effect();
         renderer.Picked();
+        // TODO : animation doesn't work, hide object 
+        gameObject.SetActive(false);
     }
 
     public void Init()

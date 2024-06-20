@@ -129,6 +129,7 @@ namespace Runner.Player
             // fait repasser en état normal après un dive
             if (currentState == EState.Dive && isOnGround)
             {
+                // not called ??
                 OnDiveSFX?.Invoke(AudioManager.ETypeDive.HitGround);
                 currentState = EState.Normal;
                 return;
@@ -238,6 +239,11 @@ namespace Runner.Player
                 jumpStepIndex = Mathf.Min(jumpStepIndex + 1, jumpSteps.Length - 1);
             else
                 jumpStepIndex = 0;
+            
+            if (jumpStepIndex == 0) OnJumpSFX?.Invoke(AudioManager.EType.Small);
+            else if (jumpStepIndex == 1) OnJumpSFX?.Invoke(AudioManager.EType.Medium);
+            else if (jumpStepIndex == 2) OnJumpSFX?.Invoke(AudioManager.EType.High);
+            
             
             JumpHeight = jumpSteps[jumpStepIndex].y;
             maxJumpLength = jumpSteps[jumpStepIndex].z;
