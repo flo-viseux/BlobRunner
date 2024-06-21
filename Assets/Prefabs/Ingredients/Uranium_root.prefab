@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8233772031384509000
 Transform:
   m_ObjectHideFlags: 0
@@ -79,7 +79,8 @@ GameObject:
   - component: {fileID: 7173803098376478972}
   - component: {fileID: 578328347079926670}
   - component: {fileID: 3603581357640883773}
-  - component: {fileID: 6549523156383843278}
+  - component: {fileID: 4184704539971927512}
+  - component: {fileID: 1551029751438621883}
   m_Layer: 0
   m_Name: Uranium_root
   m_TagString: Untagged
@@ -133,7 +134,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.21}
@@ -151,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d55c3e1f3b018304f9e2f9df54d0e1ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 1469700024769852392}
-  effect: {fileID: 0}
+  renderer: {fileID: 1551029751438621883}
+  effect: {fileID: 3603581357640883773}
 --- !u!114 &3603581357640883773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 1000
---- !u!95 &6549523156383843278
+--- !u!95 &4184704539971927512
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -187,6 +188,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1551029751438621883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449760097007271515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbf40fae1db4cb146b08f9cc8092f73d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 4184704539971927512}
 --- !u!1001 &4728402098055877899
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -44,54 +44,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d273bea1ba41174c9701c4c90d85ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
+  speed: 7
   initialSections:
   - section: {fileID: 11400000, guid: 826790e367732164898032d1f6a441c8, type: 2}
     weight: 1
-    cdDuration: 1
+    cdDuration: 0
     curve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
   potentialSections:
-  - section: {fileID: 11400000, guid: 8c5bccd15dab6814f9a3fb1be95bb862, type: 2}
-    weight: 0.5
+  - section: {fileID: 11400000, guid: 9cf9cca949c1d154981d2595097b0d71, type: 2}
+    weight: 0
     cdDuration: 0
     curve:
       serializedVersion: 2
       m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  - section: {fileID: 11400000, guid: 12e828e83176b10458f1cccbe42a330a, type: 2}
-    weight: 0.8
-    cdDuration: 1
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
+  - section: {fileID: 11400000, guid: 077ef2875076a994f9709f906d2cf6d3, type: 2}
+    weight: 0
+    cdDuration: 0
     curve:
       serializedVersion: 2
       m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  - section: {fileID: 11400000, guid: ed1044ad1ecad95439bbce81e6b490d1, type: 2}
-    weight: 0.7
-    cdDuration: 1
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  - section: {fileID: 11400000, guid: 817fee1f67bc9374b83fa10b97140fff, type: 2}
-    weight: 0.5
-    cdDuration: 1
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
   sectionRepetitionConstraints: []
   levelWidth: 400
   offset: 22
