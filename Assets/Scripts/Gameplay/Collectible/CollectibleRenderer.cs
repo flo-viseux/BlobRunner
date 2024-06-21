@@ -4,6 +4,7 @@ public class CollectibleRenderer : MonoBehaviour
 {
     #region Constants
     private static int pickedVar = Animator.StringToHash("picked");
+    private static int initVar = Animator.StringToHash("init");
     #endregion
 
     #region Serialized fields
@@ -18,7 +19,7 @@ public class CollectibleRenderer : MonoBehaviour
 
     public void Init()
     {
-        animator.Rebind();
+        animator.SetTrigger(initVar);
     }
     #endregion
 }
