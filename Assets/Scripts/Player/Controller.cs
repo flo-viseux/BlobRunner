@@ -1,315 +1,254 @@
-using System;
+ï»¿using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 
 namespace Runner.Player
 {
-    public enum EState
-    {
-        Normal,
-        Shrink,
-        Jump,
-        Bounce,
-        Dive,
-    }
-
     public class Controller : MonoBehaviour
     {
-        public static EState currentState;
-
-        [Header("Debug")]
-        [Tooltip("Normal, Shrink, Bounce")]
-        public Color[] stateColor;
-        public SpriteRenderer _renderer;
+        public enum EState
+        {
+            Normal,
+            Shrink,
+            Jump,
+            Dive,
+        }
+        private enum EJumpType
+        {
+            Small = 0,
+            Medium,
+            High,
+            None
+        }
         
-        [Header("Components")]
-        [SerializeField] private InputManager inputManager;
-        [SerializeField] private Rigidbody2D rb2D;
-        [SerializeField] private Transform spriteTransform;
+        private InputManager _input;
+        [SerializeField] private GroundCheck groundComp;
+        [SerializeField] private JumpBuffer jumpBufferComp;
         
-        [Header("Ground")]
-        [SerializeField] private float checkFloorDist;
-        [SerializeField] private float checkFloorJumpAgainDist;
-        [SerializeField] private LayerMask groundMask;
-        [SerializeField] private float initialJumpAgainCd = .5f;
+        [Header("Shrink")] 
+        [SerializeField] private Transform _spriteTransform;
+        [SerializeField]private float coefSize = 2f;
 
-        [Header("Jump")]
-        [Tooltip("x : time, y : jumpHeight, z : jumpLength")]
-        [SerializeField] private Vector3[] jumpSteps = new Vector3[3];
+        [Header("Jump")] 
+        [SerializeField] private float gravity = 5f;
+        [SerializeField] private Vector2[] jumpSteps;
         
-        [Header("Shrink")]
-        [SerializeField] private float coefSize;
+        [Header("Dive")] 
+        [SerializeField] private float diveForce = 1f;
+
         
-        [Header("Dive")]
-        [SerializeField] private float diveForce;
-
-        #region Attributes
-        // hold
-        private float startTimeHold;
-        private float holdDuration;
-        private float maxHoldTime;
-
-        // ground
-        private bool isOnGround;
-
-        // jump
-        private bool isJumping; 
-        private float jumpAgainCd;
-        private float JumpHeight = 5.0f;  // Hauteur du saut du joueur
-        public float jumpStartY = 0f;
-        private float jumpTime;  // Temps de saut total
-        private float jumpProgress = 0.0f;  // Progression du saut
-        private bool WillJumpAgain = false;
-        private int jumpStepIndex = 0;
-        private float maxJumpLength = 5f;
+        private float transformX;
+        private float velocity;
+        
+        // State
+        private static EState _currentState = EState.Normal;
+        public static EState GetCurrentState() => _currentState;
+        
+        // Ground
+        private bool isGrounded;
+        private Vector2 surface;
+        
+        // Shrink
+        private float _startHoldTime;
+        private float _durationHoldTime;
+        private Vector3 originalScale;
+        
+        // Jump
+        private float _GRAVITY;
+        private EJumpType e_jumpType;
+        private bool hasTap;
+        private bool allowJump;
+        
+        #region Events
+        // animator
+        public event Action Jumped;
+        public event Action Run;
+        public event Action<bool, float> GroundChange;
         #endregion
+        
+        private void Awake()
+        {
+            _input = GetComponent<InputManager>();
+        }
 
-        #region Delegates
-        public delegate void OnDiveStart(Vector3 playerPos);
-        public static OnDiveStart onDiveStart;
-
-        public delegate void OnBounce(Vector3 playerPos);
-        public static OnBounce onBounce;
-
-        public static event Action<AudioManager.EType> OnBounceSFX;
-        public static event Action<AudioManager.EType> OnJumpSFX;
-        public static event Action<AudioManager.ETypeDive> OnDiveSFX;
-        #endregion
-
-        // UI : slider 
-        private JumpChargeUI _jumpChargeUI = null;
-        public JumpChargeUI GetJumpChargeUI() => _jumpChargeUI;
-
-        #region UnityMethods
         private void Start()
         {
-            currentState = EState.Normal;
-            WillJumpAgain = false;
-            jumpStartY = transform.position.y;
+            originalScale = _spriteTransform.localScale;
+            
+            transformX = transform.position.x;
+            isGrounded = false;
+            
+            e_jumpType = EJumpType.None;
+            allowJump = false;
+            
+            _GRAVITY = Physics2D.gravity.y * gravity;
+        }
+        
+        private void Update()
+        {
+            if (!isGrounded)
+            {
+                velocity += _GRAVITY * Time.deltaTime;
+                transform.Translate(new Vector2(0,velocity)*Time.deltaTime);
+            }
         }
 
         private void OnEnable()
         {
-            inputManager.OnStartTouch += Shrink;
-            inputManager.OnEndTouch += Jump;
-            inputManager.OnSwipeSuccessful += Dive;
-            inputManager.OnTap += Jump;
+            _input.OnStartTouch += OnStartShrink;
+            _input.OnEndTouch += OnEndShrink;
+            _input.OnTap += OnJump;
+
+            groundComp.OnGround += OnGround;
+            jumpBufferComp.OnJumpBuffer += OnAllowJump;
         }
 
         private void OnDisable()
         {
-            inputManager.OnStartTouch -= Shrink;
-            inputManager.OnEndTouch -= Jump;
-            inputManager.OnSwipeSuccessful -= Dive;
-            inputManager.OnTap -= Jump;
+            _input.OnStartTouch -= OnStartShrink;
+            _input.OnEndTouch -= OnEndShrink;
+            _input.OnTap -= OnJump;
+            
+            groundComp.OnGround -= OnGround;
+            jumpBufferComp.OnJumpBuffer -= OnAllowJump;
         }
 
-        private void Update()
+        private void OnAllowJump()
         {
-            jumpAgainCd -= Time.deltaTime;
-
-            // debug
-            UpdateColor();
-            if (UIDebugText.Instance != null)
-                UIDebugText.Instance.UpdateText(currentState.ToString());
-            //----
-
-            // debug, charge ui
-            if (currentState == EState.Shrink)
-            {
-                if (holdDuration > maxHoldTime) return;
-                holdDuration += Time.deltaTime;
-                GetJumpChargeUI().UpdateCharge(holdDuration);
-                return;
-            }
-
-            // fait repasser en état normal après un dive
-            if (currentState == EState.Dive && isOnGround)
-            {
-                // not called ??
-                OnDiveSFX?.Invoke(AudioManager.ETypeDive.HitGround);
-                currentState = EState.Normal;
-                return;
-            }
-        }
-        private void FixedUpdate()
-        {
-            CheckGround();
-            /* if (CanTap) return;
-             previousVelocity = rb2D.velocity;*/
+            allowJump = true;
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void OnGround(bool isOnGround, Collider2D p_collider)
         {
-            if (currentState == EState.Normal || currentState == EState.Shrink)
-                return;
-
-            if (other.gameObject.layer == 6)
+            isGrounded = isOnGround;
+            
+            if (isOnGround)
             {
-                StartCoroutine(StopJump());
+                StartCoroutine(WaitOnGround(p_collider));
             }
         }
 
-       
-        private void OnDrawGizmos()
+        
+        private IEnumerator WaitOnGround(Collider2D p_collider)
         {
-            /*if (CanTap)
+            yield return new WaitForSeconds(0.05f);
+            
+            if (_currentState == EState.Jump || _currentState == EState.Dive)
             {
-                Gizmos.color = Color.magenta;
-                Gizmos.DrawSphere(transform.position, 0.5f);
+                if (hasTap && allowJump)
+                {
+                    if (_currentState == EState.Jump) SetJumpType();
+                    Jump(jumpSteps[(int)e_jumpType].y);
+                }
+                else if (!hasTap)
+                {
+                    _currentState = EState.Normal;
+                    e_jumpType = EJumpType.None;
+                    velocity = 0f;
+                    
+                    // animation run
+                    StartCoroutine(TimerRun(0.1f));
+                }
+                allowJump = false;
+                hasTap = false;
             }
+                
+            // animation
+            GroundChange?.Invoke(true, 0f);
+                
+            surface = Physics2D.ClosestPoint(transform.position, p_collider);
+            transform.position = new Vector2(transformX, surface.y);
+        }
 
-            if (HasTap)
+
+
+        #region Shrink
+        
+        private void OnStartShrink(float time)
+        {
+            if (_currentState == EState.Normal && isGrounded)
             {
-                Gizmos.color = Color.green;
-                Gizmos.DrawSphere(transform.position, 0.5f);
-            }*/
+                _currentState = EState.Shrink;
+                _startHoldTime = time;
+                _spriteTransform.localScale = _spriteTransform.localScale / coefSize;
+            }
+        }
 
-            Gizmos.color = Color.green;
-            Gizmos.DrawRay(transform.position, Vector2.down * checkFloorDist);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(transform.position, Vector2.down * checkFloorJumpAgainDist);
+        private void OnEndShrink(float time)
+        {
+            if (_currentState == EState.Shrink)
+            {
+                _spriteTransform.localScale = originalScale;
+                
+                _currentState = EState.Jump;
+                _durationHoldTime = time - _startHoldTime;
+                float jumpHeight = GetJumpHeight(_durationHoldTime);
+                Jump(jumpHeight);
+            }
         }
         #endregion
-
-
-        #region Private
-        private void Shrink(float startTime)
+        
+        // Input Jump
+        private void OnJump()
         {
-            if (currentState == EState.Normal && isOnGround)
+            if (isGrounded)
             {
-                Debug.Log("Shrink");
-
-                currentState = EState.Shrink;
-
-                if (_jumpChargeUI == null)
+                if (_currentState == EState.Normal)
                 {
-                    _jumpChargeUI = UIManager.Instance.gameObject.GetComponent<JumpChargeUI>();
-                    _jumpChargeUI.InitChargeSlider(maxHoldTime);
+                    _currentState = EState.Jump;
+                    e_jumpType = EJumpType.Small;
+                    
+                    Jump(jumpSteps[0].y);
+                    
+                    return;
                 }
+            }
 
-                startTimeHold = startTime;
-                CameraSwitcher.Instance.SwitchCamera();
-
-                holdDuration = 0f;
-                Vector3 scale = spriteTransform.localScale / coefSize;
-                spriteTransform.localScale = scale;
+            hasTap = true;
+            
+            if (_currentState == EState.Jump)
+            {
+                if (!allowJump)
+                {
+                    _currentState = EState.Dive;
+                    velocity = diveForce * _GRAVITY;
+                    hasTap = false;
+                }
             }
         }
 
-
-        #region Jump
-        private void CheckGround()
+        private void SetJumpType()
         {
-            RaycastHit2D hit2d = Physics2D.Raycast(transform.position, Vector2.down, checkFloorDist, groundMask);
+            switch (e_jumpType)
+            {
+                case EJumpType.None:
+                    e_jumpType = EJumpType.Small;
+                    return;
+                case EJumpType.Small:
+                    e_jumpType = EJumpType.Medium;
+                    return;
+                default: 
+                    e_jumpType = EJumpType.High; 
+                    return;
+            }
+        }
 
-            if (hit2d.collider != null)
-            {
-                if (isJumping)
-                {
-                    Debug.Log("ground");
-                    jumpAgainCd = initialJumpAgainCd;
-                    currentState = EState.Normal;
-                    isJumping = false;
-                    StopCoroutine(JumpTrajectory());
-                }
-                isOnGround = true;
-            }
-            else
-            {
-                isOnGround = false;
-            }
+        private void Jump(float p_jumpHeight)
+        {
+            StartCoroutine(TimerLaunchAnimJump(0.2f));
+            isGrounded = false;
+            velocity = Mathf.Sqrt(p_jumpHeight * -2 * _GRAVITY);
+        }
+
+        private float GetJumpHeight(float duration)
+        {
+            int index = GetJumpIndexFromTime(duration);
+            e_jumpType = (EJumpType)index;
+            
+            return jumpSteps[index].y;
         }
         
-        private void Jump()
-        {
-        }
-        private void Jump(float endTime)
-        {
-            //Debug.Log("Jump");
-
-            if (!isOnGround || isJumping)
-                return;
-
-            if (jumpAgainCd > 0f)
-                jumpStepIndex = Mathf.Min(jumpStepIndex + 1, jumpSteps.Length - 1);
-            else
-                jumpStepIndex = 0;
-            
-            if (jumpStepIndex == 0) OnJumpSFX?.Invoke(AudioManager.EType.Small);
-            else if (jumpStepIndex == 1) OnJumpSFX?.Invoke(AudioManager.EType.Medium);
-            else if (jumpStepIndex == 2) OnJumpSFX?.Invoke(AudioManager.EType.High);
-            
-            
-            JumpHeight = jumpSteps[jumpStepIndex].y;
-            maxJumpLength = jumpSteps[jumpStepIndex].z;
-
-            if (currentState == EState.Shrink)
-            {
-                // STOP SHRINK
-                holdDuration = 0f;
-                GetJumpChargeUI().ResetSlider();
-                // switch scale back to normal
-                Vector3 scale = spriteTransform.localScale * coefSize;
-                spriteTransform.localScale = scale;
-
-                // JUMP
-                CameraSwitcher.Instance.SwitchCamera();
-                CameraShaker.Instance.Shake();
-
-                float durationTime = endTime - startTimeHold;
-                jumpStepIndex = GetJumpIndexFromTime(durationTime);
-                JumpHeight = jumpSteps[jumpStepIndex].y;
-                maxJumpLength = jumpSteps[jumpStepIndex].z;
-            }
-            else if (jumpStepIndex > 0)
-            {
-                if (onBounce != null)
-                    onBounce(transform.position);
-
-                JumpHeight = jumpSteps[jumpStepIndex].y;
-                maxJumpLength = jumpSteps[jumpStepIndex].z;
-            }
-
-            jumpStartY = transform.position.y;
-            StartCoroutine(JumpTrajectory());
-        }
-        private IEnumerator JumpTrajectory()
-        {
-            WillJumpAgain = false;
-            currentState = EState.Jump;
-            int t = 0;
-            isJumping = true;
-            isOnGround = false;
-            jumpProgress = 0;
-
-            while (isJumping)
-            {
-                // Calculer la progression du saut en fonction de la distance parcourue
-                jumpProgress += SectionGenerator.Instance.Speed * Time.deltaTime;
-
-                // Calculer la nouvelle position en Y du joueur en fonction de la hauteur de saut théorique
-                float newY = jumpStartY + JumpHeight * (Mathf.Sin(Mathf.PI * (jumpProgress / maxJumpLength)));
-
-                // Mettre à jour la position du joueur
-                transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-
-                // Vérifier si le saut est terminé
-                if (jumpProgress >= maxJumpLength)
-                {
-                    Debug.Log("EndJump");
-                    isJumping = false;
-                    jumpAgainCd = initialJumpAgainCd;
-                    jumpProgress = 0.0f;
-                    rb2D.velocity = new Vector3(0, -5, 0);
-                }
-                yield return null;
-            }
-        }
         private int GetJumpIndexFromTime(float t)
         {
             int length = jumpSteps.Length;
@@ -319,59 +258,23 @@ namespace Runner.Player
                 if (i == length - 1) return i;
                 if (t >= jumpSteps[i].x && t < jumpSteps[i + 1].x) return i;
             }
-
             return 0;
         }
-        private IEnumerator StopJump()
+
+        #region Timers for animations
+        private IEnumerator TimerLaunchAnimJump(float seconds)
         {
-            yield return null;
-            isOnGround = true;
-            //isJumping = false;
-            jumpAgainCd = initialJumpAgainCd;
-            currentState = EState.Normal;
-            //StopCoroutine(JumpTrajectory());
-            Debug.Log("collision - ground no normal state");
+            GroundChange?.Invoke(false, velocity);
+            yield return new WaitForSeconds(seconds);
+            Jumped?.Invoke();
         }
-
-        #endregion
-
-
-        // debug only
-        private void UpdateColor()
+        
+        private IEnumerator TimerRun(float seconds)
         {
-            switch (currentState)
-            {
-                case EState.Normal:
-                    _renderer.color = stateColor[0];
-                    return;
-                case EState.Shrink:
-                    _renderer.color = stateColor[1];
-                    return;
-                case EState.Bounce:
-                    _renderer.color = stateColor[2];
-                    return;
-                default:
-                    _renderer.color = Color.white;
-                    return;
-            }
-        }
-
-        private void Dive()
-        {
-            if (currentState == EState.Normal) return;
-            
-            // VFX
-            if (onDiveStart != null)
-                onDiveStart(transform.position);
-            // SFX
-            OnDiveSFX?.Invoke(AudioManager.ETypeDive.Dive);
-            
-            // DIVE
-            currentState = EState.Dive;
-            isJumping = false;
-            Vector2 diveImpulse = new Vector2(0f,-1 * diveForce);
-            rb2D.AddForce(diveImpulse, ForceMode2D.Impulse);
+            yield return new WaitForSeconds(seconds);
+            Run?.Invoke();
         }
         #endregion
+        
     }
 }
