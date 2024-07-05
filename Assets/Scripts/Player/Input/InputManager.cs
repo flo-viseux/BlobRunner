@@ -11,6 +11,9 @@ namespace Runner.Player
         public delegate void EndTouchEvent(float time);
         public event EndTouchEvent OnEndTouch;
 
+        public delegate void HoldEvent(float time);
+        public event HoldEvent OnHold;
+
         public delegate void SwipeSuccesfulEvent();
         public event SwipeSuccesfulEvent OnSwipeSuccessful;
         
@@ -21,6 +24,7 @@ namespace Runner.Player
         void OnEnable()
         {
             Lean.Touch.LeanTouch.OnFingerSwipe += HandleSwipe;
+            Lean.Touch.LeanTouch.OnFingerUpdate += HandleFingerHold;
             Lean.Touch.LeanTouch.OnFingerTap += HandleTap;
             Lean.Touch.LeanTouch.OnFingerOld += HandleFingerOld;
             Lean.Touch.LeanTouch.OnFingerUp += HandleFingerUp;
@@ -29,6 +33,7 @@ namespace Runner.Player
         void OnDisable()
         {
             Lean.Touch.LeanTouch.OnFingerSwipe -= HandleSwipe;
+            Lean.Touch.LeanTouch.OnFingerUpdate -= HandleFingerHold;
             Lean.Touch.LeanTouch.OnFingerTap -= HandleTap;
             Lean.Touch.LeanTouch.OnFingerOld -= HandleFingerOld;
             Lean.Touch.LeanTouch.OnFingerUp -= HandleFingerUp;
@@ -44,6 +49,16 @@ namespace Runner.Player
 
                 if (finger.Age > 1f) return;
                 OnStartTouch(finger.Age);
+            }
+        }
+
+        void HandleFingerHold(Lean.Touch.LeanFinger finger)
+        {
+            if (!GameManager.Instance.wasPaused)
+            {
+                if (finger.Index != 0) return;
+
+                OnHold(finger.Age);
             }
         }
 

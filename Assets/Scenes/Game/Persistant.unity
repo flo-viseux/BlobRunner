@@ -1220,7 +1220,7 @@ MonoBehaviour:
     CurrentHealth: 0
     StartSpeed: 5
     CurrentSpeed: 0
-  gameSceneName: Test_LD
+  gameSceneName: SceneEnv
   wasPaused: 0
   loadingTime: 0.1
 --- !u!4 &849818536
