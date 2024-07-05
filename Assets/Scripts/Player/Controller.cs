@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using TMPro.EditorUtilities;
+using TMPro.Examples;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,7 +16,7 @@ namespace Runner.Player
             Jump,
             Dive,
         }
-        private enum EJumpType
+        public enum EJumpType
         {
             Small = 0,
             Medium,
@@ -59,6 +61,8 @@ namespace Runner.Player
         private EJumpType e_jumpType;
         private bool hasTap;
         private bool allowJump;
+
+        public EJumpType GetJumpType() => e_jumpType;
         
         #region Events
         // animator
@@ -114,9 +118,9 @@ namespace Runner.Player
             jumpBufferComp.OnJumpBuffer -= OnAllowJump;
         }
 
-        private void OnAllowJump()
+        private void OnAllowJump(bool value)
         {
-            allowJump = true;
+            allowJump = value;
         }
 
         private void OnGround(bool isOnGround, Collider2D p_collider)
@@ -125,6 +129,9 @@ namespace Runner.Player
             
             if (isOnGround)
             {
+                surface = Physics2D.ClosestPoint(transform.position, p_collider);
+                transform.position = new Vector2(transformX, surface.y);
+                
                 StartCoroutine(WaitOnGround(p_collider));
             }
         }
@@ -132,13 +139,14 @@ namespace Runner.Player
         
         private IEnumerator WaitOnGround(Collider2D p_collider)
         {
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
             
             if (_currentState == EState.Jump || _currentState == EState.Dive)
             {
                 if (hasTap && allowJump)
                 {
                     if (_currentState == EState.Jump) SetJumpType();
+                    else _currentState = EState.Jump;
                     Jump(jumpSteps[(int)e_jumpType].y);
                 }
                 else if (!hasTap)
@@ -156,9 +164,6 @@ namespace Runner.Player
                 
             // animation
             GroundChange?.Invoke(true, 0f);
-                
-            surface = Physics2D.ClosestPoint(transform.position, p_collider);
-            transform.position = new Vector2(transformX, surface.y);
         }
 
 
@@ -206,11 +211,12 @@ namespace Runner.Player
             }
 
             hasTap = true;
-            
+
             if (_currentState == EState.Jump)
             {
                 if (!allowJump)
                 {
+                    Debug.Log($"dive - is grounded {isGrounded}");
                     _currentState = EState.Dive;
                     velocity = diveForce * _GRAVITY;
                     hasTap = false;
