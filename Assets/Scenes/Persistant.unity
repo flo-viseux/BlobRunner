@@ -1216,7 +1216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDatas:
-    MaxHealth: 1
+    MaxHealth: 4
     CurrentHealth: 0
     StartSpeed: 5
     CurrentSpeed: 0
@@ -4704,6 +4704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1181a24de6cf4a24cae8bcdf5ea9f12b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sliderEvent: {fileID: 11400000, guid: 9467182c11578614f84b4790b223b8d1, type: 2}
   jumpChargeSlider: {fileID: 940949998}
   decreaseDuration: 0.2
 --- !u!114 &2025997798
