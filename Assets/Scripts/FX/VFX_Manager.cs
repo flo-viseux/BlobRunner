@@ -6,6 +6,13 @@ using Runner.Player;
 
 public class VFX_Manager : MonoBehaviour
 {
+    public enum EType
+    {
+        Bounce,
+        Dive,
+    }
+
+    [SerializeField] private VFX_EventSO VFX_Event;
     [SerializeField] private ParticleSystem bounceVFX;
     [SerializeField] private ParticleSystem diveVFX;
 
@@ -14,28 +21,38 @@ public class VFX_Manager : MonoBehaviour
 
     private void OnEnable()
     {
-        // TODO : create player event to play vfx
-        // Controller.onBounce += EnableBounceVFX;
-        // Controller.onDiveStart += EnableDiveVFX;
+        VFX_Event.OnEffectRaise += LaunchEffect;
 
-        bounceVFXInstance = Instantiate(bounceVFX, new Vector3(-10f,0f,0f),Quaternion.identity);
-        diveVFXInstance = Instantiate(diveVFX, new Vector3(-10f,0f,0f),Quaternion.identity);
+        bounceVFXInstance = Instantiate(bounceVFX, new Vector3(-100f,0f,0f),Quaternion.identity);
+        diveVFXInstance = Instantiate(diveVFX, new Vector3(-100f,0f,0f),Quaternion.identity);
     }
 
     private void OnDisable()
     {
-        // TODO : create player event to play vfx
-        // Controller.onBounce -= EnableBounceVFX;
-        // Controller.onDiveStart -= EnableDiveVFX;
+        VFX_Event.OnEffectRaise -= LaunchEffect;
     }
 
-    public void EnableBounceVFX(Vector3 position)
+    private void LaunchEffect(Vector3 position, EType vfxType)
+    {
+        switch (vfxType)
+        {
+            case EType.Bounce : 
+                EnableBounceVFX(position);
+                return;
+            case EType.Dive :
+                EnableDiveVFX(position);
+                return;
+            default: return;
+        }
+    }
+
+    private void EnableBounceVFX(Vector3 position)
     {
         bounceVFXInstance.transform.position = position;
         bounceVFXInstance.Play();
     }
 
-    public void EnableDiveVFX(Vector3 position)
+    private void EnableDiveVFX(Vector3 position)
     {
         diveVFXInstance.transform.position = position;
         diveVFXInstance.Play();

@@ -19,6 +19,8 @@ public class AudioManager : MonoBehaviour
         Dive,
         HitGround
     }
+
+    [SerializeField] private SFX_EventSO SFX_Event;
     
     [Tooltip("Small, Medium, High")]
     [SerializeField] private AudioClip[] bounceSFX;
@@ -31,16 +33,14 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // Controller.OnDiveSFX += PlayDive;
-        // Controller.OnJumpSFX += PlayJump;
-        // Controller.OnBounceSFX += PlayBounce;
+        SFX_Event.OnJumpEffectRaise += PlayJump;
+        SFX_Event.OnDiveEffectRaise += PlayDive;
     }
 
     private void OnDisable()
     {
-        // Controller.OnDiveSFX -= PlayDive;
-        // Controller.OnJumpSFX -= PlayJump;
-        // Controller.OnBounceSFX -= PlayBounce;
+        SFX_Event.OnJumpEffectRaise -= PlayJump;
+        SFX_Event.OnDiveEffectRaise -= PlayDive;
     }
 
     private void PlayBounce(EType type)
@@ -50,11 +50,13 @@ public class AudioManager : MonoBehaviour
 
     private void PlayJump(EType type)
     {
+        _source.clip = jumpSFX[(int)type];
         _source.PlayOneShot(jumpSFX[(int)type]);
     }
 
     private void PlayDive(ETypeDive type)
     {
+        _source.clip = diveSFX[(int)type];
         _source.PlayOneShot(diveSFX[(int)type]);
     }
 }
