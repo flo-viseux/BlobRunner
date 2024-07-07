@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
         wasPaused = false;
     }
 
+    public void LoseLife()
+    {
+        playerDatas.DecreaseHealth();
+    }
+
     public void SwitchState(GameStatus newGameStatus)
     {
         switch (newGameStatus)
@@ -136,4 +141,9 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
     #endregion
+
+    // private void Update()
+    // {
+    //     Debug.Log("health : "+playerDatas.CurrentHealth);
+    // }
 }
