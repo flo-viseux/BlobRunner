@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3355243c15b64419156aabee867d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitObstacle: {fileID: 11400000, guid: 562cc17bb0a264a41a0e6484a6f01b24, type: 2}
 --- !u!58 &8868287169238815125
 CircleCollider2D:
   m_ObjectHideFlags: 0
