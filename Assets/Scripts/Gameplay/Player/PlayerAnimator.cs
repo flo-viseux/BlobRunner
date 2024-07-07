@@ -12,12 +12,18 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private float jumpAnimDuration = 0.1f;
     
     private Animator _animator;
+    private const int baseLayer = 0;
+    private const int invulnerableLayer = 1;
 
     private string _currentState;
+    // Base Layer Animations
     private static readonly string Run = "Player - Run";
     private static readonly string Jump = "Player - Jump";
     private static readonly string InAir = "Player - InAir";
     private static readonly string Land = "Player - Landing";
+    // Invulnerable Layer Animations
+    private static readonly string OriginalColor = "Player - OriginalColor";
+    private static readonly string SwitchColor = "Player - InvulnerableColorSwitch";
 
     private bool _run;
     private bool _grounded;
@@ -67,7 +73,7 @@ public class PlayerAnimator : MonoBehaviour
         
         if (state != _currentState)
         {
-            _animator.CrossFade(state,0,0);
+            _animator.CrossFade(state,0,baseLayer);
             _currentState = state;
             
             // reset triggers
@@ -94,6 +100,18 @@ public class PlayerAnimator : MonoBehaviour
     {
         _lockAnim = Time.time + time;
         return state;
+    }
+
+    public void LaunchInvulnerableAnim(bool isLaunched)
+    {
+        if (isLaunched)
+        {
+            _animator.CrossFade(SwitchColor,0,invulnerableLayer);
+        }
+        else
+        {
+            _animator.CrossFade(OriginalColor,0,invulnerableLayer);
+        }
     }
 
     private string DebugState(string state)

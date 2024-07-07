@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections;
-using TMPro.EditorUtilities;
-using TMPro.Examples;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Runner.Player
@@ -25,6 +22,7 @@ namespace Runner.Player
         }
         
         private InputManager _input;
+        private PlayerInvulnerability _invulnerability;
         [SerializeField] private GroundCheck groundComp;
         [SerializeField] private JumpBuffer jumpBufferComp;
         
@@ -39,6 +37,11 @@ namespace Runner.Player
         
         [Header("Dive")] 
         [SerializeField] private float diveForce = 1f;
+
+        [Header("Events")] 
+        [SerializeField] private VFX_EventSO VFX_Event;
+        [SerializeField] private SFX_EventSO SFX_Event;
+        [SerializeField] private SliderEventSO sliderEvent;
 
         
         private float transformX;
@@ -76,6 +79,7 @@ namespace Runner.Player
         private void Awake()
         {
             _input = GetComponent<InputManager>();
+            _invulnerability = GetComponent<PlayerInvulnerability>();
         }
 
         private void Start()
@@ -87,8 +91,10 @@ namespace Runner.Player
             
             e_jumpType = EJumpType.None;
             allowJump = false;
+            sliderEvent.RaiseInitEvent(jumpSteps[2].x);
             
             _GRAVITY = Physics2D.gravity.y * gravity;
+            
         }
         
         private void Update()
@@ -126,15 +132,37 @@ namespace Runner.Player
         {
             allowJump = value;
         }
+        
 
         private void OnGround(bool isOnGround, Collider2D p_collider)
         {
-            isGrounded = isOnGround;
+
+            if (p_collider != null && _invulnerability.GetIsInvulnerable() && p_collider.CompareTag("Obstacles"))
+            {
+                isGrounded = false;
+            }
+            else
+            {
+                isGrounded = isOnGround;
+                
+                // Play SFX
+                if (_currentState == EState.Jump)
+                {
+                    SFX_Event.RaiseJumpEvent(AudioManager.EType.HitGround);
+                }
+                else if (_currentState == EState.Dive)
+                {
+                    SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.HitGround);
+                }
+            }    
             
             if (isOnGround)
             {
-                surface = Physics2D.ClosestPoint(transform.position, p_collider);
-                transform.position = new Vector2(transformX, surface.y);
+                //surface = Physics2D.ClosestPoint(transform.position, p_collider);
+                //transform.position = new Vector2(transformX, surface.y);
+                
+                float surface = p_collider.bounds.max.y;
+                transform.position = new Vector2(transformX, surface);
                 
                 StartCoroutine(WaitOnGround(p_collider));
             }
@@ -149,9 +177,19 @@ namespace Runner.Player
             {
                 if (hasTap && allowJump)
                 {
-                    if (_currentState == EState.Jump) SetJumpType();
-                    else _currentState = EState.Jump;
-                    Jump(jumpSteps[(int)e_jumpType].y);
+                    if (_currentState == EState.Jump)
+                    {
+                        SetJumpType();
+                    }
+                    else
+                    {
+                        _currentState = EState.Jump;
+                    }
+
+                    int index = (int)e_jumpType;
+                    Jump(jumpSteps[index].y);
+                    
+                    VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Bounce);
                 }
                 else if (!hasTap)
                 {
@@ -188,21 +226,21 @@ namespace Runner.Player
             if (_currentState == EState.Shrink)
             {
                 _currentHoldTime = time - _startHoldTime;
+                
+                sliderEvent.RaiseUpdateEvent(_currentHoldTime);
+                
                 int jumpHeight = GetJumpIndexFromTime(_currentHoldTime);
 
                 switch (jumpHeight)
                 {
                     case 0:
-                        Debug.Log("Default");
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
                         break;
                     case 1:
-                        Debug.Log("Medium");
                         _spriteTransform.localScale = originalScale / coefSize;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Medium);
                         break;
                     case 2:
-                        Debug.Log("Large");
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Large);
                         break;
                 }
@@ -217,6 +255,9 @@ namespace Runner.Player
                 
                 _currentState = EState.Jump;
                 _durationHoldTime = time - _startHoldTime;
+                
+                sliderEvent.RaiseResetEvent();
+                
                 float jumpHeight = GetJumpHeight(_durationHoldTime);
                 Jump(jumpHeight);
             }
@@ -226,6 +267,7 @@ namespace Runner.Player
         // Input Jump
         private void OnJump()
         {
+            Debug.Log($"state : {_currentState.ToString()} - is grounded {isGrounded}");
             if (isGrounded)
             {
                 if (_currentState == EState.Normal)
@@ -243,12 +285,15 @@ namespace Runner.Player
 
             if (_currentState == EState.Jump)
             {
-                if (!allowJump)
+                if (!allowJump && !isGrounded)
                 {
                     Debug.Log($"dive - is grounded {isGrounded}");
                     _currentState = EState.Dive;
                     velocity = diveForce * _GRAVITY;
                     hasTap = false;
+                    
+                    VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Dive);
+                    SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.Dive);
                 }
             }
         }
@@ -271,8 +316,12 @@ namespace Runner.Player
 
         private void Jump(float p_jumpHeight)
         {
+            Debug.Log($"jump of {p_jumpHeight}");
             CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             StartCoroutine(TimerLaunchAnimJump(0.2f));
+            
+            SFX_Event.RaiseJumpEvent(AudioManager.EType.Small);
+            
             isGrounded = false;
             velocity = Mathf.Sqrt(p_jumpHeight * -2 * _GRAVITY);
         }

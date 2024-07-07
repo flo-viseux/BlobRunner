@@ -57,7 +57,7 @@ namespace Runner.Player
             if (!GameManager.Instance.wasPaused)
             {
                 if (finger.Index != 0) return;
-
+        
                 OnHold(finger.Age);
             }
         }
