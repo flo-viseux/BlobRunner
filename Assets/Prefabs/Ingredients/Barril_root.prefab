@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -5920030111161344991}
   m_Layer: 0
   m_Name: Barril_root
-  m_TagString: Untagged
+  m_TagString: Obstacles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,6 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3355243c15b64419156aabee867d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitObstacle: {fileID: 11400000, guid: 562cc17bb0a264a41a0e6484a6f01b24, type: 2}
 --- !u!1001 &5451644439799697492
 PrefabInstance:
   m_ObjectHideFlags: 0
