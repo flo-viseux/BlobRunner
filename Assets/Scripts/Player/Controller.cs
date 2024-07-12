@@ -30,6 +30,7 @@ namespace Runner.Player
         
         [Header("Shrink")] 
         [SerializeField] private Transform _spriteTransform;
+        [SerializeField] private float  shrinkSize;
         [SerializeField]private float coefSize = 2f;
 
         [Header("Jump")] 
@@ -53,6 +54,7 @@ namespace Runner.Player
         
         // Shrink
         private float _startHoldTime;
+        private float _currentHoldTime;
         private float _durationHoldTime;
         private Vector3 originalScale;
         
@@ -101,6 +103,7 @@ namespace Runner.Player
         private void OnEnable()
         {
             _input.OnStartTouch += OnStartShrink;
+            _input.OnHold += HoldShrink;
             _input.OnEndTouch += OnEndShrink;
             _input.OnTap += OnJump;
 
@@ -111,6 +114,7 @@ namespace Runner.Player
         private void OnDisable()
         {
             _input.OnStartTouch -= OnStartShrink;
+            _input.OnHold -= HoldShrink;
             _input.OnEndTouch -= OnEndShrink;
             _input.OnTap -= OnJump;
             
@@ -174,9 +178,34 @@ namespace Runner.Player
         {
             if (_currentState == EState.Normal && isGrounded)
             {
-                _currentState = EState.Shrink;
                 _startHoldTime = time;
-                _spriteTransform.localScale = _spriteTransform.localScale / coefSize;
+                _currentState = EState.Shrink;
+            }
+        }
+
+        private void HoldShrink(float time)
+        {
+            if (_currentState == EState.Shrink)
+            {
+                _currentHoldTime = time - _startHoldTime;
+                int jumpHeight = GetJumpIndexFromTime(_currentHoldTime);
+
+                switch (jumpHeight)
+                {
+                    case 0:
+                        Debug.Log("Default");
+                        CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
+                        break;
+                    case 1:
+                        Debug.Log("Medium");
+                        _spriteTransform.localScale = originalScale / coefSize;
+                        CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Medium);
+                        break;
+                    case 2:
+                        Debug.Log("Large");
+                        CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Large);
+                        break;
+                }
             }
         }
 
@@ -242,6 +271,7 @@ namespace Runner.Player
 
         private void Jump(float p_jumpHeight)
         {
+            CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             StartCoroutine(TimerLaunchAnimJump(0.2f));
             isGrounded = false;
             velocity = Mathf.Sqrt(p_jumpHeight * -2 * _GRAVITY);
@@ -261,9 +291,12 @@ namespace Runner.Player
 
             for (int i = 0; i < length; i++)
             {
-                if (i == length - 1) return i;
-                if (t >= jumpSteps[i].x && t < jumpSteps[i + 1].x) return i;
+                if (i == length - 1)
+                    return i;
+                if (t >= jumpSteps[i].x && t < jumpSteps[i + 1].x)
+                    return i;
             }
+
             return 0;
         }
 

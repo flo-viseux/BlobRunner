@@ -5,29 +5,43 @@ using UnityEngine.UI;
 
 public class CameraSwitcher : MonoBehaviour
 {
+    #region Enum
+    public enum CameraState
+    {
+        Default,
+        Medium,
+        Large
+    }
+    #endregion
+
     #region SerializedFields
     [SerializeField] private Animator animator;
-
-    [SerializeField] private Button button;
     #endregion
 
     #region Attributes
-    private bool isDefaultCamera = true;
+    private CameraState currentState;
     #endregion
 
     #region API
     public static CameraSwitcher Instance = null;
 
-    public void SwitchCamera()
+    public void SwitchCamera(CameraState newState)
     {
         //Debug.Log("SwitchCamera");
+        currentState = newState;
 
-        isDefaultCamera = !isDefaultCamera;
-
-        if (isDefaultCamera)
-            animator.Play("Default");
-        else
-            animator.Play("Large");
+        switch (currentState)
+        {
+            case CameraState.Default:
+                animator.Play("Default");
+                break;
+            case CameraState.Medium:
+                animator.Play("Medium");
+                break;
+            case CameraState.Large:
+                animator.Play("Large");
+                break;
+        }
     }
     #endregion
 
@@ -38,9 +52,8 @@ public class CameraSwitcher : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
-        
-        isDefaultCamera = true;
-        button.onClick.AddListener(SwitchCamera);
+
+        currentState = CameraState.Default;
     }
     #endregion
 }
