@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bcb5a0fdeab614dbec7cbafd067d1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VFX_Event: {fileID: 11400000, guid: 0bc83a3969a0f564284166a0a401b161, type: 2}
   bounceVFX: {fileID: 7330638445543741582, guid: cfa17ca2559c5db48a5bb4edd229fee2, type: 3}
   diveVFX: {fileID: 570832250925526149, guid: dcd90c4976197424b9958a7c54b6bb8c, type: 3}
 --- !u!114 &7101529360799118747
@@ -59,6 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd6501a3b4b7a64598e43d55ecef13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SFX_Event: {fileID: 11400000, guid: efc87ae630dbc144b899109400aabe39, type: 2}
   bounceSFX:
   - {fileID: 8300000, guid: 15de6fa77a933174faebeb442a1cc637, type: 3}
   - {fileID: 8300000, guid: ff5b9310223775c43afdd55bd011df6d, type: 3}

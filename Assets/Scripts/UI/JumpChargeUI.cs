@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,22 +6,36 @@ using UnityEngine.UI;
 
 public class JumpChargeUI : MonoBehaviour
 {
-
+    [SerializeField] private SliderEventSO sliderEvent;
     [SerializeField] private Slider jumpChargeSlider;
     [SerializeField] private float decreaseDuration = 0.2f;
-    
-    public void InitChargeSlider(float maxValue)
+
+    private void OnEnable()
+    {
+        sliderEvent.OnInitialization += InitChargeSlider;
+        sliderEvent.OnUpdate += UpdateCharge;
+        sliderEvent.OnReset += ResetSlider;
+    }
+
+    private void OnDisable()
+    {
+        sliderEvent.OnInitialization -= InitChargeSlider;
+        sliderEvent.OnUpdate -= UpdateCharge;
+        sliderEvent.OnReset -= ResetSlider;
+    }
+
+    private void InitChargeSlider(float maxValue)
     {
         jumpChargeSlider.value = 0f;
         jumpChargeSlider.maxValue = maxValue;
     }
 
-    public void UpdateCharge(float value)
+    private void UpdateCharge(float value)
     {
         jumpChargeSlider.value = value;
     }
 
-    public void ResetSlider()
+    private void ResetSlider()
     {
         StartCoroutine(DecreaseCharge());
     }
