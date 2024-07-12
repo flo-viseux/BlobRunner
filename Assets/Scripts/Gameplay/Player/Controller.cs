@@ -136,8 +136,7 @@ namespace Runner.Player
 
         private void OnGround(bool isOnGround, Collider2D p_collider)
         {
-
-            if (p_collider != null && _invulnerability.GetIsInvulnerable() && p_collider.CompareTag("Obstacles"))
+            if (p_collider == null)
             {
                 isGrounded = false;
             }
@@ -191,7 +190,7 @@ namespace Runner.Player
                     
                     VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Bounce);
                 }
-                else if (!hasTap)
+                else 
                 {
                     _currentState = EState.Normal;
                     e_jumpType = EJumpType.None;
@@ -316,7 +315,7 @@ namespace Runner.Player
 
         private void Jump(float p_jumpHeight)
         {
-            Debug.Log($"jump of {p_jumpHeight}");
+            //Debug.Log($"jump of {p_jumpHeight}");
             CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             StartCoroutine(TimerLaunchAnimJump(0.2f));
             
