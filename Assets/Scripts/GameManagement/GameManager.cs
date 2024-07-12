@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Runner.Player;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -69,9 +70,17 @@ public class GameManager : MonoBehaviour
                 }
                 stateMachine.OnChangeState(_gameState);
                 return;
+            case GameStatus.RESTART:
+                StartCoroutine(LoadScreen());
+                _gameState = new GameState(playerDatas, gameSceneName);
+                stateMachine.OnChangeState(_gameState);
+                return;
             case GameStatus.WIN : stateMachine.OnChangeState(_winState);
                 return;
             case GameStatus.LOOSE : stateMachine.OnChangeState(_looseState);
+                StartCoroutine(LoadScreen());
+                _gameState = new GameState(playerDatas, gameSceneName);
+                stateMachine.OnChangeState(_gameState);
                 return;
             default: return;
         }
@@ -114,6 +123,8 @@ public class GameManager : MonoBehaviour
 
     public void GoToMenu()
     {
+        SceneManager.UnloadScene(gameSceneName);
+        wasPaused = false;
         SwitchState(GameStatus.MENU);
     }
 
@@ -136,6 +147,14 @@ public class GameManager : MonoBehaviour
     {
         SwitchState(GameStatus.LOOSE);
     }
+
+    public void Restart()
+    {
+        SceneManager.UnloadScene(gameSceneName);
+        wasPaused = false;
+        SwitchState(GameStatus.RESTART);
+    }
+
     public void QuitGame()
     {
         Application.Quit();

@@ -3,6 +3,7 @@
     MENU,
     LOAD,
     GAME,
+    RESTART,
     PAUSE,
     WIN,
     LOOSE,

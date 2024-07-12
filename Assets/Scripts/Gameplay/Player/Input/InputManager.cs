@@ -75,7 +75,7 @@ namespace Runner.Player
 
         void HandleSwipe(Lean.Touch.LeanFinger finger)
         {
-            if (!GameManager.Instance.wasPaused)
+            /*if (!GameManager.Instance.wasPaused)
             {
                 if (finger.Index != 0) return;
 
@@ -85,9 +85,9 @@ namespace Runner.Player
                 {
                     //Debug.Log("Swiped Down");
                     // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
-                    OnSwipeSuccessful();
+                    //OnSwipeSuccessful();
                 }
-            }
+            }*/
         }
 
         void HandleTap(Lean.Touch.LeanFinger finger)
