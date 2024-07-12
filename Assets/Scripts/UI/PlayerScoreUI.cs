@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerScoreUI : MonoBehaviour
 {
     #region SerializedFields
-    [SerializeField] private TMP_Text scoreLabel = null;
+    [SerializeField] private TMP_Text collectiblesLabel = null;
     #endregion
 
     #region UnityMethods
@@ -19,16 +19,16 @@ public class PlayerScoreUI : MonoBehaviour
             return;
         }
 
-        GameManager.Instance.playerDatas.OnScroreChange += ScoreChange;
-        scoreLabel.text = "Score : " + GameManager.Instance.playerDatas.Score.ToString();
+        GameManager.Instance.playerDatas.OnCollectiblesChange += CollectiblesChange;
+        collectiblesLabel.text = GameManager.Instance.playerDatas.CollectiblesCount.ToString();
     }
 
     #endregion
 
     #region Private
-    private void ScoreChange(int score)
+    private void CollectiblesChange(int collectibles)
     {
-        scoreLabel.text = "Score : " + score.ToString();
+        collectiblesLabel.text = collectibles.ToString();
     }
     #endregion
 }

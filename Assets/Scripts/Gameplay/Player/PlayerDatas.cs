@@ -15,28 +15,28 @@ namespace Runner.Player
         [SerializeField] private  float StartSpeed = 5f;
         [HideInInspector] public float CurrentSpeed;
 
-        private int CurrentScore;
-        public int Score => CurrentScore;
+        private int collectiblesCount;
+        public int CollectiblesCount => collectiblesCount;
 
-        public event Action<int> OnScroreChange;
+        public event Action<int> OnCollectiblesChange;
 
         public void InitPlayerDatas()
         {
             CurrentHealth = MaxHealth;
             CurrentSpeed = StartSpeed;
-            CurrentScore = 0;
+            collectiblesCount = 0;
         }
 
-        public void IncreaseScore(int addValue)
+        public void IncreaseCollectiblesCount()
         {
-            CurrentScore += addValue;
-            OnScroreChange?.Invoke(CurrentScore);
+            ++collectiblesCount;
+            OnCollectiblesChange?.Invoke(collectiblesCount);
         }
 
-        public void DecreaseScore(int addValue)
+        public void DecreaseScore()
         {
-            CurrentScore -= addValue;
-            OnScroreChange?.Invoke(CurrentScore);
+            --collectiblesCount;
+            OnCollectiblesChange?.Invoke(collectiblesCount);
         }
 
         public void ResetSpeed()
@@ -61,7 +61,7 @@ namespace Runner.Player
             if (CurrentHealth <= 0)
                 GameManager.Instance.GoToLoose();
             else
-                DecreaseScore(1000);
+                DecreaseScore();
         }
     }
 }

@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Runner.Player;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -47,11 +44,6 @@ public class GameManager : MonoBehaviour
         stateMachine.OnChangeState(_menuState);
 
         wasPaused = false;
-    }
-
-    public void LoseLife()
-    {
-        playerDatas.DecreaseHealth();
     }
 
     public void SwitchState(GameStatus newGameStatus)

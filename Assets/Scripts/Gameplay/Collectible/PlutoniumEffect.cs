@@ -11,8 +11,7 @@ public class PlutoniumEffect : CollectibleEffect
     #region API
     public override void Effect()
     {
-        GameManager.Instance.playerDatas.IncreaseScore(score);
-        GameManager.Instance.playerDatas.IncreaseHealth();
+        GameManager.Instance.playerDatas.IncreaseCollectiblesCount();
     }
     #endregion
 }
