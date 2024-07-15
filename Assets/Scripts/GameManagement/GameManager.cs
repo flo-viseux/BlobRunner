@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Runner.Player;
 using UnityEngine.SceneManagement;
@@ -22,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     public bool wasPaused;
     public float loadingTime = 0.1f;
+
+    [SerializeField] private SimpleEventSO hitObstacle;
     
     private void Awake()
     {
@@ -33,6 +34,16 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void OnEnable()
+    {
+        hitObstacle.OnEventRaised += LoseLife;
+    }
+
+    private void OnDisable()
+    {
+        hitObstacle.OnEventRaised -= LoseLife;
     }
 
     private void Start()
@@ -48,7 +59,8 @@ public class GameManager : MonoBehaviour
         wasPaused = false;
     }
 
-    public void LoseLife()
+    
+    private void LoseLife()
     {
         playerDatas.DecreaseHealth();
     }
