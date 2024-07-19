@@ -75,15 +75,33 @@ MonoBehaviour:
       m_RotationOrder: 4
   potentialSections:
   - section: {fileID: 11400000, guid: 9cf9cca949c1d154981d2595097b0d71, type: 2}
-    weight: 0
-    cdDuration: 0
+    weight: 1
+    cdDuration: 1
     curve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
-  - section: {fileID: 11400000, guid: 077ef2875076a994f9709f906d2cf6d3, type: 2}
+  - section: {fileID: 11400000, guid: 5c852051e5dd8e145b719034e4295081, type: 2}
     weight: 0
     cdDuration: 0
     curve:
@@ -93,5 +111,5 @@ MonoBehaviour:
       m_PostInfinity: 0
       m_RotationOrder: 0
   sectionRepetitionConstraints: []
-  levelWidth: 400
+  levelWidth: 50
   offset: 22

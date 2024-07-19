@@ -27,6 +27,8 @@ public class SectionGenerator : Parallax
     private Dictionary<SectionGeometry, WeightedSection> instanceToPrefab = new Dictionary<SectionGeometry, WeightedSection>();
 
     private Queue<SectionGeometry> instances = new Queue<SectionGeometry>();
+
+    private int totalCollectiblesCount = 0;
     #endregion
 
     #region API
@@ -34,6 +36,8 @@ public class SectionGenerator : Parallax
     public float CurrentPos { get; private set; }
 
     public float Speed => speed;
+
+    public int TotalCollectiblesCount => totalCollectiblesCount;
     #endregion
 
     #region Unity methods
@@ -131,6 +135,7 @@ public class SectionGenerator : Parallax
             potentialSection.DecreaseCooldown();
 
         currentLevelWidth += newGeo.Width;
+        totalCollectiblesCount += newGeo.CollectiblesCount;
     }
 
     private WeightedSection GetRdWeightedSection()

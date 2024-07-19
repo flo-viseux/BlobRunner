@@ -18,6 +18,7 @@ public class SectionGeometry : MonoBehaviour
 
     #region API
     public float Width => width;
+    public int CollectiblesCount => collectibles.Length;
 
     public SectionSlot[] StartSlots => startSlots;
     public SectionSlot[] EndSlots => endSlots;

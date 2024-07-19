@@ -1,6 +1,7 @@
 ﻿public enum GameStatus
 {
     MENU,
+    LEVELMENU,
     LOAD,
     GAME,
     RESTART,
