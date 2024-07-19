@@ -74,6 +74,8 @@ namespace Runner.Player
         public event Action Run;
         public event Action<bool, float> GroundChange;
         #endregion
+
+        private Vector3 shrinkScaleTarget;
         
         private void Awake()
         {
@@ -83,6 +85,7 @@ namespace Runner.Player
         private void Start()
         {
             originalScale = _spriteTransform.localScale;
+            shrinkScaleTarget = originalScale / coefSize;
             
             transformX = transform.position.x;
             isGrounded = false;
@@ -92,7 +95,7 @@ namespace Runner.Player
             sliderEvent.RaiseInitEvent(jumpSteps[2].x);
             
             _GRAVITY = Physics2D.gravity.y * gravity;
-            
+
         }
 
         
@@ -233,6 +236,8 @@ namespace Runner.Player
         
 
         #region Shrink
+
+        private Coroutine scaleCoroutine = null;
         
         private void OnStartShrink(float time)
         {
@@ -240,6 +245,8 @@ namespace Runner.Player
             {
                 _startHoldTime = time;
                 _currentState = EState.Shrink;
+                if (scaleCoroutine == null) 
+                    scaleCoroutine = StartCoroutine(ResizeCoroutine(originalScale, shrinkScaleTarget, jumpSteps[0].x));
             }
         }
 
@@ -259,7 +266,6 @@ namespace Runner.Player
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
                         break;
                     case 1:
-                        _spriteTransform.localScale = originalScale / coefSize;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Medium);
                         break;
                     case 2:
@@ -273,7 +279,12 @@ namespace Runner.Player
         {
             if (_currentState == EState.Shrink)
             {
-                _spriteTransform.localScale = originalScale;
+                if (scaleCoroutine != null)
+                {
+                    StopCoroutine(scaleCoroutine);
+                    scaleCoroutine = null;
+                }
+                StartCoroutine(ResizeCoroutine(_spriteTransform.localScale, originalScale, 0.3f));
                 
                 _currentState = EState.Jump;
                 _durationHoldTime = time - _startHoldTime;
@@ -283,6 +294,19 @@ namespace Runner.Player
                 float jumpHeight = GetJumpHeight(_durationHoldTime);
                 Jump(jumpHeight);
             }
+        }
+        
+        private IEnumerator ResizeCoroutine(Vector3 startSize, Vector3 endSize, float duration)
+        {
+            float time = 0f;
+
+            while (time < duration)
+            {
+                _spriteTransform.localScale = Vector3.Lerp(startSize, endSize, time / duration);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            _spriteTransform.localScale = endSize;
         }
         #endregion
         
