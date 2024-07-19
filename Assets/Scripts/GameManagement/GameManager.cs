@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Runner.Player;
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     public bool wasPaused;
     public float loadingTime = 0.1f;
+
+    [SerializeField] private SimpleEventSO hitObstacle;
     
     private void Awake()
     {
@@ -31,6 +34,16 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void OnEnable()
+    {
+        hitObstacle.OnEventRaised += LoseLife;
+    }
+
+    private void OnDisable()
+    {
+        hitObstacle.OnEventRaised -= LoseLife;
     }
 
     private void Start()
@@ -46,11 +59,22 @@ public class GameManager : MonoBehaviour
         wasPaused = false;
     }
 
+    
+    private void LoseLife()
+    {
+        playerDatas.DecreaseHealth();
+    }
+
     public void SwitchState(GameStatus newGameStatus)
     {
         switch (newGameStatus)
         {
             case GameStatus.MENU : stateMachine.OnChangeState(_menuState);
+                return;
+            case GameStatus.RESTART:
+                StartCoroutine(LoadScreen());
+                _gameState = new GameState(playerDatas, gameSceneName);
+                stateMachine.OnChangeState(_gameState);
                 return;
             case GameStatus.PAUSE : stateMachine.OnChangeState(_pauseState);
                 return;
@@ -60,11 +84,6 @@ public class GameManager : MonoBehaviour
                     StartCoroutine(LoadScreen());
                     _gameState = new GameState(playerDatas, gameSceneName);
                 }
-                stateMachine.OnChangeState(_gameState);
-                return;
-            case GameStatus.RESTART:
-                StartCoroutine(LoadScreen());
-                _gameState = new GameState(playerDatas, gameSceneName);
                 stateMachine.OnChangeState(_gameState);
                 return;
             case GameStatus.WIN : stateMachine.OnChangeState(_winState);
@@ -125,6 +144,13 @@ public class GameManager : MonoBehaviour
         wasPaused = true;
         SwitchState(GameStatus.PAUSE);
     }
+    public void Restart()
+    {
+        SceneManager.UnloadScene(gameSceneName);
+        wasPaused = false;
+        SwitchState(GameStatus.RESTART);
+    }
+
     public void GoToGame()
     {
         SwitchState(GameStatus.GAME);
@@ -139,14 +165,6 @@ public class GameManager : MonoBehaviour
     {
         SwitchState(GameStatus.LOOSE);
     }
-
-    public void Restart()
-    {
-        SceneManager.UnloadScene(gameSceneName);
-        wasPaused = false;
-        SwitchState(GameStatus.RESTART);
-    }
-
     public void QuitGame()
     {
         Application.Quit();

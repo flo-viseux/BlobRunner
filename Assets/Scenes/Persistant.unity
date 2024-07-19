@@ -1528,13 +1528,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDatas:
-    MaxHealth: 4
+    MaxHealth: 1
     CurrentHealth: 0
     StartSpeed: 5
     CurrentSpeed: 0
   gameSceneName: SceneEnv
   wasPaused: 0
   loadingTime: 0.1
+  hitObstacle: {fileID: 11400000, guid: 562cc17bb0a264a41a0e6484a6f01b24, type: 2}
 --- !u!4 &849818536
 Transform:
   m_ObjectHideFlags: 0

@@ -22,7 +22,6 @@ namespace Runner.Player
         }
         
         private InputManager _input;
-        private PlayerInvulnerability _invulnerability;
         [SerializeField] private GroundCheck groundComp;
         [SerializeField] private JumpBuffer jumpBufferComp;
         
@@ -79,7 +78,6 @@ namespace Runner.Player
         private void Awake()
         {
             _input = GetComponent<InputManager>();
-            _invulnerability = GetComponent<PlayerInvulnerability>();
         }
 
         private void Start()
@@ -96,13 +94,21 @@ namespace Runner.Player
             _GRAVITY = Physics2D.gravity.y * gravity;
             
         }
+
         
         private void Update()
         {
+
             if (!isGrounded)
             {
                 velocity += _GRAVITY * Time.deltaTime;
                 transform.Translate(new Vector2(0,velocity)*Time.deltaTime);
+
+                // if (velocity < 0)
+                // {
+                //     Debug.Log("allow ground check");
+                //     groundComp.AllowCheckGround(true);
+                // }
             }
         }
 
@@ -114,6 +120,7 @@ namespace Runner.Player
             _input.OnTap += OnJump;
 
             groundComp.OnGround += OnGround;
+            groundComp.OnHitHead += OnHitHead;
             jumpBufferComp.OnJumpBuffer += OnAllowJump;
         }
 
@@ -125,25 +132,43 @@ namespace Runner.Player
             _input.OnTap -= OnJump;
             
             groundComp.OnGround -= OnGround;
+            groundComp.OnHitHead -= OnHitHead;
             jumpBufferComp.OnJumpBuffer -= OnAllowJump;
+        }
+
+        private void OnHitHead(bool hasHit)
+        {
+            //groundComp.AllowCheckGround(true);
+            
+            if (hasHit == false)
+            {
+                velocity = 0f;
+                return;
+            }
+            
+            if (!isGrounded && velocity > 0)
+            {
+                velocity = -velocity;
+            }
         }
 
         private void OnAllowJump(bool value)
         {
             allowJump = value;
         }
-        
 
         private void OnGround(bool isOnGround, Collider2D p_collider)
         {
 
-            if (p_collider != null && _invulnerability.GetIsInvulnerable() && p_collider.CompareTag("Obstacles"))
+            //groundComp.AllowCheckGround(false);
+            
+            if (p_collider == null)
             {
                 isGrounded = false;
             }
             else
             {
-                isGrounded = isOnGround;
+                isGrounded = true;
                 
                 // Play SFX
                 if (_currentState == EState.Jump)
@@ -158,9 +183,6 @@ namespace Runner.Player
             
             if (isOnGround)
             {
-                //surface = Physics2D.ClosestPoint(transform.position, p_collider);
-                //transform.position = new Vector2(transformX, surface.y);
-                
                 float surface = p_collider.bounds.max.y;
                 transform.position = new Vector2(transformX, surface);
                 
@@ -171,6 +193,7 @@ namespace Runner.Player
         
         private IEnumerator WaitOnGround(Collider2D p_collider)
         {
+            //groundComp.AllowCheckGround(true);
             yield return new WaitForSeconds(0.1f);
             
             if (_currentState == EState.Jump || _currentState == EState.Dive)
@@ -191,7 +214,7 @@ namespace Runner.Player
                     
                     VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Bounce);
                 }
-                else if (!hasTap)
+                else 
                 {
                     _currentState = EState.Normal;
                     e_jumpType = EJumpType.None;
@@ -203,12 +226,11 @@ namespace Runner.Player
                 allowJump = false;
                 hasTap = false;
             }
-                
+
             // animation
             GroundChange?.Invoke(true, 0f);
         }
-
-
+        
 
         #region Shrink
         
@@ -267,16 +289,13 @@ namespace Runner.Player
         // Input Jump
         private void OnJump()
         {
-            Debug.Log($"state : {_currentState.ToString()} - is grounded {isGrounded}");
             if (isGrounded)
             {
                 if (_currentState == EState.Normal)
                 {
                     _currentState = EState.Jump;
                     e_jumpType = EJumpType.Small;
-                    
                     Jump(jumpSteps[0].y);
-                    
                     return;
                 }
             }
@@ -287,13 +306,14 @@ namespace Runner.Player
             {
                 if (!allowJump && !isGrounded)
                 {
-                    Debug.Log($"dive - is grounded {isGrounded}");
                     _currentState = EState.Dive;
                     velocity = diveForce * _GRAVITY;
                     hasTap = false;
                     
                     VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Dive);
                     SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.Dive);
+                    
+                    //groundComp.AllowCheckGround(true);
                 }
             }
         }
@@ -316,7 +336,6 @@ namespace Runner.Player
 
         private void Jump(float p_jumpHeight)
         {
-            Debug.Log($"jump of {p_jumpHeight}");
             CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             StartCoroutine(TimerLaunchAnimJump(0.2f));
             
@@ -324,6 +343,8 @@ namespace Runner.Player
             
             isGrounded = false;
             velocity = Mathf.Sqrt(p_jumpHeight * -2 * _GRAVITY);
+            
+            //groundComp.AllowCheckGround(true);
         }
 
         private float GetJumpHeight(float duration)
@@ -355,6 +376,7 @@ namespace Runner.Player
             GroundChange?.Invoke(false, velocity);
             yield return new WaitForSeconds(seconds);
             Jumped?.Invoke();
+            groundComp.ChangeWasOnGround(false);
         }
         
         private IEnumerator TimerRun(float seconds)
