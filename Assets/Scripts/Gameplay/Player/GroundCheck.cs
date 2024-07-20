@@ -22,7 +22,7 @@ namespace Runner.Player
 
         // head
         [SerializeField] private Transform headSpriteTransform;
-        public event Action<bool> OnHitHead;
+        public event Action<bool, bool> OnHitHead;
         private Collider2D[] resultsHead = new Collider2D[3];
 
         private bool hasHitHead;
@@ -61,7 +61,7 @@ namespace Runner.Player
                     wasOnGround = false;
                 }
             }
-            ClearResults(results);
+            
 
             // head
             int headCount = Physics2D.OverlapBox(headSpriteTransform.position, headSpriteTransform.localScale, 0f, filter, resultsHead);
@@ -71,15 +71,17 @@ namespace Runner.Player
             {
                 if (groundCount > 0)
                 {
-                    OnHitHead?.Invoke(false);
+                    OnHitHead?.Invoke(true, true);
                 }
                 else
                 {
-                    OnHitHead?.Invoke(true);
+                    OnHitHead?.Invoke(true, false);
                 }
 
                 hasHitHead = currentHitHead;
             }
+            
+            ClearResults(results);
             ClearResults(resultsHead);
         }
 

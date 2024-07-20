@@ -226,6 +226,7 @@ MonoBehaviour:
   - {x: 0.3, y: 4}
   - {x: 0.7, y: 6}
   diveForce: 1
+  playerStateEvent: {fileID: 11400000, guid: 1e00a21aaf48454428835a2b8ab31662, type: 2}
   VFX_Event: {fileID: 11400000, guid: 0bc83a3969a0f564284166a0a401b161, type: 2}
   SFX_Event: {fileID: 11400000, guid: efc87ae630dbc144b899109400aabe39, type: 2}
   sliderEvent: {fileID: 11400000, guid: 9467182c11578614f84b4790b223b8d1, type: 2}

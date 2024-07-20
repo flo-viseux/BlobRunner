@@ -101,17 +101,10 @@ namespace Runner.Player
         
         private void Update()
         {
-
             if (!isGrounded)
             {
                 velocity += _GRAVITY * Time.deltaTime;
                 transform.Translate(new Vector2(0,velocity)*Time.deltaTime);
-
-                // if (velocity < 0)
-                // {
-                //     Debug.Log("allow ground check");
-                //     groundComp.AllowCheckGround(true);
-                // }
             }
         }
 
@@ -139,11 +132,11 @@ namespace Runner.Player
             jumpBufferComp.OnJumpBuffer -= OnAllowJump;
         }
 
-        private void OnHitHead(bool hasHit)
+        private void OnHitHead(bool hasHit, bool hasGround)
         {
-            //groundComp.AllowCheckGround(true);
+            if (!hasHit) return;
             
-            if (hasHit == false)
+            if (hasGround)
             {
                 velocity = 0f;
                 return;
@@ -154,7 +147,6 @@ namespace Runner.Player
                 velocity = -velocity;
             }
         }
-
         private void OnAllowJump(bool value)
         {
             allowJump = value;
@@ -162,9 +154,6 @@ namespace Runner.Player
 
         private void OnGround(bool isOnGround, Collider2D p_collider)
         {
-
-            //groundComp.AllowCheckGround(false);
-            
             if (p_collider == null)
             {
                 isGrounded = false;
@@ -188,17 +177,27 @@ namespace Runner.Player
             {
                 float surface = p_collider.bounds.max.y;
                 transform.position = new Vector2(transformX, surface);
-                
-                StartCoroutine(WaitOnGround(p_collider));
+
+                if (hasTap)
+                {
+                    HandleHitGround();
+                }
+                else
+                {
+                    StartCoroutine(WaitOnGround());
+                }
             }
         }
 
         
-        private IEnumerator WaitOnGround(Collider2D p_collider)
+        private IEnumerator WaitOnGround()
         {
-            //groundComp.AllowCheckGround(true);
             yield return new WaitForSeconds(0.1f);
-            
+            HandleHitGround();
+        }
+
+        private void HandleHitGround()
+        {
             if (_currentState == EState.Jump || _currentState == EState.Dive)
             {
                 if (hasTap && allowJump)
@@ -222,7 +221,7 @@ namespace Runner.Player
                     _currentState = EState.Normal;
                     e_jumpType = EJumpType.None;
                     velocity = 0f;
-                    
+
                     // animation run
                     StartCoroutine(TimerRun(0.1f));
                 }
@@ -233,7 +232,6 @@ namespace Runner.Player
             // animation
             GroundChange?.Invoke(true, 0f);
         }
-        
 
         #region Shrink
 
@@ -247,6 +245,7 @@ namespace Runner.Player
                 _currentState = EState.Shrink;
                 if (scaleCoroutine == null) 
                     scaleCoroutine = StartCoroutine(ResizeCoroutine(originalScale, shrinkScaleTarget, jumpSteps[0].x));
+                
             }
         }
 
@@ -279,6 +278,7 @@ namespace Runner.Player
         {
             if (_currentState == EState.Shrink)
             {
+                
                 if (scaleCoroutine != null)
                 {
                     StopCoroutine(scaleCoroutine);
@@ -318,6 +318,8 @@ namespace Runner.Player
                 if (_currentState == EState.Normal)
                 {
                     _currentState = EState.Jump;
+                    
+                    
                     e_jumpType = EJumpType.Small;
                     Jump(jumpSteps[0].y);
                     return;
@@ -331,13 +333,13 @@ namespace Runner.Player
                 if (!allowJump && !isGrounded)
                 {
                     _currentState = EState.Dive;
+                    
                     velocity = diveForce * _GRAVITY;
                     hasTap = false;
                     
                     VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Dive);
                     SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.Dive);
-                    
-                    //groundComp.AllowCheckGround(true);
+
                 }
             }
         }
@@ -367,8 +369,6 @@ namespace Runner.Player
             
             isGrounded = false;
             velocity = Mathf.Sqrt(p_jumpHeight * -2 * _GRAVITY);
-            
-            //groundComp.AllowCheckGround(true);
         }
 
         private float GetJumpHeight(float duration)
