@@ -36,7 +36,7 @@ public class Collectible : MonoBehaviour
     #region UnityMethods
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        if (collision.CompareTag("Player"))
             Picked();
     }
     #endregion

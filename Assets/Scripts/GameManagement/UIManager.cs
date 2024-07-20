@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
     [Header("UI Panels")]
     [SerializeField] private GameObject menuPanel;
+    [SerializeField] private GameObject levelMenuPanel;
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject winPanel;
@@ -43,6 +44,7 @@ public class UIManager : MonoBehaviour
         switch (status)
         {
             case GameStatus.MENU : return menuPanel;
+            case GameStatus.LEVELMENU: return levelMenuPanel;
             case GameStatus.PAUSE : return pausePanel;
             case GameStatus.LOAD : return loadingPanel;
             case GameStatus.GAME : return gamePanel;

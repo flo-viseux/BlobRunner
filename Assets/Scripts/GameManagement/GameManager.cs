@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     
     public GameStateMachine stateMachine;
     private MenuState _menuState;
+    private LevelMenuState _levelMenuState;
     private LoadState _loadState;
     private GameState _gameState;
     private PauseState _pauseState;
@@ -18,12 +19,15 @@ public class GameManager : MonoBehaviour
 
     public PlayerDatas playerDatas;
     public string gameSceneName;
+    public int levelIndex;
 
     public bool wasPaused;
     public float loadingTime = 0.1f;
 
     [SerializeField] private SimpleEventSO hitObstacle;
-    
+
+    [SerializeField] private SaveLevelScore saveLevelScore;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -50,6 +54,7 @@ public class GameManager : MonoBehaviour
     {
         stateMachine = new GameStateMachine();
         _menuState = new MenuState();
+        _levelMenuState = new LevelMenuState();
         _gameState = new GameState(playerDatas, gameSceneName);
         _pauseState = new PauseState();
         _winState = new WinState();
@@ -71,7 +76,10 @@ public class GameManager : MonoBehaviour
         {
             case GameStatus.MENU : stateMachine.OnChangeState(_menuState);
                 return;
+            case GameStatus.LEVELMENU: stateMachine.OnChangeState(_levelMenuState);
+                return;
             case GameStatus.RESTART:
+                saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
                 StartCoroutine(LoadScreen());
                 _gameState = new GameState(playerDatas, gameSceneName);
                 stateMachine.OnChangeState(_gameState);
@@ -86,9 +94,12 @@ public class GameManager : MonoBehaviour
                 }
                 stateMachine.OnChangeState(_gameState);
                 return;
-            case GameStatus.WIN : stateMachine.OnChangeState(_winState);
+            case GameStatus.WIN :
+                saveLevelScore.OnVictory(levelIndex, playerDatas.CollectiblesCount, SectionGenerator.Instance.TotalCollectiblesCount);
+                stateMachine.OnChangeState(_winState);
                 return;
             case GameStatus.LOOSE : stateMachine.OnChangeState(_looseState);
+                saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
                 StartCoroutine(LoadScreen());
                 _gameState = new GameState(playerDatas, gameSceneName);
                 stateMachine.OnChangeState(_gameState);
@@ -134,9 +145,15 @@ public class GameManager : MonoBehaviour
 
     public void GoToMenu()
     {
-        SceneManager.UnloadScene(gameSceneName);
+        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+            SceneManager.UnloadScene(gameSceneName);
         wasPaused = false;
         SwitchState(GameStatus.MENU);
+    }
+
+    public void GoToLevelMenu()
+    {
+        SwitchState(GameStatus.LEVELMENU);
     }
 
     public void GoToPause()
@@ -146,7 +163,8 @@ public class GameManager : MonoBehaviour
     }
     public void Restart()
     {
-        SceneManager.UnloadScene(gameSceneName);
+        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+            SceneManager.UnloadScene(gameSceneName);
         wasPaused = false;
         SwitchState(GameStatus.RESTART);
     }
