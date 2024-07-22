@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Datas;
 using UnityEngine;
 
 namespace Runner.Player
@@ -254,7 +255,7 @@ namespace Runner.Player
             if (_currentState == EState.Shrink)
             {
                 _currentHoldTime = time - _startHoldTime;
-                
+
                 sliderEvent.RaiseUpdateEvent(_currentHoldTime);
                 
                 int jumpHeight = GetJumpIndexFromTime(_currentHoldTime);

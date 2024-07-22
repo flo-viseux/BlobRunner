@@ -18,7 +18,7 @@ public class InitPanelRect : MonoBehaviour
         rectTransform.sizeDelta = Vector2.zero;
 
         rectTransform.offsetMin = new Vector2(safeRect.x * Screen.width, safeRect.y);
-        Debug.Log(safeRect.x + ", "  + Screen.width);
+        //Debug.Log(safeRect.x + ", "  + Screen.width);
         rectTransform.offsetMax = new Vector2(0, 0);
     }
     #endregion
