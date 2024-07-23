@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using Datas;
 using UnityEngine;
 
 namespace Runner.Player
