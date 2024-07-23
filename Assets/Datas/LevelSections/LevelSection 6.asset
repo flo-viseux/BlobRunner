@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9dd0943d1b32840992ae5254102184, type: 3}
   m_Name: LevelSection 6
   m_EditorClassIdentifier: 
-  geometry: {fileID: 7953173042517008191, guid: 632c54b829f17054d9a20a102c2b2d4b, type: 3}
+  geometry: {fileID: 7953173042517008191, guid: cf993cef21af8d844aae4114a8077447, type: 3}
