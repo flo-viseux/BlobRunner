@@ -144,6 +144,7 @@ namespace Runner.Player
             
             if (!isGrounded && velocity > 0)
             {
+                EventManager.RaiseHitHeadEvent();
                 velocity = -velocity;
             }
         }
@@ -161,16 +162,17 @@ namespace Runner.Player
             else
             {
                 isGrounded = true;
+                EventManager.RaiseHitGroundEvent();
                 
-                // Play SFX
-                if (_currentState == EState.Jump)
-                {
-                    SFX_Event.RaiseJumpEvent(AudioManager.EType.HitGround);
-                }
-                else if (_currentState == EState.Dive)
-                {
-                    SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.HitGround);
-                }
+                // // Play SFX
+                // if (_currentState == EState.Jump)
+                // {
+                //     SFX_Event.RaiseJumpEvent(AudioManager.EType.HitGround);
+                // }
+                // else if (_currentState == EState.Dive)
+                // {
+                //     SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.HitGround);
+                // }
             }    
             
             if (isOnGround)
@@ -214,6 +216,8 @@ namespace Runner.Player
                     int index = (int)e_jumpType;
                     Jump(jumpSteps[index].y);
                     
+                    EventManager.RaiseBounceEvent(transform.position);
+                    
                     VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Bounce);
                 }
                 else 
@@ -221,7 +225,9 @@ namespace Runner.Player
                     _currentState = EState.Normal;
                     e_jumpType = EJumpType.None;
                     velocity = 0f;
-
+                    
+                    EventManager.RaiseRunEvent();
+                    
                     // animation run
                     StartCoroutine(TimerRun(0.1f));
                 }
@@ -245,7 +251,7 @@ namespace Runner.Player
                 _currentState = EState.Shrink;
                 if (scaleCoroutine == null) 
                     scaleCoroutine = StartCoroutine(ResizeCoroutine(originalScale, shrinkScaleTarget, jumpSteps[0].x));
-                
+                EventManager.RaiseShrinkEvent();
             }
         }
 
@@ -278,6 +284,7 @@ namespace Runner.Player
         {
             if (_currentState == EState.Shrink)
             {
+                EventManager.RaiseEndShrinkEvent();
                 
                 if (scaleCoroutine != null)
                 {
@@ -318,10 +325,9 @@ namespace Runner.Player
                 if (_currentState == EState.Normal)
                 {
                     _currentState = EState.Jump;
-                    
-                    
                     e_jumpType = EJumpType.Small;
                     Jump(jumpSteps[0].y);
+                    EventManager.RaiseJumpEvent(transform.position);
                     return;
                 }
             }
@@ -334,11 +340,13 @@ namespace Runner.Player
                 {
                     _currentState = EState.Dive;
                     
+                    EventManager.RaiseDiveEvent(transform.position);
+                    
                     velocity = diveForce * _GRAVITY;
                     hasTap = false;
                     
                     VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Dive);
-                    SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.Dive);
+                    //SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.Dive);
 
                 }
             }
@@ -365,7 +373,7 @@ namespace Runner.Player
             CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             StartCoroutine(TimerLaunchAnimJump(0.2f));
             
-            SFX_Event.RaiseJumpEvent(AudioManager.EType.Small);
+            //SFX_Event.RaiseJumpEvent(AudioManager.EType.Small);
             
             isGrounded = false;
             velocity = Mathf.Sqrt(p_jumpHeight * -2 * _GRAVITY);
