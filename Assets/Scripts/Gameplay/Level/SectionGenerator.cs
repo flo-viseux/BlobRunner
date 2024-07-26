@@ -84,7 +84,7 @@ public class SectionGenerator : Parallax
         }
 
 
-        if (CurrentPos >= levelWidth)
+        if (CurrentPos >= levelWidth + offset)
         {
             GameManager.Instance.GoToWin();
             Scrolling = false;
@@ -107,6 +107,20 @@ public class SectionGenerator : Parallax
         }
     }
 
+    private void FinalFill()
+    {
+        for (int i = 0; i < initialSections.Length; ++i)
+        {
+            SectionGeometry initialProps = Instantiate(initialSections[i].Section.Geometry.gameObject, transform).GetComponent<SectionGeometry>();
+            initialProps.gameObject.transform.localPosition = Vector3.right * currentLevelWidth;
+
+            Section instanciatedProps = initialSections[i].Section;
+            sectionSequence.Add(instanciatedProps);
+
+            currentLevelWidth += initialProps.Width;
+        }
+    }
+
     private void Fill()
     {
         while (CurrentPos + offset >= currentLevelWidth)
@@ -114,7 +128,7 @@ public class SectionGenerator : Parallax
             if (currentLevelWidth < levelWidth)
                 AddSection();
             else
-                InitialFill();
+                FinalFill();
         }
     }
 

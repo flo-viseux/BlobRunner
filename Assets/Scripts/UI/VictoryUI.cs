@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class VictoryUI : MonoBehaviour
 {
     #region SerialiedFields
-    [SerializeField] private Showable showable;
+    [SerializeField] private TMP_Text label;
     #endregion
 
-    #region API
-    public void Show()
+    #region UnityMethods
+    public void OnEnable()
     {
-        showable.Show();
+        label.text = SaveFileController.LastScore + " / " + SaveFileController.LastMaxScore;
     }
     #endregion
 }

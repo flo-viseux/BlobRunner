@@ -16,6 +16,9 @@ public class SaveFileController : MonoBehaviour
     #endregion
 
     #region API
+    public static int LastScore = 0;
+    public static int LastMaxScore = 0;
+
     public static void AddLevel(int level, int score, int maxScore)
     {
         if (!levels.TryGetValue(level, out LevelData levelData))
@@ -26,6 +29,13 @@ public class SaveFileController : MonoBehaviour
 
         AddScore(level, score);
         AddMaxScore(level, maxScore);
+    }
+    public static LevelData GetLevel(int level)
+    {
+        if (levels.TryGetValue(level, out LevelData levelData))
+            return levelData;
+
+        return null;
     }
 
     public static void AddScore(int level, int score)
@@ -61,6 +71,8 @@ public class SaveFileController : MonoBehaviour
                 maxScores[level] = maxScore;
                 levels[level].maxScore = maxScore;
             }
+
+            return;
         }
 
         maxScores[level] = maxScore;

@@ -20,7 +20,10 @@ public class LevelButton : MonoBehaviour
 
     private void OnEnable()
     {
-        label.text = SaveFileController.GetScore(levelIndex) + " / " + SaveFileController.GetMaxScore(levelIndex);
+        if (SaveFileController.GetLevel(levelIndex) != null)
+            label.text = SaveFileController.GetLevel(levelIndex).score + " / " + SaveFileController.GetLevel(levelIndex).maxScore;
+        else
+            label.text = "0 / 0";
     }
     #endregion
 
