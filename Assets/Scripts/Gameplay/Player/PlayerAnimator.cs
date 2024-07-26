@@ -37,19 +37,19 @@ public class PlayerAnimator : MonoBehaviour
         _currentState = InAir;
     }
 
-    private void OnEnable()
-    {
-        _player.Jumped += OnJump;
-        _player.Run += OnRun;
-        _player.GroundChange += OnGroundChange;
-    }
-
-    private void OnDisable()
-    {
-        _player.Jumped -= OnJump;
-        _player.Run -= OnRun;
-        _player.GroundChange -= OnGroundChange;
-    }
+    // private void OnEnable()
+    // {
+    //     _player.Jumped += OnJump;
+    //     _player.Run += OnRun;
+    //     _player.GroundChange += OnGroundChange;
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     _player.Jumped -= OnJump;
+    //     _player.Run -= OnRun;
+    //     _player.GroundChange -= OnGroundChange;
+    // }
 
     private void OnJump()
     {
