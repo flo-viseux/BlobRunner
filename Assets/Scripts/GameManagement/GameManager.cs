@@ -188,9 +188,4 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
     #endregion
-
-    // private void Update()
-    // {
-    //     Debug.Log("health : "+playerDatas.CurrentHealth);
-    // }
 }

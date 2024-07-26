@@ -182,7 +182,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  - section: {fileID: 11400000, guid: 0da4e0aa5585b28478d236cdd539a610, type: 2}
+  - section: {fileID: 11400000, guid: 5c852051e5dd8e145b719034e4295081, type: 2}
     weight: 1
     cdDuration: 1
     curve:
@@ -723,5 +723,5 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   sectionRepetitionConstraints: []
-  levelWidth: 1000
-  offset: 1000
+  levelWidth: 100
+  offset: 20
