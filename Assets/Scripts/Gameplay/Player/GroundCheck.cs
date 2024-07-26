@@ -52,7 +52,9 @@ namespace Runner.Player
             {
                 if (groundCount > 0)
                 {
-                    OnGround?.Invoke(true, results[0]);
+                    if (results != null && results[0] != null)
+                        OnGround?.Invoke(true, results[0]);
+
                     wasOnGround = true;
                 }
                 else

@@ -5,25 +5,44 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class SaveFileController : MonoBehaviour
 {
     #region Attributes
+    private static Dictionary<int, LevelData> levels = new Dictionary<int, LevelData>();
     private static Dictionary<int, int> scores = new Dictionary<int, int>();
     private static Dictionary<int, int> maxScores = new Dictionary<int, int>();
     #endregion
 
     #region API
+    public static void AddLevel(int level, int score, int maxScore)
+    {
+        if (!levels.TryGetValue(level, out LevelData levelData))
+        {
+            levels[level] = new LevelData(level, score, maxScore);
+        }
+            
+
+        AddScore(level, score);
+        AddMaxScore(level, maxScore);
+    }
 
     public static void AddScore(int level, int score)
     {
         if (scores.TryGetValue(level, out int scoreRecord))
         {
             if (scoreRecord < score)
+            {
                 scores[level] = score;
+                levels[level].score = score;
+            }
+
+            return;
         }
-        else
-            scores[level] = score;
+        
+        scores[level] = score;
+        levels[level].score = score;
     }
     public static int GetScore(int level)
     {
@@ -38,10 +57,14 @@ public class SaveFileController : MonoBehaviour
         if (maxScores.TryGetValue(level, out int maxScoreRecord))
         {
             if (maxScoreRecord < maxScore)
+            {
                 maxScores[level] = maxScore;
+                levels[level].maxScore = maxScore;
+            }
         }
-        else
-            maxScores[level] = maxScore;
+
+        maxScores[level] = maxScore;
+        levels[level].maxScore = maxScore;
     }
     public static int GetMaxScore(int level)
     {
@@ -57,9 +80,9 @@ public class SaveFileController : MonoBehaviour
 
         FileStream file = File.Open(Application.persistentDataPath + "/save.data", FileMode.Create);
 
-        int[] scoreDatas = scores.Values.ToArray();
+        LevelData[] levelsData = levels.Values.ToArray();
 
-        binaryFormatter.Serialize(file, scoreDatas);
+        binaryFormatter.Serialize(file, levelsData);
 
         file.Close();
     }
@@ -76,27 +99,30 @@ public class SaveFileController : MonoBehaviour
     #region Private
     private static void Load()
     {
-        int[] scoreDatas = LoadScoreDatas();
+        LevelData[] levelsDatas = LoadLevelDatas();
 
-        if (scoreDatas == null)
+        if (levelsDatas == null)
             return;
 
-        for (int i = 0; i < scoreDatas.Length; ++i)
+        for (int i = 0; i < levelsDatas.Length; ++i)
         {
-            scores[i] = scoreDatas[i];
+            levels[i] = levelsDatas[i];
+            scores[i] = levels[i].score;
+            maxScores[i] = levels[i].maxScore;
         }
+
     }
 
-    private static int[] LoadScoreDatas()
+    private static LevelData[] LoadLevelDatas()
     {
-        int[] scoreDatas = null;
+        LevelData[] levelDatas = null;
 
         try
         {
             FileStream file = File.Open(Application.persistentDataPath + "/save.data", FileMode.Open);
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-            scoreDatas = binaryFormatter.Deserialize(file) as int[];
+            levelDatas = binaryFormatter.Deserialize(file) as LevelData[];
 
             file.Close();
         }
@@ -118,7 +144,7 @@ public class SaveFileController : MonoBehaviour
             Debug.LogError("Save file: Empty file");
         }
 
-        return scoreDatas;
+        return levelDatas;
     }
 
     private static void Delete()
