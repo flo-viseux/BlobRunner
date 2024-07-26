@@ -60,17 +60,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd6501a3b4b7a64598e43d55ecef13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SFX_Event: {fileID: 11400000, guid: efc87ae630dbc144b899109400aabe39, type: 2}
-  bounceSFX:
-  - {fileID: 8300000, guid: 15de6fa77a933174faebeb442a1cc637, type: 3}
-  - {fileID: 8300000, guid: ff5b9310223775c43afdd55bd011df6d, type: 3}
-  - {fileID: 8300000, guid: 1d953227388ada54981d0f59f37364f3, type: 3}
-  jumpSFX:
-  - {fileID: 8300000, guid: 6e0135081f827874d9c2e47dee8f465d, type: 3}
-  - {fileID: 8300000, guid: c4eac4ddd8a0e3048b3be69e17266ca4, type: 3}
-  - {fileID: 8300000, guid: 8d78a256dfb8ee24dadca308c04d3ab9, type: 3}
-  - {fileID: 8300000, guid: be586bb4ee866624ab390c150e58ce0c, type: 3}
-  diveSFX:
-  - {fileID: 8300000, guid: e2d997985f16a7a49bb5b848715927f6, type: 3}
-  - {fileID: 8300000, guid: bc64aab0f0c0c434e9b3c3a9a3420e00, type: 3}
   _source: {fileID: 0}
+  bounceClips:
+  - {fileID: 8300000, guid: fce5eacbd29bc2f4b9b189b1831cda8c, type: 3}
+  - {fileID: 8300000, guid: f149a5066e99d5a4880036fc6fcc323a, type: 3}
+  - {fileID: 8300000, guid: 95d1d408e89369c4d80fe97be415d45b, type: 3}
+  - {fileID: 8300000, guid: 7888de32b89d42d43b8e085352a68afd, type: 3}
+  deathClips:
+  - {fileID: 8300000, guid: 2f626ec7a9eff5444bb3ca7cb4fb7d13, type: 3}
+  - {fileID: 8300000, guid: 45d83a67d001c03439e9669730dc458f, type: 3}
+  - {fileID: 8300000, guid: 2c9c658b4d2e60e42ac0bd4b7f7cf430, type: 3}
+  diveClips:
+  - {fileID: 8300000, guid: 58495a09e97f92c47a4241e205b36664, type: 3}
+  - {fileID: 8300000, guid: 1317b8cd1b033eb4b9843eab821c44b3, type: 3}
+  - {fileID: 8300000, guid: 5ef3ba4fd6da40a41a57ae7c92231ffe, type: 3}
+  jumpClips:
+  - {fileID: 8300000, guid: 9473e67dd8727214abb6e6cd6c14d1df, type: 3}
+  - {fileID: 8300000, guid: f3a4631af60490d428da512421a5863d, type: 3}
+  - {fileID: 8300000, guid: 4c78085d5d6dd414eb5821f40426ae5c, type: 3}
+  runClip: {fileID: 8300000, guid: e974ecfe0ec3e6b4097e64faf4b4cfe6, type: 3}
+  hitGroundClip: {fileID: 8300000, guid: f9d59b90c1362194a8696eabb7a79591, type: 3}
