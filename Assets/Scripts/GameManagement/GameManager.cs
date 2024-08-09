@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public float loadingTime = 0.1f;
 
     [SerializeField] private SimpleEventSO hitObstacle;
+    [SerializeField] private SimpleEventSO winEvent;
 
     [SerializeField] private SaveLevelScore saveLevelScore;
 
@@ -43,11 +44,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         hitObstacle.OnEventRaised += LoseLife;
+        winEvent.OnEventRaised += GoToWin;
     }
 
     private void OnDisable()
     {
         hitObstacle.OnEventRaised -= LoseLife;
+        winEvent.OnEventRaised -= GoToWin;
     }
 
     private void Start()
@@ -176,16 +179,28 @@ public class GameManager : MonoBehaviour
 
     public void GoToWin()
     {
-        SwitchState(GameStatus.WIN);
+        StartCoroutine(WaitBeforeWinRoutine(0.5f));
     }
 
     public void GoToLoose()
     {
-        SwitchState(GameStatus.LOOSE);
+        StartCoroutine(WaitBeforeLooseRoutine(0.5f));
     }
     public void QuitGame()
     {
         Application.Quit();
     }
     #endregion
+
+    private IEnumerator WaitBeforeLooseRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SwitchState(GameStatus.LOOSE);
+    }
+
+    private IEnumerator WaitBeforeWinRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SwitchState(GameStatus.WIN);
+    }
 }

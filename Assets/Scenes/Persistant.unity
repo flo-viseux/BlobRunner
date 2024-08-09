@@ -2045,6 +2045,7 @@ MonoBehaviour:
   wasPaused: 0
   loadingTime: 0.1
   hitObstacle: {fileID: 11400000, guid: 562cc17bb0a264a41a0e6484a6f01b24, type: 2}
+  winEvent: {fileID: 11400000, guid: 5b99ab304e4c0ee48b8db7ebee13feb2, type: 2}
   saveLevelScore: {fileID: 1384910954}
 --- !u!4 &849818536
 Transform:

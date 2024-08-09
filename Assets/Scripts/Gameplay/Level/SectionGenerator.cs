@@ -14,6 +14,8 @@ public class SectionGenerator : Parallax
     [SerializeField] private float levelWidth = 0f;
 
     [SerializeField] private float offset = 0f;
+
+    [SerializeField] private SimpleEventSO WinEvent;
     #endregion
 
     #region Attributes
@@ -86,7 +88,8 @@ public class SectionGenerator : Parallax
 
         if (CurrentPos >= levelWidth + offset)
         {
-            GameManager.Instance.GoToWin();
+            WinEvent.RaiseEvent();
+            //GameManager.Instance.GoToWin();
             Scrolling = false;
         }
     }
