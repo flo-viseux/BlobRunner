@@ -2200,6 +2200,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6972435947509093713}
     m_Modifications:
+    - target: {fileID: 1693432260958712471, guid: 5110d3b65355143418be01937603c665, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5096625175347381590, guid: 5110d3b65355143418be01937603c665, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10.125873
+      objectReference: {fileID: 0}
+    - target: {fileID: 5096625175347381590, guid: 5110d3b65355143418be01937603c665, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 14.9726
+      objectReference: {fileID: 0}
     - target: {fileID: 8115284001983169449, guid: 5110d3b65355143418be01937603c665, type: 3}
       propertyPath: m_Name
       value: Mur+Sol_Prefab
