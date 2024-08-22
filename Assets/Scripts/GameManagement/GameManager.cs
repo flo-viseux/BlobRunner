@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Runner.Player;
@@ -6,9 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    private static GameManager _instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GameManager>();
+                if (_instance == null)
+                {
+                    Debug.LogError("Game manager not found : Persistant scene not loaded");
+                }
+            }
+
+            return _instance;
+        }
+    }
     
-    public GameStateMachine stateMachine;
+    private GameStateMachine stateMachine;
     private MenuState _menuState;
     private LevelMenuState _levelMenuState;
     private LoadState _loadState;
@@ -22,7 +38,7 @@ public class GameManager : MonoBehaviour
     public int levelIndex;
 
     public bool wasPaused;
-    public float loadingTime = 0.1f;
+    public float loadingTime = 0.5f;
 
     [SerializeField] private SimpleEventSO hitObstacle;
     [SerializeField] private SimpleEventSO winEvent;
@@ -31,13 +47,13 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
         }
         else
         {
-            Instance = this;
+            _instance = this;
         }
     }
 
@@ -71,6 +87,10 @@ public class GameManager : MonoBehaviour
     private void LoseLife()
     {
         playerDatas.DecreaseHealth();
+        if (playerDatas.CurrentHealth <= 0)
+        {
+            GoToLoose();
+        }
     }
 
     public void SwitchState(GameStatus newGameStatus)
@@ -81,56 +101,35 @@ public class GameManager : MonoBehaviour
                 return;
             case GameStatus.LEVELMENU: stateMachine.OnChangeState(_levelMenuState);
                 return;
-            case GameStatus.RESTART:
-                saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
-                StartCoroutine(LoadScreen());
-                _gameState = new GameState(playerDatas, gameSceneName);
-                stateMachine.OnChangeState(_gameState);
-                return;
             case GameStatus.PAUSE : stateMachine.OnChangeState(_pauseState);
                 return;
             case GameStatus.GAME :
-                if (!wasPaused)
-                {
-                    StartCoroutine(LoadScreen());
-                    _gameState = new GameState(playerDatas, gameSceneName);
-                }
+                _gameState = new GameState(playerDatas, gameSceneName);
                 stateMachine.OnChangeState(_gameState);
                 return;
             case GameStatus.WIN :
                 saveLevelScore.OnVictory(levelIndex, playerDatas.CollectiblesCount, SectionGenerator.Instance.TotalCollectiblesCount);
                 stateMachine.OnChangeState(_winState);
                 return;
-            case GameStatus.LOOSE : stateMachine.OnChangeState(_looseState);
+            case GameStatus.LOOSE : 
                 saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
-                StartCoroutine(LoadScreen());
-                _gameState = new GameState(playerDatas, gameSceneName);
-                stateMachine.OnChangeState(_gameState);
+                stateMachine.OnChangeState(_looseState);
+                return;
+            case GameStatus.LOAD :
+                _loadState = new LoadState(gameSceneName, loadingTime);
+                stateMachine.OnChangeState(_loadState);
+                StartCoroutine(LoadUpdate(_loadState));
                 return;
             default: return;
         }
     }
-    
-    private IEnumerator LoadScreen()
+
+    private IEnumerator LoadUpdate(LoadState state)
     {
-        UIManager.Instance.ShowUIPanel(GameStatus.LOAD);
-        AsyncOperation async = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Additive);
-        
-        float startLoadingTime = Time.time;
-        
-        while (!async.isDone) yield return null;
-        
-        // Make sure the load screen doesn't flash if the loading is fast, wait 0.5s
-        float loadedTime = Time.time - startLoadingTime;
-        if (loadedTime < loadingTime)
-        {
-            yield return new WaitForSeconds(loadingTime - loadedTime);
-            // TODO : prevent game to start while loading panel isn't hidden
-        }
-
-        UIManager.Instance.HideUIPanel(GameStatus.LOAD);
+        yield return StartCoroutine(state.UnloadScene());
+        yield return StartCoroutine(state.LoadScene());
+        SwitchState(GameStatus.GAME);
     }
-
 
     public void SetWasPaused(bool value)
     {
@@ -140,7 +139,6 @@ public class GameManager : MonoBehaviour
     public IEnumerator SetWasPausedCoroutine(bool value)
     {
         yield return null;
-
         wasPaused = value;
     }
 
@@ -166,15 +164,13 @@ public class GameManager : MonoBehaviour
     }
     public void Restart()
     {
-        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
-            SceneManager.UnloadScene(gameSceneName);
         wasPaused = false;
-        SwitchState(GameStatus.RESTART);
+        SwitchState(GameStatus.LOAD);
     }
 
     public void GoToGame()
     {
-        SwitchState(GameStatus.GAME);
+        SwitchState(GameStatus.LOAD);
     }
 
     public void GoToWin()
@@ -194,12 +190,14 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitBeforeLooseRoutine(float time)
     {
+        SectionGenerator.Instance.Scrolling = false;
         yield return new WaitForSeconds(time);
         SwitchState(GameStatus.LOOSE);
     }
 
     private IEnumerator WaitBeforeWinRoutine(float time)
     {
+        SectionGenerator.Instance.Scrolling = false;
         yield return new WaitForSeconds(time);
         SwitchState(GameStatus.WIN);
     }

@@ -4,7 +4,7 @@
     LEVELMENU,
     LOAD,
     GAME,
-    RESTART,
+    //RESTART,
     PAUSE,
     WIN,
     LOOSE,

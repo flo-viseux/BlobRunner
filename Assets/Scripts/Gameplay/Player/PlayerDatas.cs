@@ -59,10 +59,10 @@ namespace Runner.Player
         {
             CurrentHealth--;
 
-            if (CurrentHealth <= 0)
-            {
-                GameManager.Instance.GoToLoose();
-            }
+            // if (CurrentHealth <= 0)
+            // {
+            //     GameManager.Instance.GoToLoose();
+            // }
             //else
             //    DecreaseScore();
         }
