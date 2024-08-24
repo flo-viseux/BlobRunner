@@ -104,7 +104,8 @@ public class GameManager : MonoBehaviour
             case GameStatus.PAUSE : stateMachine.OnChangeState(_pauseState);
                 return;
             case GameStatus.GAME :
-                _gameState = new GameState(playerDatas, gameSceneName);
+                if (!wasPaused)
+                    _gameState = new GameState(playerDatas, gameSceneName);
                 stateMachine.OnChangeState(_gameState);
                 return;
             case GameStatus.WIN :
@@ -162,6 +163,12 @@ public class GameManager : MonoBehaviour
         wasPaused = true;
         SwitchState(GameStatus.PAUSE);
     }
+
+    public void Resume()
+    {
+        SwitchState(GameStatus.GAME);
+    }
+    
     public void Restart()
     {
         wasPaused = false;
