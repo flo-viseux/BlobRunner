@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 1943066475324726960}
   m_Layer: 7
   m_Name: Player3D
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -317,12 +317,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3930840854643084111}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: -0.009626302}
-  m_LocalScale: {x: 0.01, y: 0.011687702, z: 0.010000002}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.09368714, y: -10, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6036907072813159295}
+  m_Father: {fileID: 2237964306312988333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &6565354372314134875
 CapsuleCollider2D:
@@ -356,8 +356,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0920714, y: 0.7538579}
-  m_Size: {x: 2.3863246, y: 1.0362235}
+  m_Offset: {x: 0, y: 5.5}
+  m_Size: {x: 0.0001, y: 3}
   m_Direction: 1
 --- !u!1 &4064550901764173726
 GameObject:
@@ -674,7 +674,8 @@ Transform:
   m_LocalPosition: {x: -0.0009000015, y: 0, z: 0.007554616}
   m_LocalScale: {x: 0.009606456, y: 0.0019445057, z: 0.010000002}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6107537221919256355}
   m_Father: {fileID: 6036907072813159295}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3104565044212007085
@@ -767,11 +768,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f3f1f174b6f617849bcbf4d4fa579ed6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: -89.98021
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f3f1f174b6f617849bcbf4d4fa579ed6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -179.99998
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f3f1f174b6f617849bcbf4d4fa579ed6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -807,9 +808,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f3f1f174b6f617849bcbf4d4fa579ed6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2237964306312988333}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f3f1f174b6f617849bcbf4d4fa579ed6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6107537221919256355}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f3f1f174b6f617849bcbf4d4fa579ed6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2022796744851477286}

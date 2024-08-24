@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Obstacle : MonoBehaviour
@@ -9,8 +7,11 @@ public class Obstacle : MonoBehaviour
     #region UnityMethods
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision);
+
         if (collision != null && collision.CompareTag("Player"))
         {
+            Debug.Log("Player !");
             HitObstacle.RaiseEvent();
         }
     }
