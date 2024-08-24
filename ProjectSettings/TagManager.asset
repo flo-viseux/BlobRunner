@@ -8,6 +8,9 @@ TagManager:
   - ChemicalX
   - Plutonium
   - PlayerJumpBuffer
+  - FxTemporaire
+  - walkableObstacle
+  - Glass
   layers:
   - Default
   - TransparentFX
