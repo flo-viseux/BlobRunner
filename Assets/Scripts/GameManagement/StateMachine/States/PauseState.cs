@@ -10,14 +10,16 @@ public class PauseState : IGameBaseState
     public void OnEnterState()
     {
         //Debug.Log("Enter Pause State");
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
+        SectionGenerator.Instance.Scrolling = false;
         UIManager.Instance.ShowUIPanel(Status);
         
     }
 
     public void OnExitState()
     {
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
+        SectionGenerator.Instance.Scrolling = true;
         UIManager.Instance.HideUIPanel(Status);
     }
 }

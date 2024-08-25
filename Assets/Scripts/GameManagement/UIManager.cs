@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+
+    [SerializeField] private FadePanel fadePanel;
     [Header("UI Panels")]
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject levelMenuPanel;
@@ -16,31 +17,50 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject loosePanel;
     [SerializeField] private GameObject pausePanel;
 
+    private static UIManager _instance;
+    public static UIManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<UIManager>();
+                if (_instance == null)
+                {
+                    Debug.LogError("UI manager not found : Persistant scene not loaded");
+                }
+            }
+
+            return _instance;
+        }
+    }
+    
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
         }
         else
         {
-            Instance = this;
+            _instance = this;
         }
     }
 
-    public void HideUIPanel(GameStatus status)
+    public void HideUIPanel(GameStatus status, bool activeFade = false, float fadeDuration = 0f, float stayBlackDuration = 0f)
     {
+        if (activeFade) fadePanel.FadeIn(fadeDuration, stayBlackDuration);
         GetPanelFromGameStatus(status).SetActive(false);
     }
 
-    public void ShowUIPanel(GameStatus status)
+    public void ShowUIPanel(GameStatus status, bool activeFade = false, float fadeDuration = 0f, float stayBlackDuration = 0f)
     {
+        if (activeFade) fadePanel.FadeOut(fadeDuration, stayBlackDuration);
         GetPanelFromGameStatus(status).SetActive(true);
     }
     
     private GameObject GetPanelFromGameStatus(GameStatus status)
     {
-        // TODO : change game object to UI panel
         switch (status)
         {
             case GameStatus.MENU : return menuPanel;

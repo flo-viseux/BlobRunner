@@ -136,6 +136,7 @@ namespace Runner.Player
         private void OnDeath()
         {
             VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.Death);
+            EventManager.RaiseDeathEvent();
             animator.DeathAnimation();
         }
 
@@ -286,6 +287,19 @@ namespace Runner.Player
         {
             if (_currentState == EState.Shrink)
             {
+                if (!step1 && !step2)
+                {
+                    EventManager.RaiseJumpStepEvent(0,transform.position);
+                }
+                else if (step1)
+                {
+                    EventManager.RaiseJumpStepEvent(1,transform.position);
+                }
+                else if (step2)
+                {
+                    EventManager.RaiseJumpStepEvent(2,transform.position);
+                }
+                
                 step1 = false;
                 if (step2)
                 {
@@ -319,7 +333,7 @@ namespace Runner.Player
                     _currentState = EState.Jump;
                     e_jumpType = EJumpType.Small;
                     Jump(jumpSteps[0].y);
-                    EventManager.RaiseJumpEvent(transform.position);
+                    //EventManager.RaiseJumpEvent(transform.position);
                     VFX_Event.RaiseEvent(baseVFX.position, VFX_Manager.EType.Jump);
                     return;
                 }

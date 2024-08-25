@@ -18,12 +18,12 @@ public class LoadState : IGameBaseState
     public void OnEnterState()
     {
         //Debug.Log("Enter Load State");
-        UIManager.Instance.ShowUIPanel(Status);
+        UIManager.Instance.ShowUIPanel(Status, true, 0.3f, 0.1f);
     }
 
     public void OnExitState()
     {
-        UIManager.Instance.HideUIPanel(Status);
+        UIManager.Instance.HideUIPanel(Status, true, 0.3f, 0.1f);
         SectionGenerator.Instance.Scrolling = true;
     }
     

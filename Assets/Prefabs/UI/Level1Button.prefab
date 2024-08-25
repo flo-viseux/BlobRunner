@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9079611359167228652}
   - component: {fileID: 8747025108465391378}
   - component: {fileID: 8891977772072626150}
+  - component: {fileID: 6612123544786333510}
   m_Layer: 5
   m_Name: Level1Button
   m_TagString: Untagged
@@ -160,6 +161,20 @@ MonoBehaviour:
   levelScene: SceneEnv
   button: {fileID: 9079611359167228652}
   label: {fileID: 903870748380353729}
+--- !u!114 &6612123544786333510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054183054414357090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0402d4e45e1e41e1a366c9c8f79e1f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounceScale: 1.5
+  bounceDuration: 0.3
 --- !u!1 &2758498434758032711
 GameObject:
   m_ObjectHideFlags: 0

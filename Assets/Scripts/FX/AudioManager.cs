@@ -62,6 +62,8 @@ public class AudioManager : MonoBehaviour
     // }
 
     [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioSource _sourceLoop;
+    [SerializeField] private AudioPitchRun _pitchRun;
     [Header("SFX")]
     [SerializeField] private AudioClip[] bounceClips;
     [SerializeField] private AudioClip[] deathClips;
@@ -83,6 +85,7 @@ public class AudioManager : MonoBehaviour
         EventManager.DeathEvent += PlayDeath;
         EventManager.JumpEvent += PlayJump;
         EventManager.HitGroundEvent += PlayHitGround;
+        EventManager.JumpStepEvent += PlayJumpStep;
     }
 
     private void OnDisable()
@@ -93,7 +96,10 @@ public class AudioManager : MonoBehaviour
         EventManager.DeathEvent -= PlayDeath;
         EventManager.JumpEvent -= PlayJump;
         EventManager.HitGroundEvent -= PlayHitGround;
+        EventManager.JumpStepEvent -= PlayJumpStep;
     }
+
+
 
     private void Start()
     {
@@ -105,35 +111,49 @@ public class AudioManager : MonoBehaviour
 
     private void PlayRun()
     {
-        _source.PlayOneShot(runClip);
+        _pitchRun.Play();
     }
 
     private void PlayBounce(Vector3 position)
     {
         AudioClip clip = bounceClips[Random.Range(0, bounceLength)];
+        _source.loop = false;
         _source.PlayOneShot(clip);
     }
 
     private void PlayDive(Vector3 position)
     {
         AudioClip clip = diveClips[Random.Range(0, diveLength)];
+        _source.loop = false;
         _source.PlayOneShot(clip);
     }
 
     private void PlayDeath()
     {
+        _pitchRun.Stop();
         AudioClip clip = deathClips[Random.Range(0, deathLength)];
+        _source.loop = false;
         _source.PlayOneShot(clip);
     }
 
     private void PlayJump(Vector3 position)
     {
+        //_sourceLoop.Stop();
         AudioClip clip = jumpClips[Random.Range(0, jumpLength)];
+        _source.loop = false;
         _source.PlayOneShot(clip);
     }
 
     private void PlayHitGround()
     {
+        _source.loop = false;
         _source.PlayOneShot(hitGroundClip);
+    }
+    private void PlayJumpStep(int step, Vector3 position)
+    {
+        _pitchRun.Stop();
+        AudioClip clip = jumpClips[step];
+        _source.loop = false;
+        _source.PlayOneShot(clip);
     }
 }

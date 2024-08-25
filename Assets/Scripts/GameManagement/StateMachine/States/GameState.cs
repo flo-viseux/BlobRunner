@@ -22,6 +22,7 @@ public class GameState : IGameBaseState
         if (!GameManager.Instance.wasPaused)
         {
             playerDatas.InitPlayerDatas();
+            UIManager.Instance.ShowUIPanel(Status, true, 0.3f,0.1f);
         }
         UIManager.Instance.ShowUIPanel(Status);
         if (GameManager.Instance.wasPaused) GameManager.Instance.SetWasPaused(false);

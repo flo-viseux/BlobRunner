@@ -99,7 +99,8 @@ public class GameManager : MonoBehaviour
         {
             case GameStatus.MENU : stateMachine.OnChangeState(_menuState);
                 return;
-            case GameStatus.LEVELMENU: stateMachine.OnChangeState(_levelMenuState);
+            case GameStatus.LEVELMENU: 
+                stateMachine.OnChangeState(_levelMenuState);
                 return;
             case GameStatus.PAUSE : stateMachine.OnChangeState(_pauseState);
                 return;
@@ -115,6 +116,7 @@ public class GameManager : MonoBehaviour
             case GameStatus.LOOSE : 
                 saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
                 stateMachine.OnChangeState(_looseState);
+                SwitchState(GameStatus.LOAD);
                 return;
             case GameStatus.LOAD :
                 _loadState = new LoadState(gameSceneName, loadingTime);
@@ -127,6 +129,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LoadUpdate(LoadState state)
     {
+        yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(state.UnloadScene());
         yield return StartCoroutine(state.LoadScene());
         SwitchState(GameStatus.GAME);
@@ -155,7 +158,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToLevelMenu()
     {
-        SwitchState(GameStatus.LEVELMENU);
+        StartCoroutine(WaitBeforeLevelRoutine(0.3f));
     }
 
     public void GoToPause()
@@ -166,18 +169,20 @@ public class GameManager : MonoBehaviour
 
     public void Resume()
     {
-        SwitchState(GameStatus.GAME);
+        StartCoroutine(WaitBeforeResumeRoutine(0.2f));
+        //SwitchState(GameStatus.GAME);
     }
     
     public void Restart()
     {
         wasPaused = false;
-        SwitchState(GameStatus.LOAD);
+        StartCoroutine(WaitBeforeGameRoutine(0.2f));
+        //SwitchState(GameStatus.LOAD);
     }
 
     public void GoToGame()
     {
-        SwitchState(GameStatus.LOAD);
+        StartCoroutine(WaitBeforeGameRoutine(0.5f));
     }
 
     public void GoToWin()
@@ -207,5 +212,23 @@ public class GameManager : MonoBehaviour
         SectionGenerator.Instance.Scrolling = false;
         yield return new WaitForSeconds(time);
         SwitchState(GameStatus.WIN);
+    }
+    
+    private IEnumerator WaitBeforeLevelRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SwitchState(GameStatus.LEVELMENU);
+    }
+    
+    private IEnumerator WaitBeforeGameRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SwitchState(GameStatus.LOAD);
+    }
+    
+    private IEnumerator WaitBeforeResumeRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SwitchState(GameStatus.GAME);
     }
 }
