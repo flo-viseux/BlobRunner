@@ -15,6 +15,7 @@ public static class EventManager
     public static event Action<int,Vector3> JumpStepEvent;
     public static event Action<Vector3> DiveEvent;
     public static event Action DeathEvent;
+    public static event Action StopRunEvent;
  
     public static void RaiseHitHeadEvent() => HitHeadEvent?.Invoke();
     public static void RaiseHitGroundEvent() => HitGroundEvent?.Invoke();
@@ -26,4 +27,5 @@ public static class EventManager
     public static void RaiseJumpStepEvent(int step, Vector3 position) => JumpStepEvent?.Invoke(step,position);
     public static void RaiseDiveEvent(Vector3 position) => DiveEvent?.Invoke(position);
     public static void RaiseDeathEvent() => DeathEvent?.Invoke();
+    public static void RaiseStopRunEvent() => StopRunEvent?.Invoke();
 }

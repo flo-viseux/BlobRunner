@@ -19,7 +19,7 @@ public class AudioPitchRun : MonoBehaviour
         {
             pitchRoutine = StartCoroutine(VaryPitchRoutine());
             EventManager.ShrinkEvent += ShrinkPitch;
-            EventManager.EndShrinkEvent += StopRun;
+            EventManager.StopRunEvent += StopRun;
         }
         
 
@@ -27,7 +27,7 @@ public class AudioPitchRun : MonoBehaviour
         {
             StopAllCoroutines();
             EventManager.ShrinkEvent -= ShrinkPitch;
-            EventManager.EndShrinkEvent -= StopRun;
+            EventManager.StopRunEvent -= StopRun;
         }
 
         private IEnumerator VaryPitchRoutine()
@@ -51,6 +51,7 @@ public class AudioPitchRun : MonoBehaviour
         }
         private void StopRun()
         {
+            StopCoroutine(pitchRoutine);
             audioSource.Stop();
         }
 

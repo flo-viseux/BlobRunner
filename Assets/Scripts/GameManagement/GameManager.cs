@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Runner.Player;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     private PauseState _pauseState;
     private WinState _winState;
     private LooseState _looseState;
-
+    
     public PlayerDatas playerDatas;
     public string gameSceneName;
     public int levelIndex;
@@ -44,7 +45,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SimpleEventSO winEvent;
 
     [SerializeField] private SaveLevelScore saveLevelScore;
+    [SerializeField] private AudioMixer mixer;
 
+    private AudioManager _audioManager;
+    
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -81,6 +85,9 @@ public class GameManager : MonoBehaviour
         stateMachine.OnChangeState(_menuState);
 
         wasPaused = false;
+        _audioManager = new AudioManager(mixer);
+        // no music in menu
+        _audioManager.SetParamVolume(AudioManager.GroupType.Ambient, -80f);
     }
 
     
@@ -97,17 +104,20 @@ public class GameManager : MonoBehaviour
     {
         switch (newGameStatus)
         {
-            case GameStatus.MENU : stateMachine.OnChangeState(_menuState);
+            case GameStatus.MENU : 
+                stateMachine.OnChangeState(_menuState);
                 return;
             case GameStatus.LEVELMENU: 
                 stateMachine.OnChangeState(_levelMenuState);
                 return;
-            case GameStatus.PAUSE : stateMachine.OnChangeState(_pauseState);
+            case GameStatus.PAUSE : 
+                stateMachine.OnChangeState(_pauseState);
                 return;
             case GameStatus.GAME :
                 if (!wasPaused)
                     _gameState = new GameState(playerDatas, gameSceneName);
                 stateMachine.OnChangeState(_gameState);
+                StartCoroutine(WaitBeforeStartSFXRoutine(0.3f));
                 return;
             case GameStatus.WIN :
                 saveLevelScore.OnVictory(levelIndex, playerDatas.CollectiblesCount, SectionGenerator.Instance.TotalCollectiblesCount);
@@ -129,6 +139,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LoadUpdate(LoadState state)
     {
+        mixer.SetFloat("SFX_Volume", -80f);
+        if (!_audioManager.IsParamPlaying(AudioManager.GroupType.Ambient))
+        {
+            _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -5f, 0.8f);
+        }
         yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(state.UnloadScene());
         yield return StartCoroutine(state.LoadScene());
@@ -153,6 +168,7 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
             SceneManager.UnloadScene(gameSceneName);
         wasPaused = false;
+        _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -80f, 0.2f);
         SwitchState(GameStatus.MENU);
     }
 
@@ -199,6 +215,8 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
     #endregion
+    
+    #region Wait Routine
 
     private IEnumerator WaitBeforeLooseRoutine(float time)
     {
@@ -231,4 +249,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(time);
         SwitchState(GameStatus.GAME);
     }
+
+    private IEnumerator WaitBeforeStartSFXRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        mixer.SetFloat("SFX_Volume", 0f);
+    }
+    #endregion
 }

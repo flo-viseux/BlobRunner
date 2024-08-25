@@ -137,6 +137,7 @@ namespace Runner.Player
         {
             VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.Death);
             EventManager.RaiseDeathEvent();
+            EventManager.RaiseStopRunEvent();
             animator.DeathAnimation();
         }
 
@@ -166,11 +167,13 @@ namespace Runner.Player
             if (p_collider == null)
             {
                 isGrounded = false;
+                EventManager.RaiseStopRunEvent();
                 animator.FallAnimation();
             }
             else
             {
                 isGrounded = true;
+                EventManager.RaiseRunEvent();
                 EventManager.RaiseHitGroundEvent();
             }
 
@@ -333,7 +336,8 @@ namespace Runner.Player
                     _currentState = EState.Jump;
                     e_jumpType = EJumpType.Small;
                     Jump(jumpSteps[0].y);
-                    //EventManager.RaiseJumpEvent(transform.position);
+                    EventManager.RaiseJumpStepEvent(0,transform.position);
+                    EventManager.RaiseStopRunEvent();
                     VFX_Event.RaiseEvent(baseVFX.position, VFX_Manager.EType.Jump);
                     return;
                 }
@@ -348,6 +352,7 @@ namespace Runner.Player
                     _currentState = EState.Dive;
 
                     EventManager.RaiseDiveEvent(transform.position);
+                    EventManager.RaiseStopRunEvent();
                     animator.DiveAnimation();
 
                     velocity = diveForce * _GRAVITY;
@@ -376,6 +381,7 @@ namespace Runner.Player
 
         private void Jump(float p_jumpHeight)
         {
+            EventManager.RaiseStopRunEvent();
             CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             animator.JumpAnimation();
 
