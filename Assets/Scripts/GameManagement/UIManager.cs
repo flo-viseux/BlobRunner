@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject loosePanel;
     [SerializeField] private GameObject pausePanel;
 
+    public event Action<bool> pauseEvent;
+    
     private static UIManager _instance;
     public static UIManager Instance
     {
@@ -49,12 +51,21 @@ public class UIManager : MonoBehaviour
 
     public void HideUIPanel(GameStatus status, bool activeFade = false, float fadeDuration = 0f, float stayBlackDuration = 0f)
     {
+        if (status == GameStatus.PAUSE)
+        {
+            pauseEvent?.Invoke(false);
+        }
+        
         if (activeFade) fadePanel.FadeIn(fadeDuration, stayBlackDuration);
         GetPanelFromGameStatus(status).SetActive(false);
     }
 
     public void ShowUIPanel(GameStatus status, bool activeFade = false, float fadeDuration = 0f, float stayBlackDuration = 0f)
     {
+        if (status == GameStatus.PAUSE)
+        {
+            pauseEvent?.Invoke(true);
+        }
         if (activeFade) fadePanel.FadeOut(fadeDuration, stayBlackDuration);
         GetPanelFromGameStatus(status).SetActive(true);
     }

@@ -30,10 +30,10 @@ public class GameState : IGameBaseState
 
     public void OnExitState()
     {
-        if (!GameManager.Instance.wasPaused)
-        {
-            SceneManager.UnloadSceneAsync(sceneName);
-        }
+        // if (!GameManager.Instance.wasPaused)
+        // {
+        //     SceneManager.UnloadSceneAsync(sceneName);
+        // }
         UIManager.Instance.HideUIPanel(Status);
     }
 

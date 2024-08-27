@@ -182,7 +182,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  - section: {fileID: 11400000, guid: 5c852051e5dd8e145b719034e4295081, type: 2}
+  - section: {fileID: 11400000, guid: e0ac6f850d7a90044aa3f950bd8bd6fa, type: 2}
     weight: 1
     cdDuration: 1
     curve:

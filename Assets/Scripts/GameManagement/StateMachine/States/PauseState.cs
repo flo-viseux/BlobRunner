@@ -6,6 +6,7 @@ public class PauseState : IGameBaseState
 {
     public GameStatus Status => GameStatus.PAUSE;
 
+    
 
     public void OnEnterState()
     {

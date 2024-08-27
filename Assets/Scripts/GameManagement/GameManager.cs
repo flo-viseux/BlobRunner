@@ -1,4 +1,5 @@
 using System.Collections;
+using GameManagement;
 using UnityEngine;
 using Runner.Player;
 using UnityEngine.Audio;
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     public bool wasPaused;
     public float loadingTime = 0.5f;
+    public bool isPause = false;
 
     [SerializeField] private SimpleEventSO hitObstacle;
     [SerializeField] private SimpleEventSO winEvent;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioMixer mixer;
 
     private AudioManager _audioManager;
+    public CoroutineStorage coroutineStorage;
     
     private void Awake()
     {
@@ -88,6 +91,7 @@ public class GameManager : MonoBehaviour
         _audioManager = new AudioManager(mixer);
         // no music in menu
         _audioManager.SetParamVolume(AudioManager.GroupType.Ambient, -80f);
+        coroutineStorage = new CoroutineStorage(10);
     }
 
     
@@ -126,7 +130,9 @@ public class GameManager : MonoBehaviour
             case GameStatus.LOOSE : 
                 saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
                 stateMachine.OnChangeState(_looseState);
-                SwitchState(GameStatus.LOAD);
+                if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+                    SceneManager.UnloadScene(gameSceneName);
+                //SwitchState(GameStatus.LOAD);
                 return;
             case GameStatus.LOAD :
                 _loadState = new LoadState(gameSceneName, loadingTime);
@@ -139,14 +145,30 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LoadUpdate(LoadState state)
     {
+        // audio : mute sfx, 
         mixer.SetFloat("SFX_Volume", -80f);
+        
+        // if ambiant music is mute, comes from menu, unmute music for game
         if (!_audioManager.IsParamPlaying(AudioManager.GroupType.Ambient))
         {
             _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -5f, 0.8f);
         }
+        
+        // unload - load scene
         yield return new WaitForSeconds(0.5f);
+
+        // if (coroutineStorage.Length != 0)
+        // {
+        //     for (int i = 0; i < coroutineStorage.Length; i++)
+        //     {
+        //         StopCoroutine(coroutineStorage.GameRoutines[i]);
+        //     }
+        //     coroutineStorage.ClearRoutines();
+        // }
+        
         yield return StartCoroutine(state.UnloadScene());
         yield return StartCoroutine(state.LoadScene());
+        
         SwitchState(GameStatus.GAME);
     }
 
@@ -222,6 +244,14 @@ public class GameManager : MonoBehaviour
     {
         SectionGenerator.Instance.Scrolling = false;
         yield return new WaitForSeconds(time);
+        if (coroutineStorage.Length != 0)
+        {
+            for (int i = 0; i < coroutineStorage.Length; i++)
+            {
+                StopCoroutine(coroutineStorage.GameRoutines[i]);
+            }
+            coroutineStorage.ClearRoutines();
+        }
         SwitchState(GameStatus.LOOSE);
     }
 

@@ -14,8 +14,8 @@ namespace Runner.Player
         public delegate void HoldEvent(float time);
         public event HoldEvent OnHold;
 
-        public delegate void SwipeSuccesfulEvent();
-        public event SwipeSuccesfulEvent OnSwipeSuccessful;
+        // public delegate void SwipeSuccesfulEvent();
+        // public event SwipeSuccesfulEvent OnSwipeSuccessful;
         
         public delegate void TapEvent();
         public event TapEvent OnTap;
@@ -23,7 +23,7 @@ namespace Runner.Player
 
         void OnEnable()
         {
-            Lean.Touch.LeanTouch.OnFingerSwipe += HandleSwipe;
+            //Lean.Touch.LeanTouch.OnFingerSwipe += HandleSwipe;
             Lean.Touch.LeanTouch.OnFingerUpdate += HandleFingerHold;
             Lean.Touch.LeanTouch.OnFingerTap += HandleTap;
             Lean.Touch.LeanTouch.OnFingerOld += HandleFingerOld;
@@ -32,7 +32,7 @@ namespace Runner.Player
 
         void OnDisable()
         {
-            Lean.Touch.LeanTouch.OnFingerSwipe -= HandleSwipe;
+            //Lean.Touch.LeanTouch.OnFingerSwipe -= HandleSwipe;
             Lean.Touch.LeanTouch.OnFingerUpdate -= HandleFingerHold;
             Lean.Touch.LeanTouch.OnFingerTap -= HandleTap;
             Lean.Touch.LeanTouch.OnFingerOld -= HandleFingerOld;
@@ -73,22 +73,22 @@ namespace Runner.Player
             }
         }
 
-        void HandleSwipe(Lean.Touch.LeanFinger finger)
-        {
-            /*if (!GameManager.Instance.wasPaused)
-            {
-                if (finger.Index != 0) return;
-
-                Vector2 swipeDelta = finger.SwipeScreenDelta;
-
-                if (swipeDelta.y < -Mathf.Abs(swipeDelta.x))
-                {
-                    //Debug.Log("Swiped Down");
-                    // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
-                    //OnSwipeSuccessful();
-                }
-            }*/
-        }
+//         void HandleSwipe(Lean.Touch.LeanFinger finger)
+//         {
+//             if (!GameManager.Instance.wasPaused)
+//             {
+//                 if (finger.Index != 0) return;
+//
+//                 Vector2 swipeDelta = finger.SwipeScreenDelta;
+//
+//                 if (swipeDelta.y < -Mathf.Abs(swipeDelta.x))
+//                 {
+//                     //Debug.Log("Swiped Down");
+//                     // Debug.Log($"Swiped Down {finger.Age} {finger.Index}");
+//                     //OnSwipeSuccessful();
+//                 }
+//             }
+//         }
 
         void HandleTap(Lean.Touch.LeanFinger finger)
         {

@@ -65,6 +65,9 @@ namespace Runner.Player
         private EJumpType e_jumpType;
         private bool hasTap;
         private bool allowJump;
+        
+        // Coroutine 
+        private Coroutine waitOnGroundRoutine;
 
         public EJumpType GetJumpType() => e_jumpType;
 
@@ -91,6 +94,7 @@ namespace Runner.Player
 
         private void Update()
         {
+            Debug.DrawRay(centerVFX.position, Vector2.right*1f, Color.yellow);
             if (!isGrounded)
             {
                 velocity += _GRAVITY * Time.deltaTime;
@@ -139,12 +143,20 @@ namespace Runner.Player
             EventManager.RaiseDeathEvent();
             EventManager.RaiseStopRunEvent();
             animator.DeathAnimation();
+            
+            
         }
 
         private void OnHitHead(bool hasHit, bool hasGround)
         {
             if (!hasHit) return;
 
+            if (hasHit && hasGround && _currentState == EState.Normal)
+            {
+                hitEvent.RaiseEvent();
+                return;
+            }
+            
             if (hasGround)
             {
                 velocity = 0f;
@@ -190,7 +202,8 @@ namespace Runner.Player
                 }
                 else
                 {
-                    StartCoroutine(WaitOnGround());
+                    waitOnGroundRoutine = StartCoroutine(WaitOnGround());
+                    GameManager.Instance.coroutineStorage.AddRoutine(waitOnGroundRoutine);
                 }
             }
         }
@@ -200,6 +213,8 @@ namespace Runner.Player
         {
             yield return new WaitForSeconds(0.1f);
             HandleHitGround();
+            
+            GameManager.Instance.coroutineStorage.RemoveRoutine(waitOnGroundRoutine);
         }
 
         private void HandleHitGround()

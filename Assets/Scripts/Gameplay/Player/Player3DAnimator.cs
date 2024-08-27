@@ -14,6 +14,8 @@ public class Player3DAnimator : MonoBehaviour
     
     private Animator animator;
 
+    private Coroutine resetTriggerRoutine;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -22,13 +24,15 @@ public class Player3DAnimator : MonoBehaviour
     public void FallAnimation()
     {
         animator.SetTrigger(ID_FallTrigger);
-        StartCoroutine(ResetTriggerCoroutine(ID_FallTrigger));
+        resetTriggerRoutine = StartCoroutine(ResetTriggerCoroutine(ID_FallTrigger));
+        GameManager.Instance.coroutineStorage.AddRoutine(resetTriggerRoutine);
     }
 
     public void LandingAnimation()
     {
         animator.SetTrigger(ID_LandTrigger);
-        StartCoroutine(ResetTriggerCoroutine(ID_LandTrigger));
+        resetTriggerRoutine = StartCoroutine(ResetTriggerCoroutine(ID_LandTrigger));
+        GameManager.Instance.coroutineStorage.AddRoutine(resetTriggerRoutine);
     }
 
     public void ShrinkAnimation()
@@ -44,13 +48,15 @@ public class Player3DAnimator : MonoBehaviour
     public void JumpAnimation()
     {
         animator.SetTrigger(ID_JumpTrigger);
-        StartCoroutine(ResetTriggerCoroutine(ID_JumpTrigger));
+        resetTriggerRoutine = StartCoroutine(ResetTriggerCoroutine(ID_JumpTrigger));
+        GameManager.Instance.coroutineStorage.AddRoutine(resetTriggerRoutine);
     }
 
     public void DiveAnimation()
     {
         animator.SetTrigger(ID_DiveTrigger);
-        StartCoroutine(ResetTriggerCoroutine(ID_DiveTrigger));
+        resetTriggerRoutine = StartCoroutine(ResetTriggerCoroutine(ID_DiveTrigger));
+        GameManager.Instance.coroutineStorage.AddRoutine(resetTriggerRoutine);
     }
     
     public void DeathAnimation()
@@ -62,5 +68,6 @@ public class Player3DAnimator : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         animator.ResetTrigger(id);
+        GameManager.Instance.coroutineStorage.RemoveRoutine(resetTriggerRoutine);
     }
 }

@@ -30,6 +30,7 @@ public class LoadState : IGameBaseState
 
     public IEnumerator UnloadScene()
     {
+        //Debug.Log("Load State : unload scene");
         Scene gameScene = SceneManager.GetSceneByName(sceneToLoad);
         
         if (gameScene.isLoaded)
@@ -41,10 +42,14 @@ public class LoadState : IGameBaseState
 
     public IEnumerator LoadScene()
     {
+        //Debug.Log("Load State : load scene");
         float startLoadingTime = Time.time;
-        
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
-        while (!async.isDone) yield return null;
+
+        if (!IsSceneLoaded())
+        {
+            AsyncOperation async = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+            while (!async.isDone) yield return null;
+        }
         
         SectionGenerator.Instance.Scrolling = false;
         
@@ -54,5 +59,18 @@ public class LoadState : IGameBaseState
         {
             yield return new WaitForSeconds(loadingTime - loadedTime);
         }
+    }
+
+    private bool IsSceneLoaded()
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene scene = SceneManager.GetSceneAt(i);
+            if (scene.name == sceneToLoad)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

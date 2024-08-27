@@ -10,6 +10,8 @@ public class AudioPitchRun : MonoBehaviour
     {
         private AudioSource audioSource;
         private Coroutine pitchRoutine;
+        
+        
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
@@ -17,7 +19,10 @@ public class AudioPitchRun : MonoBehaviour
 
         private void OnEnable()
         {
+            UIManager.Instance.pauseEvent += PauseRunClip;
             pitchRoutine = StartCoroutine(VaryPitchRoutine());
+            GameManager.Instance.coroutineStorage.AddRoutine(pitchRoutine);
+            
             EventManager.ShrinkEvent += ShrinkPitch;
             EventManager.StopRunEvent += StopRun;
         }
@@ -25,9 +30,14 @@ public class AudioPitchRun : MonoBehaviour
 
         private void OnDisable()
         {
-            StopAllCoroutines();
+            UIManager.Instance.pauseEvent -= PauseRunClip;
             EventManager.ShrinkEvent -= ShrinkPitch;
             EventManager.StopRunEvent -= StopRun;
+        }
+
+        private void PauseRunClip(bool isPaused)
+        {
+            audioSource.mute = isPaused;
         }
 
         private IEnumerator VaryPitchRoutine()
@@ -45,13 +55,17 @@ public class AudioPitchRun : MonoBehaviour
         private void ShrinkPitch()
         {
             StopCoroutine(pitchRoutine);
-            Debug.Log("Shrink");
+            GameManager.Instance.coroutineStorage.RemoveRoutine(pitchRoutine);
+            
+            //Debug.Log("Shrink");
             audioSource.pitch = 1.6f;
             //audioSource.DOPitch(1.6f, 0.2f).SetEase(Ease.InOutQuad);
         }
         private void StopRun()
         {
             StopCoroutine(pitchRoutine);
+            GameManager.Instance.coroutineStorage.RemoveRoutine(pitchRoutine);
+            
             audioSource.Stop();
         }
 
@@ -59,12 +73,16 @@ public class AudioPitchRun : MonoBehaviour
         {
             audioSource.Play();
             audioSource.pitch = 1f;
+            
             pitchRoutine = StartCoroutine(VaryPitchRoutine());
+            GameManager.Instance.coroutineStorage.AddRoutine(pitchRoutine);
         }
 
         public void Stop()
         {
             StopCoroutine(pitchRoutine);
+            GameManager.Instance.coroutineStorage.RemoveRoutine(pitchRoutine);
+            
             audioSource.Stop();
         }
     }

@@ -17,9 +17,7 @@ public class Obstacle : MonoBehaviour
                 HitObstacle.RaiseEvent();
                 return;
             }
-            
-            //Vector2 direction = (collision.transform.position - transform.position).normalized;
-            //Debug.Log($"direction {gameObject.name},{collision.gameObject.name} : {direction}");
+
             RaycastHit2D hit = Physics2D.CircleCast(collision.transform.position, 0.5f, Vector2.right, 0.1f);
             if (hit != null && hit.collider != null && hit.collider.CompareTag("walkableObstacle"))
             {
