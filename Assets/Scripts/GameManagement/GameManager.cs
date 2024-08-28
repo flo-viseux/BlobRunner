@@ -126,6 +126,8 @@ public class GameManager : MonoBehaviour
             case GameStatus.WIN :
                 saveLevelScore.OnVictory(levelIndex, playerDatas.CollectiblesCount, SectionGenerator.Instance.TotalCollectiblesCount);
                 stateMachine.OnChangeState(_winState);
+                if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+                    SceneManager.UnloadScene(gameSceneName);
                 return;
             case GameStatus.LOOSE : 
                 saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
@@ -187,16 +189,13 @@ public class GameManager : MonoBehaviour
 
     public void GoToMenu()
     {
-        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
-            SceneManager.UnloadScene(gameSceneName);
-        wasPaused = false;
-        _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -80f, 0.2f);
-        SwitchState(GameStatus.MENU);
+        StartCoroutine(WaitBeforeGoToMenu(0.3f));
     }
 
     public void GoToLevelMenu()
     {
-        StartCoroutine(WaitBeforeLevelRoutine(0.3f));
+        //StartCoroutine(WaitBeforeLevelRoutine(0.3f));
+        StartCoroutine(WaitBeforeRoutine(0.3f, GameStatus.LEVELMENU));
     }
 
     public void GoToPause()
@@ -207,20 +206,23 @@ public class GameManager : MonoBehaviour
 
     public void Resume()
     {
-        StartCoroutine(WaitBeforeResumeRoutine(0.2f));
+        //StartCoroutine(WaitBeforeResumeRoutine(0.2f));
+        StartCoroutine(WaitBeforeRoutine(0.2f, GameStatus.GAME));
         //SwitchState(GameStatus.GAME);
     }
     
     public void Restart()
     {
         wasPaused = false;
-        StartCoroutine(WaitBeforeGameRoutine(0.2f));
+        //StartCoroutine(WaitBeforeGameRoutine(0.2f));
+        StartCoroutine(WaitBeforeRoutine(0.2f, GameStatus.LOAD));
         //SwitchState(GameStatus.LOAD);
     }
 
     public void GoToGame()
     {
-        StartCoroutine(WaitBeforeGameRoutine(0.5f));
+        //StartCoroutine(WaitBeforeGameRoutine(0.5f));
+        StartCoroutine(WaitBeforeRoutine(0.5f, GameStatus.LOAD));
     }
 
     public void GoToWin()
@@ -239,6 +241,16 @@ public class GameManager : MonoBehaviour
     #endregion
     
     #region Wait Routine
+
+    private IEnumerator WaitBeforeGoToMenu(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+            SceneManager.UnloadScene(gameSceneName);
+        wasPaused = false;
+        _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -80f, 0.2f);
+        SwitchState(GameStatus.MENU);
+    }
 
     private IEnumerator WaitBeforeLooseRoutine(float time)
     {
@@ -259,25 +271,39 @@ public class GameManager : MonoBehaviour
     {
         SectionGenerator.Instance.Scrolling = false;
         yield return new WaitForSeconds(time);
+        if (coroutineStorage.Length != 0)
+        {
+            for (int i = 0; i < coroutineStorage.Length; i++)
+            {
+                StopCoroutine(coroutineStorage.GameRoutines[i]);
+            }
+            coroutineStorage.ClearRoutines();
+        }
         SwitchState(GameStatus.WIN);
     }
     
-    private IEnumerator WaitBeforeLevelRoutine(float time)
-    {
-        yield return new WaitForSeconds(time);
-        SwitchState(GameStatus.LEVELMENU);
-    }
+    // private IEnumerator WaitBeforeLevelRoutine(float time)
+    // {
+    //     yield return new WaitForSeconds(time);
+    //     SwitchState(GameStatus.LEVELMENU);
+    // }
     
-    private IEnumerator WaitBeforeGameRoutine(float time)
-    {
-        yield return new WaitForSeconds(time);
-        SwitchState(GameStatus.LOAD);
-    }
+    // private IEnumerator WaitBeforeGameRoutine(float time)
+    // {
+    //     yield return new WaitForSeconds(time);
+    //     SwitchState(GameStatus.LOAD);
+    // }
     
-    private IEnumerator WaitBeforeResumeRoutine(float time)
+    // private IEnumerator WaitBeforeResumeRoutine(float time)
+    // {
+    //     yield return new WaitForSeconds(time);
+    //     SwitchState(GameStatus.GAME);
+    // }
+
+    private IEnumerator WaitBeforeRoutine(float time, GameStatus status)
     {
         yield return new WaitForSeconds(time);
-        SwitchState(GameStatus.GAME);
+        SwitchState(status);
     }
 
     private IEnumerator WaitBeforeStartSFXRoutine(float time)

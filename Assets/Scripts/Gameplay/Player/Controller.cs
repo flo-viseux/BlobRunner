@@ -289,12 +289,14 @@ namespace Runner.Player
                         if (step1) return;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Medium);
                         VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.JumpStep);
+                        EventManager.RaiseWinJumpStepEvent(0);
                         step1 = true;
                         break;
                     case 2:
                         if (step2) return;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Large);
                         VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.JumpStep, true);
+                        EventManager.RaiseWinJumpStepEvent(1);
                         step2 = true;
                         break;
                 }

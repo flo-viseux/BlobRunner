@@ -10,29 +10,42 @@ public class AudioPitchRun : MonoBehaviour
     {
         private AudioSource audioSource;
         private Coroutine pitchRoutine;
-        
+
+
         
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
         }
 
-        private void OnEnable()
+        private void Start()
         {
             UIManager.Instance.pauseEvent += PauseRunClip;
+        }
+
+        private void OnDestroy()
+        {
+            UIManager.Instance.pauseEvent -= PauseRunClip;
+        }
+
+        private void OnEnable()
+        {
+            //UIManager.Instance.pauseEvent += PauseRunClip;
             pitchRoutine = StartCoroutine(VaryPitchRoutine());
             GameManager.Instance.coroutineStorage.AddRoutine(pitchRoutine);
             
             EventManager.ShrinkEvent += ShrinkPitch;
             EventManager.StopRunEvent += StopRun;
+            EventManager.DeathEvent += StopRun;
         }
         
 
         private void OnDisable()
         {
-            UIManager.Instance.pauseEvent -= PauseRunClip;
+            //UIManager.Instance.pauseEvent -= PauseRunClip;
             EventManager.ShrinkEvent -= ShrinkPitch;
             EventManager.StopRunEvent -= StopRun;
+            EventManager.DeathEvent -= StopRun;
         }
 
         private void PauseRunClip(bool isPaused)
@@ -57,9 +70,9 @@ public class AudioPitchRun : MonoBehaviour
             StopCoroutine(pitchRoutine);
             GameManager.Instance.coroutineStorage.RemoveRoutine(pitchRoutine);
             
-            //Debug.Log("Shrink");
-            audioSource.pitch = 1.6f;
-            //audioSource.DOPitch(1.6f, 0.2f).SetEase(Ease.InOutQuad);
+            // //Debug.Log("Shrink");
+            // audioSource.pitch = 1.6f;
+            // //audioSource.DOPitch(1.6f, 0.2f).SetEase(Ease.InOutQuad);
         }
         private void StopRun()
         {

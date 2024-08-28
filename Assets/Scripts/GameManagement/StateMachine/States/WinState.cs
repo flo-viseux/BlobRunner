@@ -9,7 +9,8 @@ public class WinState : IGameBaseState
     public void OnEnterState()
     {
         //Debug.Log("Enter Win State");
-        UIManager.Instance.ShowUIPanel(Status, true, 0.5f, 0.3f);
+        //UIManager.Instance.ShowUIPanel(Status, true, 0.2f, 0.2f);
+        UIManager.Instance.ShowUIPanel(Status);
     }
 
     public void OnExitState()
