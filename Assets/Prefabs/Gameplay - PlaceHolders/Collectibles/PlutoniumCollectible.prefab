@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 1000
+  VFX_Event: {fileID: 0}
 --- !u!1 &6900192760671742672 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2949081556601899416, guid: 902cf984b4081db499530aba0a338a5d, type: 3}

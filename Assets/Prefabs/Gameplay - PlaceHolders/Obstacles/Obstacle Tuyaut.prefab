@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 8868287169238815125}
   m_Layer: 0
   m_Name: Obstacle Tuyaut
-  m_TagString: Untagged
+  m_TagString: Obstacles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -65,6 +65,9 @@ namespace Runner.Player
         private EJumpType e_jumpType;
         private bool hasTap;
         private bool allowJump;
+        
+        // Coroutine 
+        private Coroutine waitOnGroundRoutine;
 
         public EJumpType GetJumpType() => e_jumpType;
 
@@ -91,6 +94,7 @@ namespace Runner.Player
 
         private void Update()
         {
+            Debug.DrawRay(centerVFX.position, Vector2.right*1f, Color.yellow);
             if (!isGrounded)
             {
                 velocity += _GRAVITY * Time.deltaTime;
@@ -136,13 +140,23 @@ namespace Runner.Player
         private void OnDeath()
         {
             VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.Death);
+            EventManager.RaiseDeathEvent();
+            EventManager.RaiseStopRunEvent();
             animator.DeathAnimation();
+            
+            
         }
 
         private void OnHitHead(bool hasHit, bool hasGround)
         {
             if (!hasHit) return;
 
+            if (hasHit && hasGround && _currentState == EState.Normal)
+            {
+                hitEvent.RaiseEvent();
+                return;
+            }
+            
             if (hasGround)
             {
                 velocity = 0f;
@@ -165,11 +179,13 @@ namespace Runner.Player
             if (p_collider == null)
             {
                 isGrounded = false;
+                EventManager.RaiseStopRunEvent();
                 animator.FallAnimation();
             }
             else
             {
                 isGrounded = true;
+                EventManager.RaiseRunEvent();
                 EventManager.RaiseHitGroundEvent();
             }
 
@@ -186,7 +202,8 @@ namespace Runner.Player
                 }
                 else
                 {
-                    StartCoroutine(WaitOnGround());
+                    waitOnGroundRoutine = StartCoroutine(WaitOnGround());
+                    GameManager.Instance.coroutineStorage.AddRoutine(waitOnGroundRoutine);
                 }
             }
         }
@@ -196,6 +213,8 @@ namespace Runner.Player
         {
             yield return new WaitForSeconds(0.1f);
             HandleHitGround();
+            
+            GameManager.Instance.coroutineStorage.RemoveRoutine(waitOnGroundRoutine);
         }
 
         private void HandleHitGround()
@@ -270,12 +289,14 @@ namespace Runner.Player
                         if (step1) return;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Medium);
                         VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.JumpStep);
+                        EventManager.RaiseWinJumpStepEvent(0);
                         step1 = true;
                         break;
                     case 2:
                         if (step2) return;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Large);
                         VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.JumpStep, true);
+                        EventManager.RaiseWinJumpStepEvent(1);
                         step2 = true;
                         break;
                 }
@@ -286,6 +307,19 @@ namespace Runner.Player
         {
             if (_currentState == EState.Shrink)
             {
+                if (!step1 && !step2)
+                {
+                    EventManager.RaiseJumpStepEvent(0,transform.position);
+                }
+                else if (step1)
+                {
+                    EventManager.RaiseJumpStepEvent(1,transform.position);
+                }
+                else if (step2)
+                {
+                    EventManager.RaiseJumpStepEvent(2,transform.position);
+                }
+                
                 step1 = false;
                 if (step2)
                 {
@@ -319,7 +353,8 @@ namespace Runner.Player
                     _currentState = EState.Jump;
                     e_jumpType = EJumpType.Small;
                     Jump(jumpSteps[0].y);
-                    EventManager.RaiseJumpEvent(transform.position);
+                    EventManager.RaiseJumpStepEvent(0,transform.position);
+                    EventManager.RaiseStopRunEvent();
                     VFX_Event.RaiseEvent(baseVFX.position, VFX_Manager.EType.Jump);
                     return;
                 }
@@ -334,6 +369,7 @@ namespace Runner.Player
                     _currentState = EState.Dive;
 
                     EventManager.RaiseDiveEvent(transform.position);
+                    EventManager.RaiseStopRunEvent();
                     animator.DiveAnimation();
 
                     velocity = diveForce * _GRAVITY;
@@ -362,6 +398,7 @@ namespace Runner.Player
 
         private void Jump(float p_jumpHeight)
         {
+            EventManager.RaiseStopRunEvent();
             CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             animator.JumpAnimation();
 

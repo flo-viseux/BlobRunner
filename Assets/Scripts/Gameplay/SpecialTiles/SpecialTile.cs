@@ -17,7 +17,6 @@ public class SpecialTile : MonoBehaviour
             return;
 
         triggered = true;
-        Debug.LogWarning("Triggered");
         effect.Effect();
     }
 

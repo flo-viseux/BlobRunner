@@ -1,139 +1,63 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
-using Runner.Player;
-using Random = UnityEngine.Random;
+using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+
+public class AudioManager
 {
-    // public enum EType
-    // {
-    //     Small = 0,
-    //     Medium,
-    //     High,
-    //     HitGround
-    // }
-    //
-    // public enum ETypeDive
-    // {
-    //     Dive,
-    //     HitGround
-    // }
-
-    // [SerializeField] private SFX_EventSO SFX_Event;
-    //
-    // [Tooltip("Small, Medium, High")]
-    // [SerializeField] private AudioClip[] bounceSFX;
-    // [Tooltip("Small, Medium, High, HitGround")]
-    // [SerializeField] private AudioClip[] jumpSFX;
-    // [Tooltip("Dive, HitGround")]
-    // [SerializeField] private AudioClip[] diveSFX;
-    //
-    // [SerializeField] private AudioSource _source;
-    //
-    // private void OnEnable()
-    // {
-    //     SFX_Event.OnJumpEffectRaise += PlayJump;
-    //     SFX_Event.OnDiveEffectRaise += PlayDive;
-    // }
-    //
-    // private void OnDisable()
-    // {
-    //     SFX_Event.OnJumpEffectRaise -= PlayJump;
-    //     SFX_Event.OnDiveEffectRaise -= PlayDive;
-    // }
-    //
-    // private void PlayBounce(EType type)
-    // {
-    //     _source.PlayOneShot(bounceSFX[(int)type]);
-    // }
-    //
-    // private void PlayJump(EType type)
-    // {
-    //     _source.clip = jumpSFX[(int)type];
-    //     _source.PlayOneShot(jumpSFX[(int)type]);
-    // }
-    //
-    // private void PlayDive(ETypeDive type)
-    // {
-    //     _source.clip = diveSFX[(int)type];
-    //     _source.PlayOneShot(diveSFX[(int)type]);
-    // }
-
-    [SerializeField] private AudioSource _source;
-    [Header("SFX")]
-    [SerializeField] private AudioClip[] bounceClips;
-    [SerializeField] private AudioClip[] deathClips;
-    [SerializeField] private AudioClip[] diveClips;
-    [SerializeField] private AudioClip[] jumpClips;
-    [SerializeField] private AudioClip runClip;
-    [SerializeField] private AudioClip hitGroundClip;
-
-    private int bounceLength;
-    private int deathLength;
-    private int diveLength;
-    private int jumpLength;
+    public enum GroupType
+    {
+        Master,
+        Ambient,
+        SFX,
+    }
     
-    private void OnEnable()
+    private AudioMixer _mixer;
+    private string _parameter;
+    
+
+    public AudioManager(AudioMixer mixer)
     {
-        EventManager.RunEvent += PlayRun;
-        EventManager.BounceEvent += PlayBounce;
-        EventManager.DiveEvent += PlayDive;
-        EventManager.DeathEvent += PlayDeath;
-        EventManager.JumpEvent += PlayJump;
-        EventManager.HitGroundEvent += PlayHitGround;
+        _mixer = mixer;
     }
 
-    private void OnDisable()
+    private string GetMixerParam(GroupType type)
     {
-        EventManager.RunEvent -= PlayRun;
-        EventManager.BounceEvent -= PlayBounce;
-        EventManager.DiveEvent -= PlayDive;
-        EventManager.DeathEvent -= PlayDeath;
-        EventManager.JumpEvent -= PlayJump;
-        EventManager.HitGroundEvent -= PlayHitGround;
+        switch (type)
+        {
+            case GroupType.Master : return "Master_Volume";
+            case GroupType.Ambient : return "Ambiant_Volume";
+            case GroupType.SFX : return "SFX_Volume";
+            default: return "";
+        }
+    }
+    
+    public void ChangeVolume(GroupType paramType, float targetVolume, float duration)
+    {
+        _parameter = GetMixerParam(paramType);
+        _mixer.GetFloat(_parameter, out float currentVolume);
+        DOTween.To(GetCurrentVolume, SetCurrentVolume, targetVolume, duration);
     }
 
-    private void Start()
+    private float GetCurrentVolume()
     {
-        bounceLength = bounceClips.Length;
-        deathLength = deathClips.Length;
-        diveLength = diveClips.Length;
-        jumpLength = jumpClips.Length;
+        _mixer.GetFloat(_parameter, out float currentVolume);
+        return currentVolume;
     }
 
-    private void PlayRun()
+    private void SetCurrentVolume(float volume)
     {
-        _source.PlayOneShot(runClip);
+        _mixer.SetFloat(_parameter, volume);
     }
 
-    private void PlayBounce(Vector3 position)
+    public void SetParamVolume(GroupType paramType, float volume)
     {
-        AudioClip clip = bounceClips[Random.Range(0, bounceLength)];
-        _source.PlayOneShot(clip);
+        _mixer.SetFloat(GetMixerParam(paramType), volume);
     }
 
-    private void PlayDive(Vector3 position)
+    public bool IsParamPlaying(GroupType paramType)
     {
-        AudioClip clip = diveClips[Random.Range(0, diveLength)];
-        _source.PlayOneShot(clip);
-    }
-
-    private void PlayDeath()
-    {
-        AudioClip clip = deathClips[Random.Range(0, deathLength)];
-        _source.PlayOneShot(clip);
-    }
-
-    private void PlayJump(Vector3 position)
-    {
-        AudioClip clip = jumpClips[Random.Range(0, jumpLength)];
-        _source.PlayOneShot(clip);
-    }
-
-    private void PlayHitGround()
-    {
-        _source.PlayOneShot(hitGroundClip);
+       _mixer.GetFloat(GetMixerParam(paramType), out float currentVolume);
+       return currentVolume > -70f;
     }
 }

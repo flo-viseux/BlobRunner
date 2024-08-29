@@ -12,6 +12,6 @@ public class LevelMenuState : IGameBaseState
 
     public void OnExitState()
     {
-        UIManager.Instance.HideUIPanel(Status);
+        UIManager.Instance.HideUIPanel(Status, true, 0.3f,0.1f);
     }
 }

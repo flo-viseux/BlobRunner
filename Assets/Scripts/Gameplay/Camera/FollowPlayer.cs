@@ -12,7 +12,7 @@ public class FollowPlayer : MonoBehaviour
     private void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x,
-                                        Mathf.Max(player.position.y, yMin),
+                                        Mathf.Max(player.position.y + 5.2f, yMin),
                                         transform.position.z);
     }
     #endregion

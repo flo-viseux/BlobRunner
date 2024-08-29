@@ -1,14 +1,32 @@
-using System;
 using System.Collections;
+using GameManagement;
 using UnityEngine;
 using Runner.Player;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    private static GameManager _instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GameManager>();
+                if (_instance == null)
+                {
+                    Debug.LogError("Game manager not found : Persistant scene not loaded");
+                }
+            }
+
+            return _instance;
+        }
+    }
     
-    public GameStateMachine stateMachine;
+    private GameStateMachine stateMachine;
     private MenuState _menuState;
     private LevelMenuState _levelMenuState;
     private LoadState _loadState;
@@ -16,28 +34,33 @@ public class GameManager : MonoBehaviour
     private PauseState _pauseState;
     private WinState _winState;
     private LooseState _looseState;
-
+    
     public PlayerDatas playerDatas;
     public string gameSceneName;
     public int levelIndex;
 
     public bool wasPaused;
-    public float loadingTime = 0.1f;
+    public float loadingTime = 0.5f;
+    public bool isPause = false;
 
     [SerializeField] private SimpleEventSO hitObstacle;
     [SerializeField] private SimpleEventSO winEvent;
 
     [SerializeField] private SaveLevelScore saveLevelScore;
+    [SerializeField] private AudioMixer mixer;
 
+    private AudioManager _audioManager;
+    public CoroutineStorage coroutineStorage;
+    
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
         }
         else
         {
-            Instance = this;
+            _instance = this;
         }
     }
 
@@ -65,72 +88,91 @@ public class GameManager : MonoBehaviour
         stateMachine.OnChangeState(_menuState);
 
         wasPaused = false;
+        _audioManager = new AudioManager(mixer);
+        // no music in menu
+        _audioManager.SetParamVolume(AudioManager.GroupType.Ambient, -80f);
+        coroutineStorage = new CoroutineStorage(10);
     }
 
     
     private void LoseLife()
     {
         playerDatas.DecreaseHealth();
+        if (playerDatas.CurrentHealth <= 0)
+        {
+            GoToLoose();
+        }
     }
 
     public void SwitchState(GameStatus newGameStatus)
     {
         switch (newGameStatus)
         {
-            case GameStatus.MENU : stateMachine.OnChangeState(_menuState);
+            case GameStatus.MENU : 
+                stateMachine.OnChangeState(_menuState);
                 return;
-            case GameStatus.LEVELMENU: stateMachine.OnChangeState(_levelMenuState);
+            case GameStatus.LEVELMENU: 
+                stateMachine.OnChangeState(_levelMenuState);
                 return;
-            case GameStatus.RESTART:
-                saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
-                StartCoroutine(LoadScreen());
-                _gameState = new GameState(playerDatas, gameSceneName);
-                stateMachine.OnChangeState(_gameState);
-                return;
-            case GameStatus.PAUSE : stateMachine.OnChangeState(_pauseState);
+            case GameStatus.PAUSE : 
+                stateMachine.OnChangeState(_pauseState);
                 return;
             case GameStatus.GAME :
                 if (!wasPaused)
-                {
-                    StartCoroutine(LoadScreen());
                     _gameState = new GameState(playerDatas, gameSceneName);
-                }
                 stateMachine.OnChangeState(_gameState);
+                StartCoroutine(WaitBeforeStartSFXRoutine(0.3f));
                 return;
             case GameStatus.WIN :
                 saveLevelScore.OnVictory(levelIndex, playerDatas.CollectiblesCount, SectionGenerator.Instance.TotalCollectiblesCount);
                 stateMachine.OnChangeState(_winState);
+                if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+                    SceneManager.UnloadScene(gameSceneName);
                 return;
-            case GameStatus.LOOSE : stateMachine.OnChangeState(_looseState);
+            case GameStatus.LOOSE : 
                 saveLevelScore.OnGameOver(levelIndex, SectionGenerator.Instance.TotalCollectiblesCount);
-                StartCoroutine(LoadScreen());
-                _gameState = new GameState(playerDatas, gameSceneName);
-                stateMachine.OnChangeState(_gameState);
+                stateMachine.OnChangeState(_looseState);
+                if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+                    SceneManager.UnloadScene(gameSceneName);
+                //SwitchState(GameStatus.LOAD);
+                return;
+            case GameStatus.LOAD :
+                _loadState = new LoadState(gameSceneName, loadingTime);
+                stateMachine.OnChangeState(_loadState);
+                StartCoroutine(LoadUpdate(_loadState));
                 return;
             default: return;
         }
     }
-    
-    private IEnumerator LoadScreen()
+
+    private IEnumerator LoadUpdate(LoadState state)
     {
-        UIManager.Instance.ShowUIPanel(GameStatus.LOAD);
-        AsyncOperation async = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Additive);
+        // audio : mute sfx, 
+        mixer.SetFloat("SFX_Volume", -80f);
         
-        float startLoadingTime = Time.time;
-        
-        while (!async.isDone) yield return null;
-        
-        // Make sure the load screen doesn't flash if the loading is fast, wait 0.5s
-        float loadedTime = Time.time - startLoadingTime;
-        if (loadedTime < loadingTime)
+        // if ambiant music is mute, comes from menu, unmute music for game
+        if (!_audioManager.IsParamPlaying(AudioManager.GroupType.Ambient))
         {
-            yield return new WaitForSeconds(loadingTime - loadedTime);
-            // TODO : prevent game to start while loading panel isn't hidden
+            _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -5f, 0.8f);
         }
+        
+        // unload - load scene
+        yield return new WaitForSeconds(0.5f);
 
-        UIManager.Instance.HideUIPanel(GameStatus.LOAD);
+        // if (coroutineStorage.Length != 0)
+        // {
+        //     for (int i = 0; i < coroutineStorage.Length; i++)
+        //     {
+        //         StopCoroutine(coroutineStorage.GameRoutines[i]);
+        //     }
+        //     coroutineStorage.ClearRoutines();
+        // }
+        
+        yield return StartCoroutine(state.UnloadScene());
+        yield return StartCoroutine(state.LoadScene());
+        
+        SwitchState(GameStatus.GAME);
     }
-
 
     public void SetWasPaused(bool value)
     {
@@ -140,7 +182,6 @@ public class GameManager : MonoBehaviour
     public IEnumerator SetWasPausedCoroutine(bool value)
     {
         yield return null;
-
         wasPaused = value;
     }
 
@@ -148,15 +189,13 @@ public class GameManager : MonoBehaviour
 
     public void GoToMenu()
     {
-        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
-            SceneManager.UnloadScene(gameSceneName);
-        wasPaused = false;
-        SwitchState(GameStatus.MENU);
+        StartCoroutine(WaitBeforeGoToMenu(0.3f));
     }
 
     public void GoToLevelMenu()
     {
-        SwitchState(GameStatus.LEVELMENU);
+        //StartCoroutine(WaitBeforeLevelRoutine(0.3f));
+        StartCoroutine(WaitBeforeRoutine(0.3f, GameStatus.LEVELMENU));
     }
 
     public void GoToPause()
@@ -164,17 +203,26 @@ public class GameManager : MonoBehaviour
         wasPaused = true;
         SwitchState(GameStatus.PAUSE);
     }
+
+    public void Resume()
+    {
+        //StartCoroutine(WaitBeforeResumeRoutine(0.2f));
+        StartCoroutine(WaitBeforeRoutine(0.2f, GameStatus.GAME));
+        //SwitchState(GameStatus.GAME);
+    }
+    
     public void Restart()
     {
-        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
-            SceneManager.UnloadScene(gameSceneName);
         wasPaused = false;
-        SwitchState(GameStatus.RESTART);
+        //StartCoroutine(WaitBeforeGameRoutine(0.2f));
+        StartCoroutine(WaitBeforeRoutine(0.2f, GameStatus.LOAD));
+        //SwitchState(GameStatus.LOAD);
     }
 
     public void GoToGame()
     {
-        SwitchState(GameStatus.GAME);
+        //StartCoroutine(WaitBeforeGameRoutine(0.5f));
+        StartCoroutine(WaitBeforeRoutine(0.5f, GameStatus.LOAD));
     }
 
     public void GoToWin()
@@ -191,16 +239,77 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
     #endregion
+    
+    #region Wait Routine
+
+    private IEnumerator WaitBeforeGoToMenu(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if (SceneManager.GetSceneByName(gameSceneName).isLoaded)
+            SceneManager.UnloadScene(gameSceneName);
+        wasPaused = false;
+        _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -80f, 0.2f);
+        SwitchState(GameStatus.MENU);
+    }
 
     private IEnumerator WaitBeforeLooseRoutine(float time)
     {
+        SectionGenerator.Instance.Scrolling = false;
         yield return new WaitForSeconds(time);
+        if (coroutineStorage.Length != 0)
+        {
+            for (int i = 0; i < coroutineStorage.Length; i++)
+            {
+                StopCoroutine(coroutineStorage.GameRoutines[i]);
+            }
+            coroutineStorage.ClearRoutines();
+        }
         SwitchState(GameStatus.LOOSE);
     }
 
     private IEnumerator WaitBeforeWinRoutine(float time)
     {
+        SectionGenerator.Instance.Scrolling = false;
         yield return new WaitForSeconds(time);
+        if (coroutineStorage.Length != 0)
+        {
+            for (int i = 0; i < coroutineStorage.Length; i++)
+            {
+                StopCoroutine(coroutineStorage.GameRoutines[i]);
+            }
+            coroutineStorage.ClearRoutines();
+        }
         SwitchState(GameStatus.WIN);
     }
+    
+    // private IEnumerator WaitBeforeLevelRoutine(float time)
+    // {
+    //     yield return new WaitForSeconds(time);
+    //     SwitchState(GameStatus.LEVELMENU);
+    // }
+    
+    // private IEnumerator WaitBeforeGameRoutine(float time)
+    // {
+    //     yield return new WaitForSeconds(time);
+    //     SwitchState(GameStatus.LOAD);
+    // }
+    
+    // private IEnumerator WaitBeforeResumeRoutine(float time)
+    // {
+    //     yield return new WaitForSeconds(time);
+    //     SwitchState(GameStatus.GAME);
+    // }
+
+    private IEnumerator WaitBeforeRoutine(float time, GameStatus status)
+    {
+        yield return new WaitForSeconds(time);
+        SwitchState(status);
+    }
+
+    private IEnumerator WaitBeforeStartSFXRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        mixer.SetFloat("SFX_Volume", 0f);
+    }
+    #endregion
 }
