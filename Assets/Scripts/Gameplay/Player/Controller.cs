@@ -20,47 +20,46 @@ namespace Runner.Player
             High,
             None
         }
-        
+
         private InputManager _input;
         [SerializeField] private GroundCheck groundComp;
         [SerializeField] private JumpBuffer jumpBufferComp;
         [SerializeField] private Player3DAnimator animator;
-        
-        // [Header("Shrink")] 
-        // [SerializeField] private Transform _spriteTransform;
-        // [SerializeField] private float  shrinkSize;
-        // [SerializeField]private float coefSize = 2f;
 
-        [Header("Jump")] 
+        [Header("Jump")]
         [SerializeField] private float gravity = 5f;
         [SerializeField] private Vector2[] jumpSteps;
-        
-        [Header("Dive")] 
+
+        [Header("Dive")]
         [SerializeField] private float diveForce = 1f;
 
-        [Header("Events")] 
+        [Header("VFX transform")]
+        [SerializeField] private Transform baseVFX;
+        [SerializeField] private Transform centerVFX;
+
+        [Header("Events")]
         [SerializeField] private VFX_EventSO VFX_Event;
         [SerializeField] private SFX_EventSO SFX_Event;
         [SerializeField] private SliderEventSO sliderEvent;
+        [SerializeField] private SimpleEventSO hitEvent;
+        [SerializeField] private SimpleEventSO winEvent;
 
-        
+
         private float transformX;
         private float velocity;
-        
+
         // State
         private static EState _currentState = EState.Normal;
         public static EState GetCurrentState() => _currentState;
-        
+
         // Ground
         private bool isGrounded;
-        private Vector2 surface;
-        
+
         // Shrink
         private float _startHoldTime;
         private float _currentHoldTime;
         private float _durationHoldTime;
-        private Vector3 originalScale;
-        
+
         // Jump
         private float _GRAVITY;
         private EJumpType e_jumpType;
@@ -68,16 +67,8 @@ namespace Runner.Player
         private bool allowJump;
 
         public EJumpType GetJumpType() => e_jumpType;
-        
-        // #region Events
-        // // animator
-        // public event Action Jumped;
-        // public event Action Run;
-        // public event Action<bool, float> GroundChange;
-        // #endregion
 
-        private Vector3 shrinkScaleTarget;
-        
+
         private void Awake()
         {
             _input = GetComponent<InputManager>();
@@ -85,27 +76,25 @@ namespace Runner.Player
 
         private void Start()
         {
-            // originalScale = _spriteTransform.localScale;
-            // shrinkScaleTarget = originalScale / coefSize;
-            
+
             transformX = transform.position.x;
             isGrounded = false;
-            
+
             e_jumpType = EJumpType.None;
             allowJump = false;
             sliderEvent.RaiseInitEvent(jumpSteps[2].x);
-            
+
             _GRAVITY = Physics2D.gravity.y * gravity;
 
         }
 
-        
+
         private void Update()
         {
             if (!isGrounded)
             {
                 velocity += _GRAVITY * Time.deltaTime;
-                transform.Translate(new Vector2(0,velocity)*Time.deltaTime);
+                transform.Translate(new Vector2(0, velocity) * Time.deltaTime);
             }
         }
 
@@ -119,6 +108,9 @@ namespace Runner.Player
             groundComp.OnGround += OnGround;
             groundComp.OnHitHead += OnHitHead;
             jumpBufferComp.OnJumpBuffer += OnAllowJump;
+
+            winEvent.OnEventRaised += OnWin;
+            hitEvent.OnEventRaised += OnDeath;
         }
 
         private void OnDisable()
@@ -127,22 +119,36 @@ namespace Runner.Player
             _input.OnHold -= HoldShrink;
             _input.OnEndTouch -= OnEndShrink;
             _input.OnTap -= OnJump;
-            
+
             groundComp.OnGround -= OnGround;
             groundComp.OnHitHead -= OnHitHead;
             jumpBufferComp.OnJumpBuffer -= OnAllowJump;
+
+            winEvent.OnEventRaised -= OnWin;
+            hitEvent.OnEventRaised -= OnDeath;
+        }
+
+        private void OnWin()
+        {
+            VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.Victory);
+        }
+
+        private void OnDeath()
+        {
+            VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.Death);
+            animator.DeathAnimation();
         }
 
         private void OnHitHead(bool hasHit, bool hasGround)
         {
             if (!hasHit) return;
-            
+
             if (hasGround)
             {
                 velocity = 0f;
                 return;
             }
-            
+
             if (!isGrounded && velocity > 0)
             {
                 EventManager.RaiseHitHeadEvent();
@@ -165,25 +171,15 @@ namespace Runner.Player
             {
                 isGrounded = true;
                 EventManager.RaiseHitGroundEvent();
-                
-                // // Play SFX
-                // if (_currentState == EState.Jump)
-                // {
-                //     SFX_Event.RaiseJumpEvent(AudioManager.EType.HitGround);
-                // }
-                // else if (_currentState == EState.Dive)
-                // {
-                //     SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.HitGround);
-                // }
-            }    
-            
+            }
+
             if (isOnGround)
             {
                 float surface = p_collider.bounds.max.y;
                 transform.position = new Vector2(transformX, surface);
-                
+
                 animator.LandingAnimation();
-                
+
                 if (hasTap)
                 {
                     HandleHitGround();
@@ -195,7 +191,7 @@ namespace Runner.Player
             }
         }
 
-        
+
         private IEnumerator WaitOnGround()
         {
             yield return new WaitForSeconds(0.1f);
@@ -216,43 +212,40 @@ namespace Runner.Player
                     {
                         _currentState = EState.Jump;
                     }
-                    
-                    
+
+
                     int index = (int)e_jumpType;
                     Jump(jumpSteps[index].y);
-                    
+
                     EventManager.RaiseBounceEvent(transform.position);
-                    
-                    VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Bounce);
+
+                    VFX_Event.RaiseEvent(baseVFX.position, VFX_Manager.EType.Bounce);
                 }
-                else 
+                else
                 {
                     _currentState = EState.Normal;
                     e_jumpType = EJumpType.None;
                     velocity = 0f;
-                    
+
                     EventManager.RaiseRunEvent();
                 }
                 allowJump = false;
                 hasTap = false;
             }
-            //
-            // // animation
-            // GroundChange?.Invoke(true, 0f);
         }
 
         #region Shrink
 
-        private Coroutine scaleCoroutine = null;
-        
+        private bool step1 = false;
+        private bool step2 = false;
+
         private void OnStartShrink(float time)
         {
             if (_currentState == EState.Normal && isGrounded)
             {
                 _startHoldTime = time;
                 _currentState = EState.Shrink;
-                //if (scaleCoroutine == null) 
-                    //scaleCoroutine = StartCoroutine(ResizeCoroutine(originalScale, shrinkScaleTarget, jumpSteps[0].x));
+
                 EventManager.RaiseShrinkEvent();
                 animator.ShrinkAnimation();
             }
@@ -265,7 +258,7 @@ namespace Runner.Player
                 _currentHoldTime = time - _startHoldTime;
 
                 sliderEvent.RaiseUpdateEvent(_currentHoldTime);
-                
+
                 int jumpHeight = GetJumpIndexFromTime(_currentHoldTime);
 
                 switch (jumpHeight)
@@ -274,10 +267,16 @@ namespace Runner.Player
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
                         break;
                     case 1:
+                        if (step1) return;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Medium);
+                        VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.JumpStep);
+                        step1 = true;
                         break;
                     case 2:
+                        if (step2) return;
                         CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Large);
+                        VFX_Event.RaiseEvent(centerVFX.position, VFX_Manager.EType.JumpStep, true);
+                        step2 = true;
                         break;
                 }
             }
@@ -287,40 +286,29 @@ namespace Runner.Player
         {
             if (_currentState == EState.Shrink)
             {
+                step1 = false;
+                if (step2)
+                {
+                    VFX_Event.RaiseStopLoop(VFX_Manager.EType.JumpStep);
+                    step2 = false;
+                }
+
                 EventManager.RaiseEndShrinkEvent();
                 animator.EndShrinkAnimation();
-                
-                // if (scaleCoroutine != null)
-                // {
-                //     StopCoroutine(scaleCoroutine);
-                //     scaleCoroutine = null;
-                // }
-                // StartCoroutine(ResizeCoroutine(_spriteTransform.localScale, originalScale, 0.3f));
-                
+
                 _currentState = EState.Jump;
                 _durationHoldTime = time - _startHoldTime;
-                
+
                 sliderEvent.RaiseResetEvent();
-                
+
                 float jumpHeight = GetJumpHeight(_durationHoldTime);
                 Jump(jumpHeight);
+                VFX_Event.RaiseEvent(baseVFX.position, VFX_Manager.EType.Jump);
             }
         }
-        
-        // private IEnumerator ResizeCoroutine(Vector3 startSize, Vector3 endSize, float duration)
-        // {
-        //     float time = 0f;
-        //
-        //     while (time < duration)
-        //     {
-        //         _spriteTransform.localScale = Vector3.Lerp(startSize, endSize, time / duration);
-        //         time += Time.deltaTime;
-        //         yield return null;
-        //     }
-        //     _spriteTransform.localScale = endSize;
-        // }
+
         #endregion
-        
+
         // Input Jump
         private void OnJump()
         {
@@ -332,6 +320,7 @@ namespace Runner.Player
                     e_jumpType = EJumpType.Small;
                     Jump(jumpSteps[0].y);
                     EventManager.RaiseJumpEvent(transform.position);
+                    VFX_Event.RaiseEvent(baseVFX.position, VFX_Manager.EType.Jump);
                     return;
                 }
             }
@@ -343,16 +332,14 @@ namespace Runner.Player
                 if (!allowJump && !isGrounded)
                 {
                     _currentState = EState.Dive;
-                    
+
                     EventManager.RaiseDiveEvent(transform.position);
                     animator.DiveAnimation();
-                    
+
                     velocity = diveForce * _GRAVITY;
                     hasTap = false;
-                    
-                    VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Dive);
-                    //SFX_Event.RaiseDiveEvent(AudioManager.ETypeDive.Dive);
 
+                    VFX_Event.RaiseEvent(transform.position, VFX_Manager.EType.Dive);
                 }
             }
         }
@@ -367,8 +354,8 @@ namespace Runner.Player
                 case EJumpType.Small:
                     e_jumpType = EJumpType.Medium;
                     return;
-                default: 
-                    e_jumpType = EJumpType.High; 
+                default:
+                    e_jumpType = EJumpType.High;
                     return;
             }
         }
@@ -377,10 +364,7 @@ namespace Runner.Player
         {
             CameraSwitcher.Instance.SwitchCamera(CameraSwitcher.CameraState.Default);
             animator.JumpAnimation();
-            //StartCoroutine(TimerLaunchAnimJump(0.2f));
-            
-            //SFX_Event.RaiseJumpEvent(AudioManager.EType.Small);
-            
+
             isGrounded = false;
             velocity = Mathf.Sqrt(p_jumpHeight * -2 * _GRAVITY);
         }
@@ -389,10 +373,10 @@ namespace Runner.Player
         {
             int index = GetJumpIndexFromTime(duration);
             e_jumpType = (EJumpType)index;
-            
+
             return jumpSteps[index].y;
         }
-        
+
         private int GetJumpIndexFromTime(float t)
         {
             int length = jumpSteps.Length;
@@ -408,21 +392,5 @@ namespace Runner.Player
             return 0;
         }
 
-        // #region Timers for animations
-        // private IEnumerator TimerLaunchAnimJump(float seconds)
-        // {
-        //     GroundChange?.Invoke(false, velocity);
-        //     yield return new WaitForSeconds(seconds);
-        //     Jumped?.Invoke();
-        //     groundComp.ChangeWasOnGround(false);
-        // }
-        //
-        // private IEnumerator TimerRun(float seconds)
-        // {
-        //     yield return new WaitForSeconds(seconds);
-        //     Run?.Invoke();
-        // }
-        // #endregion
-        
     }
 }

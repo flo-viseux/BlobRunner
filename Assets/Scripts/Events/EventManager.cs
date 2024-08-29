@@ -12,6 +12,7 @@ public static class EventManager
     public static event Action ShrinkEvent;
     public static event Action EndShrinkEvent;
     public static event Action<Vector3> JumpEvent;
+    public static event Action<Vector3> JumpStepEvent;
     public static event Action<Vector3> DiveEvent;
     public static event Action DeathEvent;
  
@@ -22,6 +23,7 @@ public static class EventManager
     public static void RaiseShrinkEvent() => ShrinkEvent?.Invoke();
     public static void RaiseEndShrinkEvent() => EndShrinkEvent?.Invoke();
     public static void RaiseJumpEvent(Vector3 position) => JumpEvent?.Invoke(position);
+    public static void RaiseJumpStepEvent(Vector3 position) => JumpStepEvent?.Invoke(position);
     public static void RaiseDiveEvent(Vector3 position) => DiveEvent?.Invoke(position);
     public static void RaiseDeathEvent() => DeathEvent?.Invoke();
 }

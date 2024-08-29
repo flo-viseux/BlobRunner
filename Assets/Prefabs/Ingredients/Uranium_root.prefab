@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 1000
+  VFX_Event: {fileID: 11400000, guid: 0bc83a3969a0f564284166a0a401b161, type: 2}
 --- !u!95 &4184704539971927512
 Animator:
   serializedVersion: 5

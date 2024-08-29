@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using UnityEngine;
 
 
@@ -12,7 +13,7 @@ namespace Runner.Player
         [SerializeField] private int MaxHealth = 1;
         [HideInInspector] public int CurrentHealth;
 
-        [SerializeField] private  float StartSpeed = 5f;
+        [SerializeField] private float StartSpeed = 5f;
         [HideInInspector] public float CurrentSpeed;
 
         private int collectiblesCount;
@@ -39,19 +40,19 @@ namespace Runner.Player
             OnCollectiblesChange?.Invoke(collectiblesCount);
         }
 
-        public void ResetSpeed()
-        {
-            CurrentSpeed = StartSpeed;
-        }
+        //public void ResetSpeed()
+        //{
+        //    CurrentSpeed = StartSpeed;
+        //}
 
-        public void IncreaseSpeed(float value)
-        {
-            CurrentSpeed += value;
-        }
+        //public void IncreaseSpeed(float value)
+        //{
+        //    CurrentSpeed += value;
+        //}
 
         public void IncreaseHealth()
         {
-            CurrentHealth ++;
+            CurrentHealth++;
         }
 
         public void DecreaseHealth()
@@ -59,9 +60,12 @@ namespace Runner.Player
             CurrentHealth--;
 
             if (CurrentHealth <= 0)
+            {
                 GameManager.Instance.GoToLoose();
-            else
-                DecreaseScore();
+            }
+            //else
+            //    DecreaseScore();
         }
+
     }
 }
