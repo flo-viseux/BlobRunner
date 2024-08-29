@@ -103,42 +103,42 @@ MonoBehaviour:
   potentialSections:
   - section: {fileID: 11400000, guid: e3fd7b92ae1db8b47902beca5427ebd2, type: 2}
     weight: 1
-    cdDuration: 1
+    cdDuration: 2
     curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
-        inSlope: -1.034474
-        outSlope: -1.034474
+        value: 0
+        inSlope: 1
+        outSlope: 1
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.33333334
+        outWeight: 0
       - serializedVersion: 3
-        time: 0.9666748
-        value: 0
-        inSlope: -1.034474
-        outSlope: -1.034474
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
         tangentMode: 34
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
   - section: {fileID: 11400000, guid: 493ed440301040c45a23100f6f1a24c8, type: 2}
     weight: 1
-    cdDuration: 1
+    cdDuration: 2
     curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
@@ -146,36 +146,36 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: 1
+        outSlope: 1
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0
-      m_PreInfinity: 0
-      m_PostInfinity: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
       m_RotationOrder: 4
   - section: {fileID: 11400000, guid: 07881637ebcf54d43a3e80abc906bc97, type: 2}
     weight: 1
-    cdDuration: 1
+    cdDuration: 2
     curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 34
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -184,25 +184,25 @@ MonoBehaviour:
       m_RotationOrder: 4
   - section: {fileID: 11400000, guid: e0ac6f850d7a90044aa3f950bd8bd6fa, type: 2}
     weight: 1
-    cdDuration: 1
+    cdDuration: 2
     curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 34
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -211,25 +211,25 @@ MonoBehaviour:
       m_RotationOrder: 4
   - section: {fileID: 11400000, guid: d8731fbd0da893d47b08aa1ee1d5daeb, type: 2}
     weight: 1
-    cdDuration: 1
+    cdDuration: 2
     curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 34
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -244,19 +244,19 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 34
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -271,19 +271,19 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 34
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -298,19 +298,19 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 34
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -325,19 +325,19 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 34
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -696,8 +696,8 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   - section: {fileID: 11400000, guid: ed1c3a22e1e50bc47959e9bebc9f1993, type: 2}
-    weight: 1
-    cdDuration: 2
+    weight: 100
+    cdDuration: 4
     curve:
       serializedVersion: 2
       m_Curve:

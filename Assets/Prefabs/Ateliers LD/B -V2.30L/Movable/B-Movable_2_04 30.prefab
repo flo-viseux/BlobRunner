@@ -3798,8 +3798,16 @@ PrefabInstance:
       value: ObstacleMovableHorizontal Variant (6)
       objectReference: {fileID: 0}
     - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: maxX
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: minX
       value: 29.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: offset
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8349817918591902534, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: m_LocalScale.x
@@ -4248,8 +4256,16 @@ PrefabInstance:
       value: ObstacleMovableHorizontal Variant (5)
       objectReference: {fileID: 0}
     - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: maxX
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: minX
       value: 19.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: offset
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8349817918591902534, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: m_LocalScale.x
@@ -4322,8 +4338,16 @@ PrefabInstance:
       value: ObstacleMovableHorizontal Variant (4)
       objectReference: {fileID: 0}
     - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: maxX
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: minX
       value: 29.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: offset
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8349817918591902534, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: m_LocalScale.x
@@ -4547,8 +4571,16 @@ PrefabInstance:
       value: ObstacleMovableHorizontal Variant (3)
       objectReference: {fileID: 0}
     - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: maxX
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: minX
       value: 19.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936261216640379797, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: offset
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8349817918591902534, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: m_LocalScale.x
