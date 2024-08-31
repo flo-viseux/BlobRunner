@@ -669,6 +669,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   sectionRepetitionConstraints: []
-  levelWidth: 50
+  levelWidth: 300
   offset: 20
   WinEvent: {fileID: 11400000, guid: 5b99ab304e4c0ee48b8db7ebee13feb2, type: 2}
