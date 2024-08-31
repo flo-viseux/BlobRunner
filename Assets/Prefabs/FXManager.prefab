@@ -89,5 +89,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b132c135c2631f940b77077bbe673c07, type: 3}
   - {fileID: 8300000, guid: 52aa1b065132d5146bdaa7d9dac5fad3, type: 3}
   runClip: {fileID: 8300000, guid: e974ecfe0ec3e6b4097e64faf4b4cfe6, type: 3}
-  shrinkClip: {fileID: 8300000, guid: 836f5e1197f82a245b561745691f406c, type: 3}
+  shrinkClip: {fileID: 8300000, guid: 23d464700327087479d3e07ed902c5e1, type: 3}
   hitGroundClip: {fileID: 8300000, guid: f9d59b90c1362194a8696eabb7a79591, type: 3}
