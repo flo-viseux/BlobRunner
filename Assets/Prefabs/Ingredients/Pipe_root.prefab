@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1449505278269897502}
   - component: {fileID: 8522029234276157318}
   - component: {fileID: 4952643577010583}
+  - component: {fileID: -8744839287333952427}
   m_Layer: 0
   m_Name: Pipe_root
   m_TagString: Obstacles
@@ -98,7 +99,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 6926033740318394024, guid: 4674f90389ce69a4baa33a8ae60ad5c2, type: 2}
   m_audioClip: {fileID: 8300000, guid: 8d809bbef1a8edb41afa4569bf67bd15, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -248,6 +249,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourceForStart: {fileID: 0}
   isTruck: 0
+  truckClips: []
+--- !u!114 &-8744839287333952427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779024726979757206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c05477f98f00d42a447fe00fe5031d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _source: {fileID: 1449505278269897502}
 --- !u!1001 &328017214688723497
 PrefabInstance:
   m_ObjectHideFlags: 0
