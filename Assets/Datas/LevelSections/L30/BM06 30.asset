@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9dd0943d1b32840992ae5254102184, type: 3}
   m_Name: BM06 30
   m_EditorClassIdentifier: 
-  geometry: {fileID: 7953173042517008191, guid: 231ef4a8b46b8ae45aaf7ef9ccb7c7bb, type: 3}
+  geometry: {fileID: 7953173042517008191, guid: 075bae1e55df7124593f43649b21df5d, type: 3}
