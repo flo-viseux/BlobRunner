@@ -2132,6 +2132,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6972435947509093713}
     m_Modifications:
+    - target: {fileID: 426149222303200328, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
+      propertyPath: m_Color.a
+      value: 0.4392157
+      objectReference: {fileID: 0}
     - target: {fileID: 2916366415000834732, guid: b11b22f01055a134e9c22f9a230b2bf6, type: 3}
       propertyPath: m_Name
       value: ObstacleMovableHorizontal Variant (1)
