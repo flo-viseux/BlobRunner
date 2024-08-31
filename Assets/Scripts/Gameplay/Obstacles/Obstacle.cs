@@ -22,12 +22,12 @@ public class Obstacle : MonoBehaviour
             if (hit != null && hit.collider != null && hit.collider.CompareTag("walkableObstacle"))
             {
                 Vector2 normal = hit.normal;
-                Debug.Log($"normal : {normal}");
-                if (Vector3.Dot(normal, Vector3.down) > 0.7f)
-                {
-                    Debug.Log("Touching down the ground");
-                    
-                }
+                // Debug.Log($"normal : {normal}");
+                // if (Vector3.Dot(normal, Vector3.down) > 0.7f)
+                // {
+                //     Debug.Log("Touching down the ground");
+                //     
+                // }
 
                 if (Vector3.Dot(normal, Vector3.up) > 0.7f)
                 {
@@ -35,15 +35,15 @@ public class Obstacle : MonoBehaviour
                     return;
                 }
 
-                else if (Vector3.Dot(normal, Vector3.left) > 0.7f)
-                {
-                    Debug.Log("Touching the left side");
-                }
-
-                else if (Vector3.Dot(normal, Vector3.right) > 0.7f)
-                {
-                    Debug.Log("Touching the right side");
-                }
+                // else if (Vector3.Dot(normal, Vector3.left) > 0.7f)
+                // {
+                //     Debug.Log("Touching the left side");
+                // }
+                //
+                // else if (Vector3.Dot(normal, Vector3.right) > 0.7f)
+                // {
+                //     Debug.Log("Touching the right side");
+                // }
 
                 HitObstacle.RaiseEvent();
             }
