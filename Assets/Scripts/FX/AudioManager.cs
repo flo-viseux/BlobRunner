@@ -10,6 +10,7 @@ public class AudioManager
         Master,
         Ambient,
         SFX,
+        UI,
     }
     
     private AudioMixer _mixer;
@@ -28,6 +29,7 @@ public class AudioManager
             case GroupType.Master : return "Master_Volume";
             case GroupType.Ambient : return "Ambiant_Volume";
             case GroupType.SFX : return "SFX_Volume";
+            case GroupType.UI : return "UI_SFX_Volume";
             default: return "";
         }
     }
