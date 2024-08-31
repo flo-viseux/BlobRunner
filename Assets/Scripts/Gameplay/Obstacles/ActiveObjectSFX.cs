@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Gameplay.Obstacles
 {
@@ -8,7 +9,9 @@ namespace Gameplay.Obstacles
     {
         private AudioSource _source;
         [SerializeField] private AudioSource sourceForStart;
+        [Header("Truck")]
         [SerializeField] private bool isTruck = false;
+        [SerializeField] private AudioClip[] truckClips;
 
         private void Awake()
         {
@@ -17,9 +20,11 @@ namespace Gameplay.Obstacles
 
         private void OnEnable()
         {
-            if (isTruck && sourceForStart != null)
+            if (isTruck && sourceForStart != null && truckClips.Length != 0)
             {
-                sourceForStart.PlayOneShot(sourceForStart.clip);
+                int rand = Random.Range(0, truckClips.Length);
+                AudioClip clip = truckClips[rand];
+                sourceForStart.PlayOneShot(clip);
             }
             _source.Play();
         }

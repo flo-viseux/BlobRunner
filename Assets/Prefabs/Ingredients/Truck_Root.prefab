@@ -305,6 +305,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourceForStart: {fileID: 7068378264811744431}
   isTruck: 1
+  truckClips:
+  - {fileID: 8300000, guid: 9fe9c53f0d37c9f4da89c7dcc3a37010, type: 3}
+  - {fileID: 8300000, guid: ad04779d65f4b5342a54d6a33cd648a5, type: 3}
+  - {fileID: 8300000, guid: 64d0b10e340b1e947ae9c7f2da2fd14f, type: 3}
 --- !u!1001 &442128155381122477
 PrefabInstance:
   m_ObjectHideFlags: 0
