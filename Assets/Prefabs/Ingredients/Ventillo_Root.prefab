@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8446889032199666038}
   - component: {fileID: -6790899082791354679}
   - component: {fileID: -6464206895771080775}
+  - component: {fileID: -3319204903989018400}
   m_Layer: 0
   m_Name: Ventillo_Root
   m_TagString: Untagged
@@ -47,7 +48,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 6926033740318394024, guid: 4674f90389ce69a4baa33a8ae60ad5c2, type: 2}
   m_audioClip: {fileID: 8300000, guid: 6f4b3eee53abcc340a85c68fdccb818d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -56,7 +57,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 10
-  MaxDistance: 20
+  MaxDistance: 25
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -197,6 +198,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourceForStart: {fileID: 0}
   isTruck: 0
+  truckClips: []
+--- !u!114 &-3319204903989018400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2392197575124609006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c05477f98f00d42a447fe00fe5031d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _source: {fileID: 8446889032199666038}
 --- !u!1001 &8543710883643486799
 PrefabInstance:
   m_ObjectHideFlags: 0

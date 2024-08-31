@@ -47,7 +47,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SimpleEventSO winEvent;
 
     [SerializeField] private SaveLevelScore saveLevelScore;
+    [Header("Audio")]
     [SerializeField] private AudioMixer mixer;
+    [SerializeField] private float sfxMaxVolume = 0f;
+    [SerializeField] private float ambiantMaxVolume = -5f;
+    [SerializeField] private float uiMaxVolume = -5f;
 
     private AudioManager _audioManager;
     public CoroutineStorage coroutineStorage;
@@ -91,6 +95,7 @@ public class GameManager : MonoBehaviour
         _audioManager = new AudioManager(mixer);
         // no music in menu
         _audioManager.SetParamVolume(AudioManager.GroupType.Ambient, -80f);
+        _audioManager.SetParamVolume(AudioManager.GroupType.UI, uiMaxVolume);
         coroutineStorage = new CoroutineStorage(10);
     }
 
@@ -148,12 +153,12 @@ public class GameManager : MonoBehaviour
     private IEnumerator LoadUpdate(LoadState state)
     {
         // audio : mute sfx, 
-        mixer.SetFloat("SFX_Volume", -80f);
+        _audioManager.SetParamVolume(AudioManager.GroupType.SFX, -80f);
         
         // if ambiant music is mute, comes from menu, unmute music for game
         if (!_audioManager.IsParamPlaying(AudioManager.GroupType.Ambient))
         {
-            _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, -5f, 0.8f);
+            _audioManager.ChangeVolume(AudioManager.GroupType.Ambient, ambiantMaxVolume, 0.8f);
         }
         
         // unload - load scene
@@ -309,7 +314,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaitBeforeStartSFXRoutine(float time)
     {
         yield return new WaitForSeconds(time);
-        mixer.SetFloat("SFX_Volume", 0f);
+        _audioManager.SetParamVolume(AudioManager.GroupType.SFX, sfxMaxVolume);
     }
     #endregion
 }
