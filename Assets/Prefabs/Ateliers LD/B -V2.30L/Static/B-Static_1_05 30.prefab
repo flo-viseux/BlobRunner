@@ -6565,6 +6565,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BreakableGlass (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4603109709672306222, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9019702364727268103, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
       propertyPath: m_LocalScale.x
       value: 4
