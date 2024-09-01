@@ -7,7 +7,7 @@ public class BreakableGlassEffect : SpecialTileEffect
     #region SerializedFields
     [SerializeField] private Collider2D collider;
 
-    [SerializeField] private BreakableGlassRenderer renderer;
+    //[SerializeField] private BreakableGlassRenderer renderer;
     [SerializeField] private ParticleSystem breakGlassVFXprefab;
     #endregion
 
@@ -29,7 +29,7 @@ public class BreakableGlassEffect : SpecialTileEffect
     public override void Rebind()
     {
         collider.enabled = true;
-        renderer.Init();
+        //GetComponent<Renderer>().Init();
     }
 
     public override void Effect()
@@ -39,7 +39,7 @@ public class BreakableGlassEffect : SpecialTileEffect
             return;
 
         collider.enabled = false;
-        renderer.Triggered();
+        //GetComponent<Renderer>().Triggered();
         if (_source != null) _source.PlayOneShot(_source.clip);
         breakGlassVFX.Play();
     }

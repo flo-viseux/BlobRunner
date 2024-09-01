@@ -85,12 +85,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1637963969972147316, guid: b02ead02271812b4483410755d58c3b8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9018835001618417047}
-    - targetCorrespondingSourceObject: {fileID: 4704650371129617218, guid: b02ead02271812b4483410755d58c3b8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 553504568839741331}
-    - targetCorrespondingSourceObject: {fileID: 4704650371129617218, guid: b02ead02271812b4483410755d58c3b8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7170112600207170313}
   m_SourcePrefab: {fileID: 100100000, guid: b02ead02271812b4483410755d58c3b8, type: 3}
 --- !u!1 &2526363081157473494 stripped
 GameObject:
@@ -110,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 5895184293400884763}
-  renderer: {fileID: 553504568839741331}
+  renderer: {fileID: 0}
   breakGlassVFXprefab: {fileID: 8621348971908687633, guid: 22b22757fc076a447b1f8ab8e063bd53, type: 3}
 --- !u!82 &-4673753822512831279
 AudioSource:
@@ -265,42 +259,3 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 7240557548238427833, guid: b02ead02271812b4483410755d58c3b8, type: 3}
   m_PrefabInstance: {fileID: 3869795337062932642}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8430176433767074784 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4704650371129617218, guid: b02ead02271812b4483410755d58c3b8, type: 3}
-  m_PrefabInstance: {fileID: 3869795337062932642}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &553504568839741331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8430176433767074784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9a860626f880e41bc6b3e125b955b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 7170112600207170313}
---- !u!95 &7170112600207170313
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8430176433767074784}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cfb0060d0462fba46ae6655430b518ea, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
