@@ -143,8 +143,6 @@ namespace Runner.Player
             EventManager.RaiseDeathEvent();
             EventManager.RaiseStopRunEvent();
             animator.DeathAnimation();
-            
-            
         }
 
         private void OnHitHead(bool hasHit, bool hasGround)
@@ -184,6 +182,14 @@ namespace Runner.Player
             }
             else
             {
+                if (p_collider.tag == "Glass")
+                {
+                    if (_currentState == EState.Dive)
+                    {
+                        isGrounded = false;
+                        return;
+                    }
+                }
                 isGrounded = true;
                 EventManager.RaiseRunEvent();
                 EventManager.RaiseHitGroundEvent();
