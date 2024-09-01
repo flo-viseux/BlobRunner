@@ -176,7 +176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7065491995892153253
 Transform:
   m_ObjectHideFlags: 0
@@ -742,7 +742,7 @@ Transform:
   m_GameObject: {fileID: 1558967793336179524}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 9.38, y: 9.18, z: -4.18}
+  m_LocalPosition: {x: 5.15, y: 9.18, z: -4.18}
   m_LocalScale: {x: 1, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1799,7 +1799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4583714884571789491
 Transform:
   m_ObjectHideFlags: 0
@@ -3891,7 +3891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2078238874607481648
 Transform:
   m_ObjectHideFlags: 0
@@ -4277,19 +4277,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.35872
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.5
+      value: 3.8323135
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.4464
+      value: 9.455
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.42
+      value: 11.4324
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4327,6 +4327,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstacle (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_TagString
+      value: Obstacles
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4351,7 +4355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.9295349
+      value: 1.8691405
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4359,7 +4363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.0262
+      value: -3.996
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4724,6 +4728,10 @@ PrefabInstance:
     - target: {fileID: 4354796307026074305, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4354796307026074305, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8111898030813779034, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_Name
@@ -6061,19 +6069,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.2899437
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.1594
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.376398
+      value: 19.3909
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.25
+      value: 12.1703
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6110,6 +6118,10 @@ PrefabInstance:
     - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_Name
       value: Obstacle (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_TagString
+      value: Obstacles
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6592,6 +6604,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BreakableGlass (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4603109709672306222, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9019702364727268103, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
       propertyPath: m_LocalScale.x
       value: 4
@@ -6749,19 +6765,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.145536
+      value: 1.1997198
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.6189435
+      value: 3.6913223
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.3614
+      value: 19.3343
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.9988
+      value: 6.0349
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6820,6 +6836,10 @@ PrefabInstance:
     - target: {fileID: 2526363081157473494, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
       propertyPath: m_Name
       value: BreakableGlass
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603109709672306222, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9019702364727268103, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
       propertyPath: m_LocalScale.x
