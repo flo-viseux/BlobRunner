@@ -4337,6 +4337,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BreakableGlass
       objectReference: {fileID: 0}
+    - target: {fileID: 4603109709672306222, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9019702364727268103, guid: 6a9f2fc28c4ad364281769108fbd2078, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -4694,19 +4698,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 4.9790196
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 4.1157055
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.46
+      value: 27.3046
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.21
+      value: 11.1521
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
