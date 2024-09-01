@@ -29,7 +29,7 @@ public class Obstacle : MonoBehaviour
 
                 if (Vector3.Dot(normal, Vector3.up) > 0.7f)
                 {
-                    Debug.Log("Touching up the ground");
+                    //Debug.Log("Touching up the ground");
                     return;
                 }
 
