@@ -1992,7 +1992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2191949906213535729
 Transform:
   m_ObjectHideFlags: 0
@@ -2178,11 +2178,11 @@ GameObject:
   - component: {fileID: 2240695114709800344}
   m_Layer: 6
   m_Name: Ground (6)
-  m_TagString: Untagged
+  m_TagString: Obstacles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6470167718437703501
 Transform:
   m_ObjectHideFlags: 0
@@ -2192,8 +2192,8 @@ Transform:
   m_GameObject: {fileID: 4088021007765062605}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 18.26, y: -5.65, z: 0}
+  m_LocalScale: {x: 2.14, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6972435947509093713}
@@ -2240,7 +2240,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3524,7 +3524,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2344683522824507684
 Transform:
   m_ObjectHideFlags: 0
@@ -3925,6 +3925,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4354796307026074305, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8111898030813779034, guid: 8cec6036dceec7043b1bd5d7eec6b3a4, type: 3}
       propertyPath: m_Name
       value: B-Static_1_04 30
@@ -4274,6 +4278,10 @@ PrefabInstance:
     - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_Name
       value: Obstacle (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4799,6 +4807,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstacle (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5039,19 +5051,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 9.746409
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.0316
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.456001
+      value: 24.9089
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.211
+      value: 8.2268
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5232,6 +5244,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstacle (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5256,7 +5272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.0403357
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5264,7 +5280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.216
+      value: 5.2362
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5302,6 +5318,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstacle (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5326,7 +5346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 4.1408
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5334,7 +5354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.216
+      value: 6.2864
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5371,6 +5391,10 @@ PrefabInstance:
     - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_Name
       value: Obstacle (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5536,19 +5560,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 5.1985
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 4.185239
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.46
+      value: 27.3607
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.2109995
+      value: 11.138
       objectReference: {fileID: 0}
     - target: {fileID: 3494558182807182586, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5585,6 +5609,10 @@ PrefabInstance:
     - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
       propertyPath: m_Name
       value: Obstacle (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775089561548729616, guid: 6742970d35afbb94a889f834513120f3, type: 3}
+      propertyPath: m_TagString
+      value: Obstacles
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
