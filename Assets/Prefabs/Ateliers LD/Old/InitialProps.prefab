@@ -988,6 +988,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlarmLight
       objectReference: {fileID: 0}
+    - target: {fileID: 8148501027437580356, guid: 64522b53c2d82364e9c90037e923aa7f, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
