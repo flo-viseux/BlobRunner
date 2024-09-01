@@ -3135,7 +3135,7 @@ MonoBehaviour:
   winEvent: {fileID: 11400000, guid: 5b99ab304e4c0ee48b8db7ebee13feb2, type: 2}
   saveLevelScore: {fileID: 1384910954}
   mixer: {fileID: 24100000, guid: 4674f90389ce69a4baa33a8ae60ad5c2, type: 2}
-  sfxMaxVolume: -15
+  sfxMaxVolume: -5
   ambiantMaxVolume: -5
   uiMaxVolume: -5
 --- !u!4 &849818536
