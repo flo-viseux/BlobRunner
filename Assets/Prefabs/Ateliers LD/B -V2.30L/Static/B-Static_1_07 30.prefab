@@ -1951,7 +1951,7 @@ GameObject:
   - component: {fileID: 8201980052483602210}
   - component: {fileID: 2037810380837286645}
   - component: {fileID: 8546425026333204305}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Ground (14)
   m_TagString: Obstacles
   m_Icon: {fileID: 0}

@@ -2267,7 +2267,7 @@ GameObject:
   - component: {fileID: 7347769121007262271}
   - component: {fileID: 7500100648890689044}
   - component: {fileID: 3296505963163239455}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Ground (16)
   m_TagString: Obstacles
   m_Icon: {fileID: 0}
@@ -2370,7 +2370,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -3451,7 +3451,7 @@ GameObject:
   - component: {fileID: 3720761584053461695}
   - component: {fileID: 1813810214351959023}
   - component: {fileID: 652177298226830472}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Ground (15)
   m_TagString: Obstacles
   m_Icon: {fileID: 0}
@@ -3554,7 +3554,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
