@@ -31,16 +31,16 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Controller.OnDiveSFX += PlayDive;
-        Controller.OnJumpSFX += PlayJump;
-        Controller.OnBounceSFX += PlayBounce;
+        // Controller.OnDiveSFX += PlayDive;
+        // Controller.OnJumpSFX += PlayJump;
+        // Controller.OnBounceSFX += PlayBounce;
     }
 
     private void OnDisable()
     {
-        Controller.OnDiveSFX -= PlayDive;
-        Controller.OnJumpSFX -= PlayJump;
-        Controller.OnBounceSFX -= PlayBounce;
+        // Controller.OnDiveSFX -= PlayDive;
+        // Controller.OnJumpSFX -= PlayJump;
+        // Controller.OnBounceSFX -= PlayBounce;
     }
 
     private void PlayBounce(EType type)

@@ -15,8 +15,8 @@ public class VFX_Manager : MonoBehaviour
     private void OnEnable()
     {
         // TODO : create player event to play vfx
-        Controller.onBounce += EnableBounceVFX;
-        Controller.onDiveStart += EnableDiveVFX;
+        // Controller.onBounce += EnableBounceVFX;
+        // Controller.onDiveStart += EnableDiveVFX;
 
         bounceVFXInstance = Instantiate(bounceVFX, new Vector3(-10f,0f,0f),Quaternion.identity);
         diveVFXInstance = Instantiate(diveVFX, new Vector3(-10f,0f,0f),Quaternion.identity);
@@ -25,8 +25,8 @@ public class VFX_Manager : MonoBehaviour
     private void OnDisable()
     {
         // TODO : create player event to play vfx
-        Controller.onBounce -= EnableBounceVFX;
-        Controller.onDiveStart -= EnableDiveVFX;
+        // Controller.onBounce -= EnableBounceVFX;
+        // Controller.onDiveStart -= EnableDiveVFX;
     }
 
     public void EnableBounceVFX(Vector3 position)

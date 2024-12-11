@@ -340,14 +340,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9160605459590528789}
-  - component: {fileID: 320417313174639445}
   - component: {fileID: 1824199248658129865}
   - component: {fileID: 5776943529971279798}
   - component: {fileID: 219738332032548818}
   - component: {fileID: 3901925363838674422}
   - component: {fileID: 3402193882066525143}
   - component: {fileID: 5953238197510767872}
-  - component: {fileID: 416229160269572248}
+  - component: {fileID: 5690609584948239856}
+  - component: {fileID: 668990304956354652}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -375,48 +375,6 @@ Transform:
   - {fileID: 6488702045780943693}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &320417313174639445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7962418247137918926}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a478a6a1763eac54aaaa239145b0971b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb2D: {fileID: 219738332032548818}
-  inputManager: {fileID: 1824199248658129865}
-  jumpForce: 15
-  maxHoldTime: 2
-  maxJumpForceMultiplier: 3
-  windowDurationBounce: 0.2
-  bounceForce: 10
-  maxBounceForce: 25
-  bounceMultiplier: 0.1
-  addSpeed: 1
-  delayBetweenAddSpeed: 0.5
-  addSpeedBetweenNBounce: 1
-  addSpeedWithTime: 0
-  checkCeilingDistNormal: 1
-  checkForwardDistNormal: 1
-  spriteTransform: {fileID: 115635309110398288}
-  checkCeilingDistShrink: 0.5
-  checkForwardDistShrink: 0.5
-  diveForce: 30
-  checkFloorDist: 0.2
-  chemicalXTag: ChemicalX
-  plutoniumPoint: 10
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  obstaclesMask:
-    serializedVersion: 2
-    m_Bits: 0
-  isBouncingFromChemical: 0
-  startGravity: 0
 --- !u!114 &1824199248658129865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,7 +545,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.75}
   serializedVersion: 2
   m_Radius: 0.05
---- !u!114 &416229160269572248
+--- !u!114 &5690609584948239856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -596,30 +554,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 7962418247137918926}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a886837fef4a646bdc46b8d95f3cb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 91d091ebd5642b14a9ebc07f4bcf9d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateColor:
-  - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0.8880043, g: 0, b: 1, a: 1}
-  _renderer: {fileID: 4912128919538292523}
-  inputManager: {fileID: 1824199248658129865}
-  rb2D: {fileID: 219738332032548818}
-  spriteTransform: {fileID: 115635309110398288}
-  checkFloorDist: 0.01
-  checkFloorJumpAgainDist: 0.25
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  initialJumpAgainCd: 0.2
-  jumpSteps:
-  - {x: 0, y: 2, z: 3.5}
-  - {x: 0.3, y: 4, z: 8}
-  - {x: 0.6, y: 6, z: 12}
+  duration: 1.5
+  playerAnimatorController: {fileID: 5889826114997222806}
+  PlayerIsInvulnerabled: 0
+--- !u!114 &668990304956354652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962418247137918926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b1fbf155b84a2c849f26b91675e524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundComp: {fileID: 0}
+  jumpBufferComp: {fileID: 0}
+  _spriteTransform: {fileID: 0}
   coefSize: 2
-  diveForce: 30
-  jumpStartY: 0
+  gravity: 5
+  jumpSteps:
+  - {x: 0, y: 2}
+  - {x: 0.5, y: 4}
+  - {x: 1, y: 6}
+  diveForce: 1
 --- !u!1 &8689511015927295859
 GameObject:
   m_ObjectHideFlags: 0
